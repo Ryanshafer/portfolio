@@ -1,0 +1,74 @@
+---
+// src/components/case-studies/CaseStudySummary.astro
+
+export interface Props {
+  role?: string;
+  problem?: string;
+  insight?: string;
+  approach?: string;
+  impact?: string;
+  stats?: {
+    stat: string;
+    label: string;
+  }[];
+}
+
+const { role, problem, insight, approach, impact, stats = [] } = Astro.props;
+
+// if *all* of them are missing, render nothing
+if (!(role || problem || insight || approach || impact || stats )) {
+  return
+}
+
+---
+ <!-- Summary Section -->
+      <div class="col-span-4 lg:col-start-2 lg:col-span-3">
+        <h2 class="text-2xl-custom font-heading xl:float-left mr-12 mb-6 max-w-lg xl:ml-[-26rem]">At a glance</h2>
+      </div>
+      <div class="col-span-4 sm:col-span-4 lg:col-start-6 lg:col-span-6 flex flex-col space-y-6">
+        <div class="space-y-6">
+          <!-- Row -->
+           {role && (
+          <div class="flex flex-col lg:flex-row border-t border-black dark:border-white pt-1.5">
+            <h3 class="w-48 mr-8 text-2xl font-heading mb-1 lg:mb-0">My Role</h3>
+            <p class="flex-1 text-base font-bold">{role}</p>
+          </div>
+          )}
+          {problem && (
+          <div class="flex flex-col lg:flex-row border-t border-black dark:border-white pt-1.5">
+            <h3 class="w-48 mr-8 text-2xl font-heading mb-1 lg:mb-0">Problem</h3>
+            <p class="flex-1 text-base">{problem}</p>
+          </div>
+          )}
+          {insight && (
+          <div class="flex flex-col lg:flex-row border-t border-black dark:border-white pt-1.5">
+            <h3 class="w-48 mr-8 text-2xl font-heading mb-1 lg:mb-0">Key Insight</h3>
+            <p class="flex-1 text-base">{insight}</p>
+          </div>
+          )}
+          {approach && (
+          <div class="flex flex-col lg:flex-row border-t border-black dark:border-white pt-1.5">
+            <h3 class="w-48 mr-8 text-2xl font-heading mb-1 lg:mb-0">Approach</h3>
+            <p class="flex-1 text-base">{approach}</p>
+          </div>
+          )}
+          {impact && (
+            <div class="flex flex-col lg:flex-row border-t border-black dark:border-white pt-1.5">
+              <h3 class="w-48 mr-8 text-2xl font-heading mb-1 lg:mb-0">Impact</h3>
+              <div class="flex-1 space-y-4">
+                <p class="text-base">{impact}</p>
+                {stats.length > 0 && (
+                  <div class="grid grid-cols-1 gap-2">
+                    {stats.map((item) => (
+                      <div class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit flex items-center leading-none">
+                        <span class="font-heading text-base font-bold text-black dark:text-white">{item.stat}</span>
+                        <span class="text-base ml-1">— {item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>

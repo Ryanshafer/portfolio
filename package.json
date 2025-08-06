@@ -1,5 +1,5 @@
 {
-  "name": "astro-theme-stone",
+  "name": "astro-theme-rs",
   "type": "module",
   "version": "1.0.0",
   "scripts": {
@@ -11,15 +11,21 @@
   },
   "dependencies": {
     "@alpinejs/collapse": "3.12.3",
-    "@astrojs/tailwind": "4.0.0",
-    "@fontsource/inter": "5.0.8",
     "@types/alpinejs": "3.7.2",
     "alpinejs": "3.12.3",
-    "astro": "2.10.13",
+    "astro": "^5.11.0",
     "astro-compress": "2.0.14",
     "prettier": "3.0.2",
     "prettier-plugin-astro": "0.12.0",
     "prettier-plugin-tailwindcss": "0.5.3",
-    "tailwindcss": "3.3.3"
+    "sharp": "^0.34.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@tailwindcss/typography": "^0.5.16",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.3"
   }
 }

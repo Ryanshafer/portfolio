@@ -1,0 +1,20 @@
+---
+// src/components/case-studies/ImageWithStyle.astro
+const { src, alt = '', className = '' } = Astro.props;
+---
+
+<figure class="my-8 w-full">
+  <div class="my-4 w-[100%]">
+    <img
+      src={src}
+      alt={alt}
+      class="w-full rounded"
+      loading="lazy"
+    />
+    {alt && (
+      <figcaption class="mt-2 text-sm text-black/60 dark:text-white/60 text-left">
+        {alt}
+      </figcaption>
+    )}
+  </div>
+</figure>

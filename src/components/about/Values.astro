@@ -1,59 +1,39 @@
 ---
 const values = [
-  [
-    {
-      ref: '01',
-      name: 'Excellence',
-      description:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    },
-    {
-      ref: '02',
-      name: 'Innovation',
-      description:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    },
-  ],
-  [
-    {
-      ref: '03',
-      name: 'Teamwork',
-      description:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    },
-    {
-      ref: '04',
-      name: 'Respect',
-      description:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    },
-  ],
+  {
+    value: 'People-first Mindset',
+    description: 'Good design starts with listening. I build teams, products, and strategies that are grounded in real human needs. From mentoring designers to launching client platforms that made complex data feel intuitive, I’ve always focused on outcomes that support both the user and the business—never one at the expense of the other.',
+  },
+  {
+    value: 'Complexity into Clarity',
+    description: 'I thrive in complex environments—where ambiguity, scale, and competing needs intersect. My role is to translate that complexity into systems, interfaces, and communication patterns that feel effortless to users. Whether aligning stakeholders or designing workflows, I apply structure, hierarchy, and UX principles to make the complicated actionable.',
+  },
+  {
+    value: 'Shape Culture Beyond Product',
+    description: 'Introducing new tools or practices is only half the battle—lasting change happens when they’re embraced. Whether advancing new technologies or evolving existing ones, I work to raise the design bar and build the cultural conditions where innovation can take root and thrive.',
+  },
+  {
+    value: 'Driving Strategy by Design',
+    description: 'Design isn’t just how something looks—it’s how decisions get made, how priorities align, and how ideas gain traction. I’ve worked with founders and executives to bridge vision and execution, using design thinking to drive clarity, momentum, and measurable impact.',
+  },
 ];
 ---
-
-<section class="py-16 sm:py-20">
-  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex flex-col gap-8 lg:gap-12">
-      <h2 class="text-3xl font-medium tracking-tight sm:text-4xl">Our Values</h2>
-      <div class="grid gap-8 lg:grid-cols-2">
-        {
-          values.map((column, index) => (
-            <div class:list={['space-y-8', index === 1 && 'lg:mt-16']}>
-              {column.map((value) => (
-                <div class="bg-primary-500/10 dark:bg-primary-400/10 flex flex-col gap-12 rounded-3xl px-6 py-8">
-                  <p class="text-sm">{value.ref}</p>
-                  <div class="flex flex-col gap-4">
-                    <h3 class="text-xl font-medium">{value.name}</h3>
-                    <p class="text-primary-950/70 dark:text-primary-200/70 text-base sm:text-lg">
-                      {value.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))
-        }
-      </div>
+<section class="mb-15 sm:mb-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="grid grid-cols-4 gap-y-6 gap-x-6 text-primary-950 dark:text-primary-200 lg:grid-cols-12 lg:gap-x-8">
+      <h2 class="col-span-4 lg:col-start-2 lg:col-span-4 text-5xl lg:text-2xl-custom font-bold font-heading">
+        My values
+      </h2>
+      {values.map((val) => (
+        <div class="border-t border-black dark:border-white col-span-4 lg:col-start-6 lg:col-span-6 grid grid-cols-4 lg:grid-cols-6">
+          <p class="py-3 text-2xl-custom font-heading font-bold col-span-4 md:col-span-2">
+            {val.value}
+          </p>
+          <p class="py-3 col-span-4 md:col-start-3 md:col-span-2 lg:col-span-4">
+            {val.description}
+          </p>
+        </div>
+      ))}
     </div>
   </div>
 </section>

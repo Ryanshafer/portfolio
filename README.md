@@ -1,96 +1,39 @@
-# Stone: Astro Theme
+This project includes code adapted from:
 
-Stone is a free and open-source Astro theme specially designed for Business, Marketing, SaaS and Startup websites.
+- astro-theme-stone (https://github.com/m6v3l9/astro-theme-stone)
+  Licensed under the MIT License.
 
-## Key Features:
+MIT License
 
-- **Built with Tailwind CSS & Alpine.js**
-- **5+ Pages**
-- **15+ Sections**
-- Clean & Modern Design
-- Fully Responsive
-- Dark & Light Mode
-- Fast & Performant
-- Super Lightweight
-- View Transitions (experimental)
-- **Prettier** Code Formatter
-- **Google Fonts**
-- **Remix Icons**
-- Free Updates
+Copyright (c) 2023 Maks
 
-## Getting Started
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-### Requirements
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-- Basic knowledge of Astro, HTML and CSS.
-- Text editor (We recommend Visual Studio Code)
-- Node.js 18 or higher.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-### Install dependencies
+## Fonts Used
 
-Navigate to your project folder and install its dependencies:
+- [IBM Plex Sans](https://github.com/IBM/plex): Licensed under the [Open Font License (OFL)](https://scripts.sil.org/cms/scripts/page.php?item_id=OFL).
+- [Cabinet Grotesk](https://www.fontshare.com/fonts/cabinet-grotesk): Licensed under the [Fontshare License](https://www.fontshare.com/licenses).
 
-```
-npm install
-```
+## Built With
 
-### Start
-
-Once the installation is done, you can now run your app:
-
-```
-npm run dev
-```
-
-This runs the app in development mode. Open http://localhost:3000 to view it in the browser.
-
-### Build
-
-```
-npm run build
-```
-
-This builds the app for production to the `./dist/` folder.
-
-## Project Structure
-
-Inside the project, you'll see the following folders and files:
-
-```
-/
-├── public/
-├── src/
-│   ├── components/
-│   ├── layouts/
-│   └── pages/
-├── .prettierrc
-├── astro.config.mjs
-├── package-lock.json
-├── package.json
-├── README.md
-├── tailwind.config.cjs
-└── tsconfig.json
-```
-
-- `public/*` - Any static assets (images, fonts, icons, ...)
-- `src/*` - Project source code (components, pages, ...)
-- `src/components/*` - Reusable Astro components used to build pages.
-- `src/layouts/*` - Astro components that define the UI structure shared by one or more pages..
-- `src/pages/*` - Astro components used to create new pages on your site. Each page is exposed as a route based on its file name.
-- `.prettierrc` - Prettier configuration file.
-- `astro.config.mjs` - Astro configuration file.
-- `package.json` - File used by JavaScript package managers to manage your dependencies. It also defines the scripts that are commonly used to run Astro.
-- `tailwind.config.cjs` - Tailwind configuration file. The theme section is where you define your color palette and fonts.
-- `tsconfig.json` - TypeScript configuration file.
-
-## Deployment
-
-Ready to build and deploy your site? Follow the [official documentation](https://docs.astro.build/en/guides/deploy/).
-
-## Support
-
-If you have any questions or suggestions do not hesitate to contact me.
-
-## License
-
-This project is licensed under the terms of the MIT license.
+- [Astro](https://astro.build/) - Static site builder
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Prettier](https://prettier.io/) - Code formatter
+- [PostCSS](https://postcss.org/) - CSS transformation tool
+- [Sharp](https://sharp.pixelplumbing.com/) - Image optimization

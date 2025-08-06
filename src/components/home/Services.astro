@@ -1,44 +1,60 @@
----
-const services = [
-  {
-    step: '01',
-    name: 'Design',
-    description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-  },
-  {
-    step: '02',
-    name: 'Develop',
-    description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-  },
-  {
-    step: '03',
-    name: 'Maintain',
-    description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-  },
-];
----
+<section class="py-16 px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl grid grid-cols-4 md:grid-cols-12 gap-y-16 md:gap-x-12">
+    <!-- Section Title -->
+    <h2 class="text-4xl font-heading font-bold text-black dark:text-white col-span-4 md:col-span-4">
+      Expertise
+    </h2>
 
-<section class="py-16 sm:py-20">
-  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex flex-col gap-12 sm:gap-16">
-      <h2 class="text-3xl font-medium tracking-tight sm:text-4xl">Services</h2>
-      <div class="grid gap-8 lg:grid-cols-3">
-        {
-          services.map((service) => (
-            <div class="bg-primary-500/10 dark:bg-primary-400/10 flex flex-col gap-12 rounded-3xl px-6 py-8">
-              <p class="text-sm">{service.step}</p>
-              <div class="flex flex-col gap-4">
-                <h3 class="text-xl font-medium">{service.name}</h3>
-                <p class="text-primary-950/70 dark:text-primary-200/70 text-base sm:text-lg">
-                  {service.description}
-                </p>
-              </div>
-            </div>
-          ))
-        }
+    <!-- Expertise Content -->
+    <div class="col-span-4 md:col-span-8 flex flex-col gap-12">
+      <!-- Item -->
+      <div class="border-t border-black dark:border-white pt-6 grid grid-cols-4 md:grid-cols-12 gap-y-6 gap-x-4 md:gap-y-6 md:gap-x-16 items-start">
+        <p class="font-heading text-4xl-custom font-black text-black dark:text-white col-span-4 md:col-span-6">
+          Product & UX Strategy
+        </p>
+        <p class="text-base text-black dark:text-white col-span-4 md:col-span-6">
+          I help define product vision and align teams around user-driven goals and business impact.
+        </p>
+      </div>
+
+      <!-- Item -->
+      <div class="border-t border-black dark:border-white pt-6 grid grid-cols-4 md:grid-cols-12 gap-y-6 gap-x-4 md:gap-y-6 md:gap-x-16 items-start">
+        <p class="font-heading text-4xl-custom font-black text-black dark:text-white col-span-4 md:col-span-6">
+          User Research & Insights
+        </p>
+        <p class="text-base text-black dark:text-white col-span-4 md:col-span-6">
+          I uncover deep user needs through research and translate them into clear, actionable insights.
+        </p>
+      </div>
+
+      <!-- Item -->
+      <div class="border-t border-black dark:border-white pt-6 grid grid-cols-4 md:grid-cols-12 gap-y-6 gap-x-4 md:gap-y-6 md:gap-x-16 items-start">
+        <p class="font-heading text-4xl-custom font-black text-black dark:text-white col-span-4 md:col-span-6">
+          Design & Concept
+        </p>
+        <p class="text-base text-black dark:text-white col-span-4 md:col-span-6">
+          I turn ideas into validated, intuitive experiences through prototyping, testing, and iteration.
+        </p>
+      </div>
+
+      <!-- Item -->
+      <div class="border-t border-black dark:border-white pt-6 grid grid-cols-4 md:grid-cols-12 gap-y-6 gap-x-4 md:gap-y-6 md:gap-x-16 items-start">
+        <p class="font-heading text-4xl-custom font-black text-black dark:text-white col-span-4 md:col-span-6">
+          Culture Development
+        </p>
+        <p class="text-base text-black dark:text-white col-span-4 md:col-span-6">
+          I foster design-driven cultures by mentoring teams, scaling practices, and partnering with leadership to embed UX into company strategy.
+        </p>
+      </div>
+
+      <!-- Button -->
+      <div class="col-span-4 md:col-span-9 text-right pt-4">
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center rounded-full border border-transparent bg-black px-5 py-3 text-lg font-bold text-white transition hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:bg-white dark:text-black dark:hover:bg-white/30 dark:hover:text-white dark:focus-visible:outline-primary-400"
+        >
+          Let’s Collaborate →
+        </a>
       </div>
     </div>
   </div>

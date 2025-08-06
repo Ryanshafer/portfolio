@@ -1,29 +1,68 @@
-<section class="py-16 sm:py-20">
+---
+import { getCollection } from 'astro:content';
+
+const allStudies = await getCollection('studies');
+
+// Choose your featured case studies by slug, in the exact order you want
+const featuredSlugs = ['my-first-study', 'my-second-study', 'my-third-study'];
+
+import type { CollectionEntry } from 'astro:content';
+
+const featuredStudies: CollectionEntry<'studies'>[] = featuredSlugs
+  .map((slug) => allStudies.find((study) => study.slug === slug))
+  .filter((study): study is CollectionEntry<'studies'> => Boolean(study));
+
+import PostPreview from '../case-studies/PostPreview.astro';
+import Button from '../layout/Button.astro';
+---
+
+<section class="mb-10 sm:mb-20">
   <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex flex-col gap-16">
-      <div class="flex flex-col items-start gap-8 sm:gap-10">
-        <div class="flex max-w-xl flex-col items-start gap-4 sm:gap-6">
-          <h1 class="text-4xl font-medium tracking-tight sm:text-5xl lg:text-6xl">
-            We design and build your next digital experience
-          </h1>
-          <p class="text-primary-950/70 dark:text-primary-200/70 text-lg sm:text-xl">
-            Anim aute id magna aliqua ad ad non deserunt sunt.
-          </p>
-        </div>
-        <a
-          href="/pricing"
-          class="bg-primary-600 dark:bg-primary-400 hover:bg-primary-700 dark:hover:bg-primary-300 focus-visible:outline-primary-600 dark:focus-visible:outline-primary-400 dark:text-primary-950 inline-flex items-center justify-center rounded-full border border-transparent px-5 py-3 text-base font-medium text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+    <div class="flex flex-col">
+      <!-- HERO TEXT -->
+
+      <div
+        class="mx-auto mb-5 mt-10 grid max-w-2xl grid-cols-1 gap-2 sm:mb-10 sm:mt-20 lg:max-w-7xl lg:grid-cols-12"
+      >
+        <h1
+          class="col-span-full font-heading text-5xl lg:text-4xl-custom font-black text-black dark:text-white lg:col-span-5 lg:self-end lg:text-[clamp(2.25rem,5vw,3.5rem)]"
         >
-          Get started
-        </a>
+          Hi, I'm Ryan.<br />I design for people.
+        </h1>
+        <p
+          class="col-span-full mt-0 leading-tight text-black dark:text-white sm:text-base sm:leading-tight lg:col-span-6 lg:col-start-7 lg:mb-3 lg:mt-auto"
+        >
+          I help organizations align vision, streamline complexity, and design experiences people
+          actually want to use.
+        </p>
       </div>
-      <img
-        class="h-auto w-full rounded-3xl"
-        width="1280"
-        height="640"
-        src="/assets/hero.webp"
-        alt="Hero picture"
-      />
+
+      <!-- FEATURED CASE STUDIES -->
+      <!-- Container for the entire 3-promo layout -->
+      <div
+        class="grid grid-cols-4 gap-x-6 gap-y-10 border-t border-black pt-10 lg:grid-cols-12">
+        <h2 class="text-4xl font-heading font-bold text-black dark:text-white col-span-4 md:col-span-4">
+Featured Work
+</h2>
+        <!-- Large promo -->
+         <div class="col-span-4 sm:col-span-4 sm:col-start-5 lg:col-span-8 lg:col-start-5">
+        <PostPreview post={featuredStudies[0]} />
+          </div>
+
+        <!-- Smaller promos below the large promo -->
+        <div class="col-span-4 sm:col-span-4 sm:col-start-5 lg:col-span-4 lg:col-start-5">
+          <PostPreview post={featuredStudies[1]} />
+        </div>
+
+        <div class="col-span-4 sm:col-span-4 sm:col-start-9 lg:col-span-4 lg:col-start-9">
+          <PostPreview post={featuredStudies[2]} />
+        </div>
+      </div>
+
+      <!-- SEE ALL BUTTON -->
+      <div class="mt-11 flex w-full justify-end">
+        <Button href="/case-studies" cta="Explore My Process →" />
+      </div>
     </div>
   </div>
 </section>

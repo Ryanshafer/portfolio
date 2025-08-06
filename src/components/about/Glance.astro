@@ -1,0 +1,54 @@
+---
+const stats = [
+    {
+    name: 'Experiences Shaped',
+    value: '700M+',
+  },
+  {
+    name: 'Years designing',
+    value: '20+',
+  },
+  {
+    name: 'Brands shaped',
+    value: '10+',
+  },
+  {
+    name: 'Executive teams advised',
+    value: '8',
+  },
+  {
+    name: 'Designers mentored',
+    value: '30+',
+  },
+];
+
+import Button from '../layout/Button.astro';
+---
+<section class="mb-16 sm:mb-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="grid grid-cols-4 gap-y-6 gap-x-6 text-primary-950 dark:text-primary-200 lg:grid-cols-12 lg:gap-x-8">
+      <h2 class="col-span-4 lg:col-start-2 lg:col-span-4 text-5xl lg:text-2xl-custom font-bold font-heading">
+        At a glance
+      </h2>
+      {stats.map((stat) => (
+        <div class="border-t border-black dark:border-white col-span-4 lg:col-start-6 lg:col-span-6 grid grid-cols-4 lg:grid-cols-6">
+          <p class="py-3 text-5xl font-heading font-black col-span-2">
+            {stat.value}
+          </p>
+          <p class="py-3 text-2xl-custom font-bold font-heading col-start-3 col-span-2 lg:col-span-4">
+            {stat.name}
+          </p>
+        </div>
+      ))}
+      <div class="border-t border-black dark:border-white col-span-4 lg:col-start-6 lg:col-span-6 flex flex-col lg:flex-row lg:items-center justify-between gap-2 lg:gap-4">
+        <p class="py-6 lg:py-8 text-2xl lg:text-lg lg:leading-tight font-heading text-center lg:text-left">
+          Curious how I’ve moved metrics, shaped teams, and scaled design practices?
+        </p>
+        <div class="shrink-0 text-center lg:text-left">
+          <Button href="/case-studies" cta="Read my case studies →" variant="outline" class="ml-auto" />
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>

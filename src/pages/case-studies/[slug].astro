@@ -1,0 +1,66 @@
+---
+// src/pages/case-studies/[slug].astro
+import { getEntryBySlug } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ImageWithStyle from '../../components/case-studies/ImageWithStyle.astro';
+import CaseStudySummary from '../../components/case-studies/CaseStudySummary.astro';
+
+export async function getStaticPaths() {
+  const { getCollection } = await import('astro:content');
+  const posts = await getCollection('studies');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug('studies', slug);
+if (!post) {
+  throw new Error(`No post found for slug: ${slug}`);
+}
+
+const { data, render } = post;
+const { Content } = await render();
+---
+
+<Layout>
+  <article class="mx-auto grid max-w-7xl grid-cols-1 px-4 py-0 xl:py-9 xl:grid-cols-12">
+    {
+      (data.heroImageWide || data.heroImagePromo) && (
+        <picture class="col-span-12 my-5 xl:my-11">
+          <source srcset={data.heroImageWide} media="(min-width: 1024px)" />
+          <img
+            src={data.heroImagePromo || data.heroImageWide}
+            alt={data.title}
+            class="rounded-m w-full object-cover"
+            style={data.bgFill ? `background-color: ${data.bgFill}` : undefined}
+          />
+        </picture>
+      )
+    }
+
+    <div class="col-span-full xl:col-span-12 grid grid-cols-1 xl:grid-cols-12 gap-y-8 xl:gap-y-16">
+      <h1 class="col-span-full md:col-span-12 md:col-start-1 xl:col-span-10 xl:col-start-2 font-heading text-2xl-custom lg:text-5xl font-bold text-black dark:text-white">
+        {data.title}
+      </h1>
+      <div class="col-span-full lg:col-span-6 lg:col-start-6">
+        {data.summary && (
+          <CaseStudySummary
+            role={data.summary.role}
+            problem={data.summary.problem}
+            insight={data.summary.insight}
+            approach={data.summary.approach}
+            impact={data.summary.impact}
+            stats={data.summary.stats}
+          />
+        )}
+      </div>
+    </div>
+    <div class="col-span-full lg:col-start-2 lg:col-span-3">
+      <!-- Optional placeholder for headings rendered via component or custom tag -->
+    </div>
+    <div class="prose prose-gray max-w-none col-span-full lg:col-start-6 lg:col-span-6 mt-16 [mdx-content]">
+      <Content components={{ ImageWithStyle }} />
+    </div>
+  </article>
+</Layout>

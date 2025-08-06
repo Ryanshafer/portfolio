@@ -1,6 +1,5 @@
 ---
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-500.css';
+import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
@@ -22,13 +21,59 @@ const { description, title } = Astro.props;
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="/tailwind.css" />
+    <!-- Cabinet Grotesk -->
+    <link
+      rel="preload"
+      href="/fonts/cabinet-grotesk/CabinetGrotesk-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/cabinet-grotesk/CabinetGrotesk-Black.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <!-- IBM Plex Sans -->
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans/IBMPlexSans-Regular-Latin1.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans/IBMPlexSans-Italic-Latin1.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans/IBMPlexSans-Bold-Latin1.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans/IBMPlexSans-BoldItalic-Latin1.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
     <ViewTransitions />
   </head>
   <body
-    class="bg-primary-50 text-primary-950 dark:bg-primary-950 dark:text-primary-200 antialiased transition"
+    class="bg-white text-black dark:bg-darkerblack dark:text-white antialiased transition"
   >
     <Header />
     <main>

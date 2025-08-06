@@ -1,0 +1,32 @@
+---
+const {
+  href = null,
+  cta,
+  target = "_self",
+  variant = "primary",
+  type = "button",
+} = Astro.props;
+---
+
+{href ? (
+  <a
+    href={href}
+    target={target}
+    class={`inline-flex items-center justify-center rounded-full px-5 py-3 text-lg font-bold whitespace-nowrap transition
+      ${variant === 'primary' ? 'bg-black text-white hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-white/30 dark:hover:text-white' : ''}
+      ${variant === 'outline' ? 'border border-black text-black hover:bg-purewhite dark:border-white dark:text-white dark:hover:bg-black' : ''}
+      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:focus-visible:outline-primary-400`}
+  >
+    {cta}
+  </a>
+) : (
+  <button
+    type={type}
+    class={`inline-flex items-center justify-center rounded-full px-5 py-3 text-lg font-bold whitespace-nowrap transition
+      ${variant === 'primary' ? 'bg-black text-white hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-white/30 dark:hover:text-white' : ''}
+      ${variant === 'outline' ? 'border border-black text-black hover:bg-purewhite dark:border-white dark:text-white dark:hover:bg-white' : ''}
+      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:focus-visible:outline-primary-400`}
+  >
+    {cta}
+  </button>
+)}
