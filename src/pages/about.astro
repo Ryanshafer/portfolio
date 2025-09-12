@@ -1,5 +1,5 @@
 ---
-import Heading from '../components/about/Heading.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
 import Bio from '../components/about/Bio.astro';
 import Glance from '../components/about/Glance.astro';
 import Values from '../components/about/Values.astro';
@@ -9,8 +9,10 @@ import Layout from '../layouts/Layout.astro';
 <Layout
   description="Learn about Ryan Shafer, a User Experience Design leader with over 20 years of experience"
   title="About · Ryan Shafer · UX Design Leader"
+  bgFill="#FAFAF9"
+  bgFillDark="#3C3758"
 >
-  <Heading />
+  <PageHeader heading="Meet Ryan Shafer" subheading="Clarity Creator, Problem Solver, Design Leader, Mentor"/>
   <Bio />
   <Glance />
   <Values />

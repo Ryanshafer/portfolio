@@ -4,12 +4,16 @@ import { ViewTransitions } from 'astro:transitions';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 
+import alpineInitUrl from '../scripts/alpine-init.ts?url';
+
 interface Props {
   description: string;
   title: string;
+  bgFill?: string;
+  bgFillDark?: string;
 }
 
-const { description, title } = Astro.props;
+const { description, title, bgFill, bgFillDark = '' } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -75,7 +79,9 @@ const { description, title } = Astro.props;
   <body
     class="bg-white text-black dark:bg-darkerblack dark:text-white antialiased transition"
   >
-    <Header />
+    <Header  
+    bgFill={bgFill}
+    bgFillDark={bgFillDark} />
     <main>
       <slot />
     </main>
@@ -85,35 +91,6 @@ const { description, title } = Astro.props;
         display: none !important;
       }
     </style>
-    <script>
-      import Alpine from 'alpinejs';
-      import collapse from '@alpinejs/collapse';
-
-      Alpine.plugin(collapse);
-
-      Alpine.store('theme', {
-        init() {
-          this.isDark = (() => {
-            if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-              return localStorage.getItem('theme') === 'dark';
-            }
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-              return true;
-            }
-            return false;
-          })();
-        },
-
-        isDark: false,
-
-        toggle() {
-          this.isDark = !this.isDark;
-          localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
-        },
-      });
-
-      window.Alpine = Alpine;
-      Alpine.start();
-    </script>
+    <script type="module" src={alpineInitUrl}></script>
   </body>
 </html>

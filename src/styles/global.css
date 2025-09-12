@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* You can add custom global styles below */
+/* custom global styles  */
 
 @font-face {
   font-family: 'Cabinet Grotesk';
@@ -59,20 +59,78 @@
 }
 
 @layer base {
-  .prose h2 {
-    @apply text-2xl-custom font-heading xl:float-left mr-12 mb-4 mt-6 max-w-lg xl:ml-[-26rem] lg:max-w-[20rem];
+
+  .prose  :where(li) {
+    @apply list-disc ml-4 pb-6 text-[clamp(1.25rem,1vw+1rem,1.625rem)] leading-[clamp(1.75rem,1vw+1.25rem,2.5rem)];
   }
-    .prose p {
+  .case-studies :where(h2) {
+    @apply text-2xl-custom font-heading xl:float-left mr-12 mb-4 mt-6 xl:mt-[3.5rem] max-w-lg xl:ml-[-26rem] lg:max-w-[23rem];
+  }
+    .case-studies :where(p) {
     @apply text-base pb-6;
   }
-    .prose hr {
-    @apply  xl:ml-[-26rem] border-darkwhite mb-6;
+    .case-studies hr {
+    @apply  xl:ml-[-26rem] border-darkwhite mb-6 xl:mt-8 xl:pt-1;
   }
 
-    .prose ul {
+    .case-studies ul {
     @apply  list-disc pl-4 pb-6;
   }
-    .prose ul li {
+    .case-studies ul li {
     @apply  py-2;
+  }
+
+    .thoughts :where(h2) {
+    @apply text-2xl-custom font-heading mb-4 mt-6;
+  }
+    .thoughts :where(p) {
+    @apply pb-6 text-[clamp(1.25rem,1vw+1rem,1.625rem)] leading-[clamp(1.75rem,1vw+1.25rem,2.5rem)];
+  }
+
+}
+
+.highlighted-heading {
+  position: relative;
+  z-index: 10;
+}
+
+.highlighted-heading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  width: 200px;
+  height: 100px;
+  background: url('/assets/highlight.svg') no-repeat center / contain;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.dark .highlighted-heading::before {
+  background-image: url('/assets/highlight-dark.svg');
+}
+
+@media (max-width: 1024px) {
+  .highlighted-heading::before {
+    top: 25%;
+    left: 35%;
+    width: 150px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 640px) {
+  .highlighted-heading::before {
+    top: 15%;
+    left: 70%;
+    width: 150px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 280px) {
+  .highlighted-heading::before {
+    display: none;
   }
 }

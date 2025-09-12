@@ -1,6 +1,6 @@
 ---
-import { Astro } from 'astro';
 const currentPath = Astro.url.pathname;
+const { bgFill, bgFillDark } = Astro.props ?? {};
 
 const links = [
   {
@@ -16,6 +16,10 @@ const links = [
     href: '/case-studies',
   },
   {
+    name: 'Thoughts',
+    href: '/thoughts',
+  },
+  {
     name: 'Contact',
     href: '/contact',
   },
@@ -24,8 +28,8 @@ const links = [
 
 <header
   x-data="{ open: false }"
-  class="transition"
-  :class="{ 'bg-darkwhite dark:bg-white/10': open, 'bg-white dark:bg-darkerblack': !(open) }"
+  class={`transition ${bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : 'bg-white dark:bg-darkerblack'}`}
+  style={bgFill ? `--hero-bg: ${bgFill}; --hero-bg-dark: ${bgFillDark ?? bgFill};` : undefined}
 >
   <div
     class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
@@ -70,7 +74,7 @@ const links = [
       <!-- Toggle theme mode -->
       <button
         type="button"
-        class="text-primary-950 dark:text-primary-200 hover:bg-primary-500/10 dark:hover:bg-primary-400/10 ring-primary-950 inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2"
+        class="text-black dark:text-white hover:bg-primary-500/10 dark:hover:bg-primary-400/10 ring-primary-950 inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2"
         x-data
         @click="$store.theme.toggle()"
       >

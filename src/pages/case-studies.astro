@@ -1,28 +1,37 @@
 ---
-import Heading from '../components/case-studies/Heading.astro';
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import PostPreview from '../components/case-studies/PostPreview.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
 
 const posts = (await getCollection('studies')).sort(
-  (a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate)
+  (a, b) => new Date(b.data?.pubDate ?? 0).getTime() - new Date(a.data?.pubDate ?? 0).getTime()
 );
 ---
 
 <Layout
   description="Learn about Ryan Shafer's past design work"
   title="Cast Studies · Ryan Shafer · UX Design Leader"
+  bgFill='#FAFAF9'
+  bgFillDark='#3C3758'
 >
-  <Heading />
-  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="space-y-11 border-t border-black dark:border-white pt-11">
+  <PageHeader heading="Case Studies" subheading="Stories of design that connect human needs with business success." />
+  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
+    <div class="space-y-11">
       {
-      posts.map((post, index) => (
-        <PostPreview
-          post={post}
-          layout={index === 0 ? 'featured' : 'horizontal'}
-        />
-      ))
+        posts.map((post, index) => (
+          <PostPreview
+            layout={index === 0 ? 'featured' : 'wide'}
+            post={post}
+            extraClasses={
+              index === 1
+                ? 'border-t border-black pt-10'
+                : index === posts.length - 1
+                  ? 'border-none'
+                  : ''
+            }
+          />
+        ))
       }
     </div>
   </section>

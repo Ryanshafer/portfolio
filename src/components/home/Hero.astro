@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 const allStudies = await getCollection('studies');
 
 // Choose your featured case studies by slug, in the exact order you want
-const featuredSlugs = ['my-first-study', 'my-second-study', 'my-third-study'];
+const featuredSlugs = ['mtv-brand-cohesion', 'my-second-study', 'my-third-study'];
 
 import type { CollectionEntry } from 'astro:content';
 
@@ -16,53 +16,58 @@ import PostPreview from '../case-studies/PostPreview.astro';
 import Button from '../layout/Button.astro';
 ---
 
-<section class="mb-10 sm:mb-20">
+<section class="bg-herowhite dark:bg-herodark">
   <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex flex-col">
       <!-- HERO TEXT -->
-
-      <div
-        class="mx-auto mb-5 mt-10 grid max-w-2xl grid-cols-1 gap-2 sm:mb-10 sm:mt-20 lg:max-w-7xl lg:grid-cols-12"
-      >
+      <div class="mx-auto my-16 lg:my-[5.5rem]">
         <h1
-          class="col-span-full font-heading text-5xl lg:text-4xl-custom font-black text-black dark:text-white lg:col-span-5 lg:self-end lg:text-[clamp(2.25rem,5vw,3.5rem)]"
+          class="highlighted-heading overflow-visible text-center font-heading text-5xl font-black tracking-[-0.018em] dark:text-white lg:text-[4.25rem]"
         >
-          Hi, I'm Ryan.<br />I design for people.
+          Hi, I’m Ryan<span class="inline sm:hidden">.</span><br class="inline sm:hidden" /><span
+            class="hidden sm:inline"
+          >
+            —
+          </span>I design for people.
         </h1>
         <p
-          class="col-span-full mt-0 leading-tight text-black dark:text-white sm:text-base sm:leading-tight lg:col-span-6 lg:col-start-7 lg:mb-3 lg:mt-auto"
+          class="mt-7 text-center font-heading text-2xl leading-tight text-black/70 dark:text-white/70 lg:mb-3"
         >
-          I help organizations align vision, streamline complexity, and design experiences people
-          actually want to use.
+          A design leader with 20+ years turning complex challenges into clarity across product, marketing, and branding.
         </p>
       </div>
-
-      <!-- FEATURED CASE STUDIES -->
-      <!-- Container for the entire 3-promo layout -->
-      <div
-        class="grid grid-cols-4 gap-x-6 gap-y-10 border-t border-black pt-10 lg:grid-cols-12">
-        <h2 class="text-4xl font-heading font-bold text-black dark:text-white col-span-4 md:col-span-4">
-Featured Work
-</h2>
-        <!-- Large promo -->
-         <div class="col-span-4 sm:col-span-4 sm:col-start-5 lg:col-span-8 lg:col-start-5">
-        <PostPreview post={featuredStudies[0]} />
-          </div>
-
-        <!-- Smaller promos below the large promo -->
-        <div class="col-span-4 sm:col-span-4 sm:col-start-5 lg:col-span-4 lg:col-start-5">
-          <PostPreview post={featuredStudies[1]} />
-        </div>
-
-        <div class="col-span-4 sm:col-span-4 sm:col-start-9 lg:col-span-4 lg:col-start-9">
-          <PostPreview post={featuredStudies[2]} />
-        </div>
+    </div>
+  </div>
+</section>
+<section class="mb-10 mt-0 sm:mb-20 lg:mt-[5rem]">
+  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex flex-col"></div>
+    <!-- FEATURED CASE STUDIES -->
+    <!-- Container for the entire 3-promo layout -->
+    <div class="grid grid-cols-1 gap-x-6 gap-y-8 pt-10 md:grid-cols-12 lg:pt-0">
+      <h2
+        class="col-span-full font-heading text-4xl font-bold text-black dark:text-white md:col-span-4"
+      >
+        Featured Work
+      </h2>
+      <!-- Large promo -->
+      <div class="col-span-full md:col-span-8 md:col-start-5 lg:col-start-5">
+        <PostPreview post={featuredStudies[0]} layout="featured" />
       </div>
 
-      <!-- SEE ALL BUTTON -->
-      <div class="mt-11 flex w-full justify-end">
-        <Button href="/case-studies" cta="Explore My Process →" />
+      <!-- Smaller promos below the large promo -->
+      <div class="col-span-full md:col-span-4 md:col-start-5 lg:col-start-5">
+        <PostPreview post={featuredStudies[1]} />
       </div>
+
+      <div class="col-span-full md:col-span-4 md:col-start-9 lg:col-start-9">
+        <PostPreview post={featuredStudies[2]} />
+      </div>
+    </div>
+
+    <!-- SEE ALL BUTTON -->
+    <div class="mt-11 flex w-full justify-end">
+      <Button href="/case-studies" cta="Explore My Process →" />
     </div>
   </div>
 </section>

@@ -1,0 +1,52 @@
+---
+import { slugify } from '../../utils/slugify';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'thoughts'>;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="mx-auto max-w-2xl text-center">
+  <div class="flex items-center justify-center gap-2">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 text-black/50 dark:text-white/50"
+    >
+      <g clip-path="url(#clip0)">
+        <path
+          d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
+          class="fill-current"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+    <span class="text-xl text-black/50 dark:text-white/50">
+      About {post.data.readTime} minute{Number(post.data.readTime) === 1 ? '' : 's'} to read
+    </span>
+  </div>
+  <h2 class="pb-4 pt-2 font-heading text-5xl font-black hover:text-black/60 dark:hover:text-white/60">
+    <a href={`/thoughts/${post.slug}`}>{post.data.title}</a>
+  </h2>
+  <p class="text-xl leading-tight">{post.data.description}</p>
+  <div class="flex flex-wrap justify-center gap-x-3 gap-y-1 py-2 text-xl text-black/50 dark:text-white/50">
+    {post.data.categories?.map((cat) => (
+      <a
+        href={`/thoughts/category/${slugify(String(cat))}`}
+        class="underline hover:underline-offset-2"
+      >
+        #{cat}
+      </a>
+    ))}
+  </div>
+</article>

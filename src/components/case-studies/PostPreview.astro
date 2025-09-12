@@ -2,27 +2,34 @@
 // src/components/case-studies/PostPreview.astro
 
 import type { CollectionEntry } from 'astro:content';
+import { slugify } from '../../utils/slugify';
 
 export interface Props {
   post: CollectionEntry<'studies'>;
-  layout?: 'default' | 'horizontal' | 'featured' ;
+  layout?: 'default' | 'wide' | 'featured';
+  extraClasses?: string;
 }
 
-const { post, layout = 'default' } = Astro.props;
+const { layout = 'default', post, extraClasses = '' } = Astro.props;
 const { data, slug } = post;
+
+const promoSrc = data.heroImagePromo;
+const wideSrc = (data as any).heroImageWide;
 ---
 
 {
   layout === 'featured' ? (
-    <div class="group col-span-12 flex w-full flex-col items-center gap-5 border-b border-black pb-11">
-      <a href={`/case-studies/${slug}`} class="block w-full overflow-hidden rounded-md">
-        <div class="w-full overflow-hidden rounded-md">
+    // featured layout
+    <div class={`group col-span-12 flex w-full flex-col items-center gap-5 ${extraClasses}`}>
+      <a href={`/case-studies/${slug}`} class="block w-full overflow-hidden rounded-lg">
+        <div class="w-full">
           <picture>
-            <source srcset={data.heroImagePromo} media="(max-width: 768px)" />
-            <source srcset={data.heroImageWide} />
+            <source srcset={String(wideSrc)} media="(min-width: 769px)" />
             <img
-              src={data.heroImageWide}
+              src={String(promoSrc)}
               alt={data.title}
+              loading="lazy"
+              decoding="async"
               class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
             />
           </picture>
@@ -32,9 +39,12 @@ const { data, slug } = post;
         <div class="flex flex-wrap items-center gap-2">
           <div class="flex flex-wrap gap-2">
             {data.categories.map((category) => (
-              <span class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black">
+              <a
+                class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                href={`/case-studies/category/${slugify(String(category))}`}
+              >
                 {category}
-              </span>
+              </a>
             ))}
           </div>
           <div class="flex items-center gap-1">
@@ -63,49 +73,92 @@ const { data, slug } = post;
         </div>
         <a
           href={`/case-studies/${slug}`}
-          class="font-heading text-2xl-custom font-bold hover:text-black/60 dark:hover:text-white/60"
+          class="font-heading text-2xl-custom font-bold hover:text-black/60 dark:hover:text-white/60 lg:text-5xl"
         >
           {data.title}
         </a>
       </div>
     </div>
-  ) : layout === 'horizontal' ? (
-    <div class="mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-6 border-black dark:border-white md:grid-cols-12 md:gap-8 md:border-b md:pb-11">
+  ) : layout === 'wide' ? (
+    //wide layout
+    <div
+      class={`mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-6 border-black dark:border-white md:grid-cols-12 md:gap-8 md:border-b md:pb-11 ${extraClasses}`}
+    >
       {/* Meta */}
-      <div class="order-1 col-span-1 flex flex-col gap-2 text-sm text-black dark:text-white md:order-1 md:col-span-2">
-        <div class="flex flex-wrap gap-2">
-          {data.categories.map((category) => (
-            <span class="rounded-full bg-purewhite px-3 py-1 text-sm text-black">{category}</span>
-          ))}
-        </div>
-        <div class="flex items-center gap-1">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-          >
-            <g clip-path="url(#clip0)">
-              <path
-                d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
-                class="fill-current"
-              />
-            </g>
-            <defs>
-              <clipPath id="clip0">
-                <rect width="16" height="16" fill="white" />
-              </clipPath>
-            </defs>
-          </svg>
-          <p>{data.readTime} minute read</p>
+      <div class="order-2 col-span-1 flex hidden flex-col gap-4 text-sm text-black dark:text-white md:order-1 md:col-span-2 lg:block">
+        <div class="flex flex-col gap-y-2">
+          <div class="flex flex-wrap gap-2">
+            {data.categories.map((category) => (
+              <a
+                class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                href={`/case-studies/category/${slugify(String(category))}`}
+              >
+                {category}
+              </a>
+            ))}
+          </div>
+          <div class="flex items-center gap-1">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+            >
+              <g clip-path="url(#clip0)">
+                <path
+                  d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
+                  class="fill-current"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <p>{data.readTime} minute read</p>
+          </div>
         </div>
       </div>
       {/* Title + Image wrapped in group */}
-      <div class="group order-2 col-span-1 grid gap-6 md:order-2 md:col-span-10 md:grid-cols-10">
+      <div class="group order-1 col-span-1 grid gap-6 md:col-span-12 md:grid-cols-12 lg:col-span-10 lg:grid-cols-10">
         {/* Title + Description */}
-        <div class="order-2 col-span-10 flex flex-col gap-4 md:order-1 md:col-span-5">
+        <div class="order-2 col-span-10 flex flex-col gap-4 md:order-1 md:col-span-6 lg:col-span-5">
+          <div class="block flex flex-wrap gap-2 lg:hidden">
+            {data.categories.map((category) => (
+              <a
+                class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                href={`/case-studies/category/${slugify(String(category))}`}
+              >
+                {category}
+              </a>
+            ))}
+          </div>
+          <div class="block flex items-center gap-1 lg:hidden">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+            >
+              <g clip-path="url(#clip0)">
+                <path
+                  d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
+                  class="fill-current"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <p>{data.readTime} minute read</p>
+          </div>
           <a
             href={`/case-studies/${slug}`}
             class="cursor-pointer font-heading text-2xl-custom font-bold text-black transition-colors hover:text-black/60 group-hover:text-black/60 dark:text-white dark:hover:text-white/60 dark:group-hover:text-white/60"
@@ -121,14 +174,16 @@ const { data, slug } = post;
           </a>
         </div>
         {/* Image */}
-        <div class="order-1 col-span-10 md:order-2 md:col-span-5">
+        <div class="order-1 col-span-10 md:order-2 md:col-span-6 lg:col-span-5">
           <a
             href={`/case-studies/${slug}`}
             class="aspect-video block w-full cursor-pointer overflow-hidden rounded-md"
           >
             <img
-              src={data.heroImagePromo}
+              src={String(promoSrc)}
               alt={data.title}
+              loading="lazy"
+              decoding="async"
               class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
             />
           </a>
@@ -136,12 +191,15 @@ const { data, slug } = post;
       </div>
     </div>
   ) : (
-    <div class="group mx-auto flex w-full max-w-3xl flex-col items-center gap-5">
+    //default layout
+    <div class={`group mx-auto flex w-full max-w-3xl flex-col items-center gap-5 ${extraClasses}`}>
       <a href={`/case-studies/${slug}`} class="block w-full overflow-hidden rounded-md">
         <div class="aspect-h-9 aspect-w-16 w-full overflow-hidden rounded-md">
           <img
-            src={data.heroImagePromo}
+            src={String(promoSrc)}
             alt={data.title}
+            loading="lazy"
+            decoding="async"
             class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
           />
         </div>
@@ -150,9 +208,12 @@ const { data, slug } = post;
         <div class="flex flex-wrap items-center gap-2">
           <div class="flex flex-wrap gap-2">
             {data.categories.map((category) => (
-              <span class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black">
+              <a
+                class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                href={`/case-studies/category/${slugify(String(category))}`}
+              >
                 {category}
-              </span>
+              </a>
             ))}
           </div>
           <div class="flex items-center gap-1">

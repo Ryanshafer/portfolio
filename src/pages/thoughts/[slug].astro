@@ -1,0 +1,148 @@
+---
+// src/pages/thoughts/[slug].astro
+import { getEntry, getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ImageWithStyle from '../../components/case-studies/ImageWithStyle.astro';
+import { slugify } from '../../utils/slugify';
+
+export async function getStaticPaths() {
+  const { getCollection } = await import('astro:content');
+  const posts = await getCollection('thoughts');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntry('thoughts', slug);
+if (!post) {
+  throw new Error(`No post found for slug: ${slug}`);
+}
+
+const { data, render } = post;
+const { Content } = await render();
+
+// // --- Build-time random selection with at least one related by category ---
+// function shuffle<T>(arr: T[]): T[] {
+//   for (let i = arr.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [arr[i], arr[j]] = [arr[j], arr[i]];
+//   }
+//   return arr;
+// }
+
+// const allStudies = await getCollection('studies');
+// const otherStudies = allStudies.filter((p) => p.slug !== slug);
+
+// // Collect current post categories (if any)
+// const currentCats = new Set<string>(Array.isArray(data.categories) ? data.categories : []);
+
+// const related = otherStudies.filter((p) => {
+//   const cats = Array.isArray(p.data?.categories) ? p.data.categories : [];
+//   return cats.some((c: string) => currentCats.has(c));
+// });
+// const unrelated = otherStudies.filter((p) => !related.includes(p));
+
+// shuffle(related);
+// shuffle(unrelated);
+
+// let featuredStudies = [] as typeof otherStudies;
+// if (related.length > 0) {
+//   featuredStudies.push(related[0]); // ensure at least one related
+// }
+// // Fill remaining slots from the rest (related leftovers first, then unrelated)
+// for (const list of [related.slice(1), unrelated]) {
+//   for (const item of list) {
+//     if (featuredStudies.length >= 3) break;
+//     featuredStudies.push(item);
+//   }
+//   if (featuredStudies.length >= 3) break;
+// }
+// // Fallback if we still don't have 3 (e.g., very small dataset)
+// if (featuredStudies.length < 3) {
+//   featuredStudies = otherStudies.slice(0, Math.min(3, otherStudies.length));
+// }
+---
+
+<Layout
+  description={`${data.description}`}
+  title={`Thoughts – ${data.title} · Ryan Shafer · UX Design Leader`}
+  bgFill='#F7F6F3'
+  bgFillDark='#3C3758'
+  >
+  <article>
+    <!-- Hero Section -->
+    <section
+      data-section="hero [slug].astro"
+      class="bg-[#F7F6F3] dark:bg-[#3C3758]"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 xl:py-16 text-center flex flex-col items-center gap-y-4">
+        <h1 class="text-black dark:text-white font-heading font-black text-[clamp(32px,4.5vw+17.6px,88px)] leading-[clamp(40px,5vw+14px,100px)]">
+          {data.title}
+        </h1>
+        <div class="mt-2">
+          <ul class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-black/50 dark:text-white/50
+                    text-[clamp(16px,1.5vw+10px,22px)]
+                    leading-[clamp(22px,2vw+12px,30px)]">
+            {Array.isArray(data.categories) && data.categories.length > 0 && (
+              <>
+                {data.categories.map((cat, idx) => (
+                  <li>
+                    #<a href={`/thoughts/category/${slugify(cat)}`} class="underline hover:underline-offset-2">{cat}</a>
+                  </li>
+                ))}
+              </>
+            )}
+            <li class="hidden sm:inline" aria-hidden="true">—</li>
+            <li>About {post.data.readTime} minute{Number(post.data.readTime) === 1 ? '' : 's'} to read</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Thoughts Content Section -->
+    <div
+      data-section="thoughts-content [slug].astro"
+      class="mx-auto flex max-w-3xl items-center justify-between px-6 lg:px-8 py-8 xl:py-16"
+    >
+        <div class="thoughts prose mt-4">
+          <Content components={{ ImageWithStyle }} />
+        </div>
+    </div>
+  </article>
+
+  <!-- More Case Studies Section -->
+  <!-- <section
+    data-section="more-case-studies [slug].astro"
+    class="mx-auto max-w-2xl px-0 sm:px-6 lg:max-w-7xl lg:px-8"
+  >
+    <div class="grid grid-cols-1 gap-x-5 gap-y-4 p-6 md:p-10 pt-6 lg:grid-cols-12 bg-darkwhite/40"> -->
+      <!-- 3 column layout for smaller promos -->
+      <!-- <h3
+        data-section="more-case-studies-heading [slug].astro"
+        class="col-span-full font-heading text-4xl font-bold text-black dark:text-white"
+      >
+        More Case Studies
+      </h3>
+      {featuredStudies[0] && (
+        <div class="col-span-full lg:col-span-4 col-start-1 mb-6 md:mb-0" >
+          <PostPreview post={featuredStudies[0]} />
+        </div>
+      )}
+
+      {featuredStudies[1] && (
+        <div class="col-span-full lg:col-span-4 lg:col-start-5">
+          <PostPreview post={featuredStudies[1]} />
+        </div>
+      )}
+
+      {featuredStudies[2] && (
+        <div class="col-span-full lg:col-span-4 lg:col-start-9">
+          <PostPreview post={featuredStudies[2]} />
+        </div>
+      )}
+    </div>
+  </section> -->
+</Layout>

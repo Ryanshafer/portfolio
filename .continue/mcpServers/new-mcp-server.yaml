@@ -1,0 +1,13 @@
+---
+name: autodetect
+version: 1.2.0
+schema: v1
+models:
+- name: autodetect
+  provider: lmstudio
+  model: autodetect
+  roles:
+    - apply
+    - autocomplete
+    - chat
+    - edit

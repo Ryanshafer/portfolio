@@ -1,9 +1,10 @@
 ---
 // src/pages/case-studies/[slug].astro
-import { getEntryBySlug } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ImageWithStyle from '../../components/case-studies/ImageWithStyle.astro';
 import CaseStudySummary from '../../components/case-studies/CaseStudySummary.astro';
+import PostPreview from '../../components/case-studies/PostPreview.astro';
 
 export async function getStaticPaths() {
   const { getCollection } = await import('astro:content');
@@ -14,36 +15,91 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const post = await getEntryBySlug('studies', slug);
+const post = await getEntry('studies', slug);
 if (!post) {
   throw new Error(`No post found for slug: ${slug}`);
 }
 
 const { data, render } = post;
 const { Content } = await render();
+// --- Build-time random selection with at least one related by category ---
+function shuffle<T>(arr: T[]): T[] {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const allStudies = await getCollection('studies');
+const otherStudies = allStudies.filter((p) => p.slug !== slug);
+
+// Collect current post categories (if any)
+const currentCats = new Set<string>(Array.isArray(data.categories) ? data.categories : []);
+
+const related = otherStudies.filter((p) => {
+  const cats = Array.isArray(p.data?.categories) ? p.data.categories : [];
+  return cats.some((c: string) => currentCats.has(c));
+});
+const unrelated = otherStudies.filter((p) => !related.includes(p));
+
+shuffle(related);
+shuffle(unrelated);
+
+let featuredStudies = [] as typeof otherStudies;
+if (related.length > 0) {
+  featuredStudies.push(related[0]); // ensure at least one related
+}
+// Fill remaining slots from the rest (related leftovers first, then unrelated)
+for (const list of [related.slice(1), unrelated]) {
+  for (const item of list) {
+    if (featuredStudies.length >= 3) break;
+    featuredStudies.push(item);
+  }
+  if (featuredStudies.length >= 3) break;
+}
+// Fallback if we still don't have 3 (e.g., very small dataset)
+if (featuredStudies.length < 3) {
+  featuredStudies = otherStudies.slice(0, Math.min(3, otherStudies.length));
+}
 ---
 
-<Layout>
-  <article class="mx-auto grid max-w-7xl grid-cols-1 px-4 py-0 xl:py-9 xl:grid-cols-12">
-    {
-      (data.heroImageWide || data.heroImagePromo) && (
-        <picture class="col-span-12 my-5 xl:my-11">
-          <source srcset={data.heroImageWide} media="(min-width: 1024px)" />
+<Layout
+  description={`${data.description}`}
+  title={`Case Studies – ${data.title} · Ryan Shafer · UX Design Leader`}
+  bgFill={data.bgFill}
+  bgFillDark={data.bgFillDark}
+  >
+  <article>
+    <!-- Hero Section -->
+    <section
+      data-section="hero [slug].astro"
+      class={`w-full mb-4 xl:mb-16 ${data.bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : ''}`}
+      style={data.bgFill ? `--hero-bg: ${data.bgFill}; --hero-bg-dark: ${data.bgFillDark ?? data.bgFill};` : undefined}
+    >
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 xl:gap-0 items-end max-w-7xl mx-auto px-4 xl:px-8 py-4 xl:py-0">
+        <div class="xl:col-span-7">
           <img
-            src={data.heroImagePromo || data.heroImageWide}
+            src={data.heroImagePromo}
             alt={data.title}
-            class="rounded-m w-full object-cover"
-            style={data.bgFill ? `background-color: ${data.bgFill}` : undefined}
+            class="w-full aspect-video object-cover"
+            loading="eager"
+            decoding="async"
           />
-        </picture>
-      )
-    }
+        </div>
+        <h1 class="text-black dark:text-white font-heading font-black text-2xl-custom md:text-5xl xl:text-4xl-custom xl:col-span-5 xl:ml-8 my-0 lg:my-7">
+          {data.title}
+        </h1>
+      </div>
+    </section>
 
-    <div class="col-span-full xl:col-span-12 grid grid-cols-1 xl:grid-cols-12 gap-y-8 xl:gap-y-16">
-      <h1 class="col-span-full md:col-span-12 md:col-start-1 xl:col-span-10 xl:col-start-2 font-heading text-2xl-custom lg:text-5xl font-bold text-black dark:text-white">
-        {data.title}
-      </h1>
-      <div class="col-span-full lg:col-span-6 lg:col-start-6">
+    <!-- Case Study Summary Section -->
+    <div
+      data-section="case-study-summary [slug].astro"
+      class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
+    >
+      <div class="col-span-full xl:col-span-12 grid grid-cols-1 xl:grid-cols-12 gap-y-8 xl:gap-y-16">
+        <div class="col-span-full lg:col-span-6 lg:col-start-6">
         {data.summary && (
           <CaseStudySummary
             role={data.summary.role}
@@ -54,13 +110,53 @@ const { Content } = await render();
             stats={data.summary.stats}
           />
         )}
+        </div>
       </div>
     </div>
-    <div class="col-span-full lg:col-start-2 lg:col-span-3">
-      <!-- Optional placeholder for headings rendered via component or custom tag -->
-    </div>
-    <div class="prose prose-gray max-w-none col-span-full lg:col-start-6 lg:col-span-6 mt-16 [mdx-content]">
-      <Content components={{ ImageWithStyle }} />
+
+    <!-- Case Study Content Section -->
+    <div
+      data-section="case-study-content [slug].astro"
+      class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
+    >
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-y-8 xl:gap-y-16">
+        <div class="case-studies prose prose-gray max-w-none col-span-full xl:col-start-6 xl:col-span-6 mt-4">
+          <Content components={{ ImageWithStyle }} />
+        </div>
+      </div>
     </div>
   </article>
+
+  <!-- More Case Studies Section -->
+  <section
+    data-section="more-case-studies [slug].astro"
+    class="mx-auto max-w-2xl px-0 sm:px-6 lg:max-w-7xl lg:px-8"
+  >
+    <div class="grid grid-cols-1 gap-x-5 gap-y-4 p-6 md:p-10 pt-6 lg:grid-cols-12 bg-darkwhite/40">
+      <!-- 3 column layout for smaller promos -->
+      <h3
+        data-section="more-case-studies-heading [slug].astro"
+        class="col-span-full font-heading text-4xl font-bold text-black dark:text-white"
+      >
+        More Case Studies
+      </h3>
+      {featuredStudies[0] && (
+        <div class="col-span-full lg:col-span-4 col-start-1 mb-6 md:mb-0" >
+          <PostPreview post={featuredStudies[0]} />
+        </div>
+      )}
+
+      {featuredStudies[1] && (
+        <div class="col-span-full lg:col-span-4 lg:col-start-5">
+          <PostPreview post={featuredStudies[1]} />
+        </div>
+      )}
+
+      {featuredStudies[2] && (
+        <div class="col-span-full lg:col-span-4 lg:col-start-9">
+          <PostPreview post={featuredStudies[2]} />
+        </div>
+      )}
+    </div>
+  </section>
 </Layout>

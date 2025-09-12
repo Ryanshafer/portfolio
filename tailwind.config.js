@@ -23,9 +23,11 @@ module.exports = {
         primary: colors.stone, // Custom palette
         black: '#322D50',
         darkerblack: '#1F1C30',
-        white: '#F3F1EC',
+        white: '#EFEDE6',
         purewhite: '#ffffff',
         darkwhite: '#E4DED2',
+        herowhite: '#FAFAF9',
+        herodark: '#3C3758'
       },
       fontFamily: {
         sans: ['"IBM Plex Sans"', 'sans-serif'],

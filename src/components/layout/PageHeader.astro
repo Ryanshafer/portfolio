@@ -1,0 +1,40 @@
+---
+import { slugify } from '../../utils/slugify';
+
+interface Props {
+  heading: string;
+  subheading?: string;
+  categories?: string[];
+}
+const { heading, subheading, categories } = Astro.props;
+---
+
+<section class="bg-herowhite dark:bg-herodark">
+<!-- HERO TEXT -->
+<div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl py-16 lg:py-[5.5rem] ">
+  <h1
+    class="overflow-visible text-center font-heading text-5xl font-black text-black dark:text-white lg:text-[4.25rem] lg:leading-[4.5rem]"
+  >
+    {heading}
+  </h1>
+  {subheading && (
+    <p
+      class="mt-7 text-center font-heading text-2xl leading-tight text-black/70 dark:text-white/70 lg:mb-3"
+    >
+      {subheading}
+    </p>
+  )}
+  {categories && categories.length > 0 && (
+    <div class="mx-auto max-w-xl flex flex-wrap justify-center gap-x-3 gap-y-1 text-xl text-black/50 dark:text-white/50">
+      {categories.map((cat) => (
+        <a
+          href={`/thoughts/category/${slugify(String(cat))}`}
+          class="underline hover:underline-offset-2"
+        >
+          #{cat}
+        </a>
+      ))}
+    </div>
+  )}
+</div>
+</section>

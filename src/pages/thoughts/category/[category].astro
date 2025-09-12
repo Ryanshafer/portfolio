@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import PageHeader from '../../../components/layout/PageHeader.astro';
+import { slugify } from '../../../utils/slugify';
+import ThoughtPreview from '../../../components/thoughts/ThoughtPreview.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('thoughts');
+  const categories = new Set<string>();
+
+  for (const post of allPosts) {
+    for (const category of post.data.categories || []) {
+      categories.add(category);
+    }
+  }
+
+  return Array.from(categories).map((label: string) => ({
+    params: { category: slugify(label) },
+    props: { label },
+  }));
+}
+
+// Part 2: Filter posts for the current slugified category
+const rawCategory = (Astro.params.category as string).toLowerCase();
+const allPosts = await getCollection('thoughts');
+
+const postsInCategory = allPosts.filter((post) =>
+  (post.data.categories || []).some((c) => slugify(String(c)) === rawCategory)
+);
+
+// Recover a human-friendly label from the first matching category or fallback
+const displayLabel =
+  postsInCategory.flatMap((p) => p.data.categories || []).find((c) => slugify(c) === rawCategory) ||
+  rawCategory.replaceAll('-', ' ');
+---
+
+<Layout
+  description="Learn about Ryan Shafer's past design work"
+  title={`Thoughts – ${displayLabel} · Ryan Shafer · UX Design Leader`}
+  bgFill="#FAFAF9"
+  bgFillDark="#3C3758"
+>
+  <PageHeader heading={`My Thoughts About ${displayLabel}`} />
+  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="space-y-11 pt-11">
+      {
+        postsInCategory.map((post, index) => (
+          <>
+            <ThoughtPreview post={post} />
+            {index < postsInCategory.length - 1 && (
+              <hr class="mx-auto max-w-2xl border-black/10 dark:border-white/10" />
+            )}
+          </>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
+
+ ))} )) }
+

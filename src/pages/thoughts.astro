@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import ThoughtPreview from '../components/thoughts/ThoughtPreview.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+
+const posts = (await getCollection('thoughts')).sort(
+  (a, b) => new Date(b.data?.pubDate ?? 0).getTime() - new Date(a.data?.pubDate ?? 0).getTime()
+);
+
+// Group posts by year
+const postsByYear = posts.reduce((acc, post) => {
+  const year = new Date(post.data.pubDate).getFullYear();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {} as Record<number, typeof posts>);
+
+// Sort years in descending order
+const sortedYears = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
+
+// Collect all unique categories
+const categories = new Set<string>();
+for (const post of posts) {
+  for (const category of post.data.categories || []) {
+    categories.add(category);
+  }
+}
+---
+
+<Layout
+  description="Learn about Ryan Shafer's past design work"
+  title="Cast Studies · Ryan Shafer · UX Design Leader"
+  bgFill='#FAFAF9'
+  bgFillDark='#3C3758'
+>
+  <PageHeader 
+    heading="My Thoughts" 
+    subheading="Writing about design, technology, and leadership." 
+    categories={Array.from(categories)}
+  />
+  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
+    <div class="space-y-16">
+      {sortedYears.map((year, yearIndex) => (
+        <>
+          <div class="space-y-11">
+            <h2 class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit mx-auto flex items-center leading-none text-base">{year}</h2>
+            {postsByYear[year].map((post, index) => (
+              <>
+                <ThoughtPreview post={post} />
+                {index < postsByYear[year].length - 1 && (
+                  <hr class="mx-auto max-w-2xl border-black/10 dark:border-white/10" />
+                )}
+              </>
+            ))}
+          </div>
+          {yearIndex < sortedYears.length - 1 && (
+            <hr class="border-black dark:border-white" />
+          )}
+        </>
+      ))}
+    </div>
+  </section>
+</Layout>

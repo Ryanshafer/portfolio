@@ -1,0 +1,63 @@
+---
+// src/pages/case-studies/category/[category].astro
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import PostPreview from '../../../components/case-studies/PostPreview.astro';
+import PageHeader from '../../../components/layout/PageHeader.astro';
+import { slugify } from '../../../utils/slugify';
+
+// Part 1: getStaticPaths
+export async function getStaticPaths() {
+  const allPosts = await getCollection('studies');
+  const categories = new Set<string>();
+
+  // Gather all unique categories
+  for (const post of allPosts) {
+    for (const category of post.data.categories || []) {
+      categories.add(category);
+    }
+  }
+
+  // Return paths in the format Astro expects
+  return Array.from(categories).map((label: string) => ({
+    params: { category: slugify(label) },
+    props: { label },
+  }));
+}
+
+// Part 2: Filter posts for the current slugified category
+const rawCategory = (Astro.params.category as string).toLowerCase();
+const allPosts = await getCollection('studies');
+
+const postsInCategory = allPosts.filter((post) =>
+  (post.data.categories || []).some((c) => slugify(String(c)) === rawCategory)
+);
+
+// Recover a human-friendly label from the first matching category or fallback
+const displayLabel =
+  postsInCategory.flatMap((p) => p.data.categories || []).find((c) => slugify(c) === rawCategory) ||
+  rawCategory.replaceAll('-', ' ');
+---
+
+<Layout
+  description="Learn about Ryan Shafer's past design work"
+  title={`Case Studies – ${displayLabel} · Ryan Shafer · UX Design Leader`}
+  bgFill='#FAFAF9'
+  bgFillDark='#3C3758'
+>
+<PageHeader heading={`My Studies Related to ${displayLabel}`}
+/>
+  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="space-y-11 pt-11">
+      {
+        postsInCategory.map((post, index) => (
+          <PostPreview
+            post={post}
+            layout="wide"
+            extraClasses={(index === postsInCategory.length - 1) ? 'border-none' : ''}
+          />
+        ))
+      }
+    </div>
+  </section>
+</Layout>
