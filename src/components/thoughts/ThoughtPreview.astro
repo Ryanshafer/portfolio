@@ -7,6 +7,14 @@ interface Props {
 }
 
 const { post } = Astro.props;
+
+// Defensive local values
+const title = post?.data?.title ?? 'Untitled';
+const description = post?.data?.description ?? '';
+const readTime = Number(post?.data?.readTime ?? 0);
+const categories = Array.isArray(post?.data?.categories) ? post.data.categories : [];
+const categoryLinks = categories.map((c) => ({ label: c, slug: slugify(String(c)) }));
+const slug = post?.slug ?? '';
 ---
 
 <article class="mx-auto max-w-2xl text-center">
@@ -18,6 +26,7 @@ const { post } = Astro.props;
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-5 text-black/50 dark:text-white/50"
+      aria-hidden="true"
     >
       <g clip-path="url(#clip0)">
         <path
@@ -32,21 +41,23 @@ const { post } = Astro.props;
       </defs>
     </svg>
     <span class="text-xl text-black/50 dark:text-white/50">
-      About {post.data.readTime} minute{Number(post.data.readTime) === 1 ? '' : 's'} to read
+      About {readTime} minute{readTime === 1 ? '' : 's'} to read
     </span>
   </div>
   <h2 class="pb-4 pt-2 font-heading text-5xl font-black hover:text-black/60 dark:hover:text-white/60">
-    <a href={`/thoughts/${post.slug}`}>{post.data.title}</a>
+    <a href={`/thoughts/${slug}`} class="underline-offset-0 hover:underline">{title}</a>
   </h2>
-  <p class="text-xl leading-tight">{post.data.description}</p>
-  <div class="flex flex-wrap justify-center gap-x-3 gap-y-1 py-2 text-xl text-black/50 dark:text-white/50">
-    {post.data.categories?.map((cat) => (
-      <a
-        href={`/thoughts/category/${slugify(String(cat))}`}
-        class="underline hover:underline-offset-2"
-      >
-        #{cat}
-      </a>
-    ))}
-  </div>
+  {description && <p class="text-xl leading-tight">{description}</p>}
+  {categoryLinks.length > 0 && (
+    <div class="flex flex-wrap justify-center gap-x-3 gap-y-1 py-2 text-xl text-black/50 dark:text-white/50">
+      {categoryLinks.map((link) => (
+        <a
+          href={`/thoughts/category/${link.slug}`}
+          class="underline hover:underline-offset-2"
+        >
+          #{link.label}
+        </a>
+      ))}
+    </div>
+  )}
 </article>

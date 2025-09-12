@@ -28,6 +28,25 @@ for (const post of posts) {
     categories.add(category);
   }
 }
+
+// Build client-side pagination chunks (static HTML, toggled with Alpine)
+const pageSize = 10; // adjust as needed
+const chunks: typeof posts[] = [];
+for (let i = 0; i < posts.length; i += pageSize) {
+  chunks.push(posts.slice(i, i + pageSize));
+}
+const totalPages = chunks.length;
+// Precompute year groupings for each chunk to avoid TS in the template
+const chunkData = chunks.map((chunk) => {
+  const byYear = chunk.reduce((acc, post) => {
+    const year = new Date(post.data.pubDate).getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+  }, {} as Record<number, typeof posts>);
+  const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+  return { byYear, years };
+});
 ---
 
 <Layout
@@ -41,26 +60,43 @@ for (const post of posts) {
     subheading="Writing about design, technology, and leadership." 
     categories={Array.from(categories)}
   />
-  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
-    <div class="space-y-16">
-      {sortedYears.map((year, yearIndex) => (
-        <>
-          <div class="space-y-11">
-            <h2 class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit mx-auto flex items-center leading-none text-base">{year}</h2>
-            {postsByYear[year].map((post, index) => (
-              <>
-                <ThoughtPreview post={post} />
-                {index < postsByYear[year].length - 1 && (
-                  <hr class="mx-auto max-w-2xl border-black/10 dark:border-white/10" />
-                )}
-              </>
-            ))}
-          </div>
-          {yearIndex < sortedYears.length - 1 && (
-            <hr class="border-black dark:border-white" />
-          )}
-        </>
-      ))}
-    </div>
+  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
+    {chunkData.map((chunk, chunkIndex) => (
+      <div x-show={`page === ${chunkIndex + 1}`} class="space-y-16">
+        {chunk.years.map((year, yearIndex) => (
+          <>
+            <div class="space-y-11">
+              <h2 class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit mx-auto flex items-center leading-none text-base">{year}</h2>
+              {chunk.byYear[year].map((post, index) => (
+                <>
+                  <ThoughtPreview post={post} />
+                  {index < chunk.byYear[year].length - 1 && (
+                    <hr class="mx-auto max-w-2xl border-black/10 dark:border-white/10" />
+                  )}
+                </>
+              ))}
+            </div>
+            {yearIndex < chunk.years.length - 1 && (
+              <hr class="border-black dark:border-white" />
+            )}
+          </>
+        ))}
+      </div>
+    ))}
+
+    {/* Pager */}
+    {totalPages > 1 && (
+      <nav class="mt-12 flex items-center justify-center gap-3" aria-label="Pagination">
+        <button @click="prev()" :disabled="page === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
+        <div class="flex items-center gap-1">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button @click={`page = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`page === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
+              {i + 1}
+            </button>
+          ))}
+        </div>
+        <button @click="next()" :disabled="page === total" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Next</button>
+      </nav>
+    )}
   </section>
 </Layout>
