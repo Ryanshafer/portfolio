@@ -26,7 +26,7 @@ module.exports = {
         white: '#EFEDE6',
         purewhite: '#ffffff',
         darkwhite: '#E4DED2',
-        herowhite: '#FAFAF9',
+        herowhite: '#F5F3EF',
         herodark: '#3C3758'
       },
       fontFamily: {

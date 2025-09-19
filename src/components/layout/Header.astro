@@ -1,6 +1,6 @@
 ---
 const currentPath = Astro.url.pathname;
-const { bgFill, bgFillDark } = Astro.props ?? {};
+const { bgFill, bgFillDark, bgClass } = Astro.props ?? {};
 
 const links = [
   {
@@ -28,8 +28,8 @@ const links = [
 
 <header
   x-data="{ open: false }"
-  class={`transition ${bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : 'bg-white dark:bg-darkerblack'}`}
-  style={bgFill ? `--hero-bg: ${bgFill}; --hero-bg-dark: ${bgFillDark ?? bgFill};` : undefined}
+  class={`transition ${bgClass ? bgClass : (bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : 'bg-herowhite dark:bg-herodark')}`}
+  style={!bgClass && bgFill ? `--hero-bg: ${bgFill}; --hero-bg-dark: ${bgFillDark ?? bgFill};` : undefined}
 >
   <div
     class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"

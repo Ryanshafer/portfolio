@@ -40,16 +40,16 @@ const slug = post?.slug ?? '';
         </clipPath>
       </defs>
     </svg>
-    <span class="text-xl text-black/50 dark:text-white/50">
-      About {readTime} minute{readTime === 1 ? '' : 's'} to read
+    <span class="text-lg md:text-xl text-black/50 dark:text-white/50">
+     About a {readTime} minute read
     </span>
   </div>
-  <h2 class="pb-4 pt-2 font-heading text-5xl font-black hover:text-black/60 dark:hover:text-white/60">
-    <a href={`/thoughts/${slug}`} class="underline-offset-0 hover:underline">{title}</a>
+  <h2 class="pb-4 pt-2 font-heading text-2xl-custom md:text-5xl font-black hover:text-black/60 dark:hover:text-white/60">
+    <a href={`/thoughts/${slug}`}>{title}</a>
   </h2>
-  {description && <p class="text-xl leading-tight">{description}</p>}
+  {description && <p class="text-lg md:text-xl leading-tight">{description}</p>}
   {categoryLinks.length > 0 && (
-    <div class="flex flex-wrap justify-center gap-x-3 gap-y-1 py-2 text-xl text-black/50 dark:text-white/50">
+    <div class="flex flex-wrap justify-center gap-x-3 gap-y-1 py-2 text-lg md:text-xl text-black/50 dark:text-white/50">
       {categoryLinks.map((link) => (
         <a
           href={`/thoughts/category/${link.slug}`}

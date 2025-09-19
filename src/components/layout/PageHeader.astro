@@ -5,8 +5,21 @@ interface Props {
   heading: string;
   subheading?: string;
   categories?: string[];
+  // Optional: control how category links render and where they point
+  categoryBasePath?: string; // e.g. '/thoughts' or '/case-studies'
+  categoryVariant?: 'links' | 'chips';
 }
-const { heading, subheading, categories } = Astro.props;
+const {
+  heading,
+  subheading,
+  categories,
+  categoryBasePath = '/thoughts',
+  categoryVariant = 'links',
+} = Astro.props as Props;
+// Sort categories alphabetically (case-insensitive)
+const sortedCategories = Array.isArray(categories)
+  ? [...categories].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+  : [];
 ---
 
 <section class="bg-herowhite dark:bg-herodark">
@@ -24,16 +37,63 @@ const { heading, subheading, categories } = Astro.props;
       {subheading}
     </p>
   )}
-  {categories && categories.length > 0 && (
-    <div class="mx-auto max-w-xl flex flex-wrap justify-center gap-x-3 gap-y-1 text-xl text-black/50 dark:text-white/50">
-      {categories.map((cat) => (
-        <a
-          href={`/thoughts/category/${slugify(String(cat))}`}
-          class="underline hover:underline-offset-2"
-        >
-          #{cat}
-        </a>
-      ))}
+  {sortedCategories.length > 0 && (
+    <div x-data="{ expanded: false, hasOverflow: false, maxHeight: 0 }" class="relative">
+      <div
+        x-ref="cats"
+        class={
+          categoryVariant === 'chips'
+            ? 'mx-auto max-w-2xl flex flex-wrap justify-center gap-1 transition-all duration-200'
+            : 'mx-auto max-w-xl flex flex-wrap justify-center gap-x-3 gap-y-1 text-xl text-black/50 dark:text-white/50 transition-all duration-200'
+        }
+        :class="expanded ? '' : 'overflow-hidden'"
+        :style="expanded ? '' : (`max-height: ${maxHeight}px`)"
+      >
+        {sortedCategories.map((cat) => (
+          categoryVariant === 'chips' ? (
+            <a
+              href={`${categoryBasePath}/category/${slugify(String(cat))}`}
+              class="rounded-full bg-white my-1 px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+            >
+              {cat}
+            </a>
+          ) : (
+            <a
+              href={`${categoryBasePath}/category/${slugify(String(cat))}`}
+              class="underline hover:underline-offset-2"
+            >
+              #{cat}
+            </a>
+          )
+        ))}
+      </div>
+      <button 
+        @click="expanded = !expanded"
+        class="mt-4 mx-auto block text-sm text-black/40 hover:text-black dark:text-white/50 dark:hover:text-white"
+        x-cloak
+        x-show="hasOverflow"
+        x-init="(() => {
+          const compute = () => {
+            if ($refs.cats) {
+              const cs = getComputedStyle($refs.cats);
+              const line = parseFloat(cs.lineHeight) || 28; // fallback ~1.75rem
+              const rowGap = parseFloat(cs.rowGap) || 4;    // row gap between lines
+              const paddingBlock = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+              // Allow up to 2 rows fully visible. Include row gap and container padding.
+              maxHeight = Math.round(line * 2 + rowGap + paddingBlock + 2);
+              const sh = $refs.cats.scrollHeight;
+              // Only show the toggle if actual content exceeds the two-line allowance
+              hasOverflow = sh > (maxHeight + 2);
+            }
+          };
+          compute();
+          window.addEventListener('resize', compute);
+          requestAnimationFrame(compute);
+        })()"
+      >
+        <span x-text="expanded ? 'Show Less' : 'Show More'"></span>
+        <span class="ml-1" x-text="expanded ? '↑' : '↓'"></span>
+      </button>
     </div>
   )}
 </div>

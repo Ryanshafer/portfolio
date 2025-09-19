@@ -51,22 +51,22 @@ const chunkData = chunks.map((chunk) => {
 
 <Layout
   description="Learn about Ryan Shafer's past design work"
-  title="Cast Studies · Ryan Shafer · UX Design Leader"
-  bgFill='#FAFAF9'
-  bgFillDark='#3C3758'
+  title="Thoughts · Ryan Shafer · UX Design Leader"
 >
   <PageHeader 
     heading="My Thoughts" 
     subheading="Writing about design, technology, and leadership." 
     categories={Array.from(categories)}
   />
-  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
+  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-8">
     {chunkData.map((chunk, chunkIndex) => (
       <div x-show={`page === ${chunkIndex + 1}`} class="space-y-16">
         {chunk.years.map((year, yearIndex) => (
           <>
-            <div class="space-y-11">
-              <h2 class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit mx-auto flex items-center leading-none text-base">{year}</h2>
+            <div class="space-y-8 md:space-y-11">
+              <div class="sticky top-0 z-10 py-4 bg-gradient-to-b from-[#EFEDE6] via-[#EFEDE6]/80 to-transparent dark:from-[#1F1C30] dark:via-[#1F1C30] dark:to-transparent">
+                <h2 class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit mx-auto flex items-center leading-none text-base bg-white dark:bg-darkerblack">{year}</h2>
+              </div>
               {chunk.byYear[year].map((post, index) => (
                 <>
                   <ThoughtPreview post={post} />

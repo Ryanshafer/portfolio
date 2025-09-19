@@ -6,7 +6,7 @@ import { slugify } from '../../utils/slugify';
 
 export interface Props {
   post: CollectionEntry<'studies'>;
-  layout?: 'default' | 'wide' | 'featured';
+  layout?: 'default' | 'wide' | 'featured' | 'featured-169' | 'featured-169-simple';
   extraClasses?: string;
 }
 
@@ -68,12 +68,177 @@ const wideSrc = (data as any).heroImageWide;
                 </clipPath>
               </defs>
             </svg>
-            <p class="text-sm">{data.readTime} minute read</p>
+            <p class="text-sm">About a {data.readTime} minute read</p>
           </div>
         </div>
         <a
           href={`/case-studies/${slug}`}
-          class="font-heading text-2xl-custom font-bold hover:text-black/60 dark:hover:text-white/60 lg:text-5xl"
+          class="font-heading text-2xl-custom font-bold hover:text-black/60 dark:hover:text-white/60"
+        >
+          {data.title}
+        </a>
+      </div>
+    </div>
+  ) : layout === 'featured-169-simple' ? (
+    // featured-169-simple layout (same as featured, but 16:9 aspect ratio)
+    <div class={`group col-span-12 flex w-full flex-col items-center gap-5 mb-4 ${extraClasses}`}>
+      <a href={`/case-studies/${slug}`} class="block w-full overflow-hidden rounded-lg">
+        <div class="aspect-video w-full overflow-hidden">
+          <picture class="block h-full w-full">
+            <source srcset={String(promoSrc)} media="(min-width: 769px)" />
+            <img
+              src={String(promoSrc)}
+              alt={data.title}
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+            />
+          </picture>
+        </div>
+      </a>
+      <div class="flex w-full flex-col items-start gap-4">
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap gap-2">
+            {data.categories.map((category) => (
+              <a
+                class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                href={`/case-studies/category/${slugify(String(category))}`}
+              >
+                {category}
+              </a>
+            ))}
+          </div>
+          <div class="flex items-center gap-1">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-black dark:text-white"
+            >
+              <g clip-path="url(#clip0)">
+                <path
+                  d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
+                  class="fill-current"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <p class="text-sm">About a {data.readTime} minute read</p>
+          </div>
+        </div>
+        <a
+          href={`/case-studies/${slug}`}
+          class="font-heading text-2xl-custom md:text-5xl font-bold hover:text-black/60 dark:hover:text-white/60"
+        >
+          {data.title}
+        </a>
+      </div>
+    </div>
+  ) : layout === 'featured-169' ? (
+    // featured-169 layout (16:9 image with overlayed metadata)
+    <div class={`group col-span-12 w-full ${extraClasses}`}>
+      <a href={`/case-studies/${slug}`} class="block w-full overflow-hidden rounded-lg">
+        <div class="aspect-video relative w-full overflow-hidden rounded-lg">
+          <img
+            src={String(promoSrc)}
+            alt={data.title}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+          />
+          <a href={`/case-studies/${slug}`} class="absolute inset-0 hidden lg:block z-10" aria-label={data.title}></a>
+          <div class="hidden lg:block absolute inset-0 rounded-lg bg-gradient-to-t from-white/90 via-white/60 to-transparent"></div>
+          <div class="z-10 hidden lg:absolute lg:inset-x-8 lg:bottom-8 lg:flex lg:flex-col lg:gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="flex flex-wrap gap-2">
+                {data.categories.map((category) => (
+                  <a
+                    class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                    href={`/case-studies/category/${slugify(String(category))}`}
+                  >
+                    {category}
+                  </a>
+                ))}
+              </div>
+              <div class="flex items-center gap-1 text-black drop-shadow lg:text-black">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                >
+                  <g clip-path="url(#clip0)">
+                    <path
+                      d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
+                      class="fill-current"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+                <p class="text-sm">About a {data.readTime} min read</p>
+              </div>
+            </div>
+
+            <a
+              href={`/case-studies/${slug}`}
+              class="font-heading text-2xl-custom font-black drop-shadow md:text-4xl lg:text-5xl lg:text-black"
+            >
+              {data.title}
+            </a>
+          </div>
+        </div>
+      </a>
+      <div class="mt-4 lg:hidden">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex flex-wrap gap-2">
+            {data.categories.map((category) => (
+              <a
+                class="rounded-full bg-purewhite px-2 py-0.5 text-sm text-black hover:outline hover:outline-1 hover:outline-black dark:hover:outline-white"
+                href={`/case-studies/category/${slugify(String(category))}`}
+              >
+                {category}
+              </a>
+            ))}
+          </div>
+          <div class="flex items-center gap-1 text-black">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+            >
+              <g clip-path="url(#clip0)">
+                <path
+                  d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
+                  class="fill-current"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0">
+                  <rect width="16" height="16" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            <p class="text-sm">About a {data.readTime} minute read</p>
+          </div>
+        </div>
+        <a
+          href={`/case-studies/${slug}`}
+          class="font-heading text-2xl-custom font-bold text-black mt-2 block"
         >
           {data.title}
         </a>
@@ -118,7 +283,7 @@ const wideSrc = (data as any).heroImageWide;
                 </clipPath>
               </defs>
             </svg>
-            <p>{data.readTime} minute read</p>
+            <p>About a {data.readTime} minute read</p>
           </div>
         </div>
       </div>
@@ -157,7 +322,7 @@ const wideSrc = (data as any).heroImageWide;
                 </clipPath>
               </defs>
             </svg>
-            <p>{data.readTime} minute read</p>
+            <p>About a {data.readTime} minute read</p>
           </div>
           <a
             href={`/case-studies/${slug}`}
@@ -237,7 +402,7 @@ const wideSrc = (data as any).heroImageWide;
                 </clipPath>
               </defs>
             </svg>
-            <p class="text-sm">{data.readTime} minute read</p>
+            <p class="text-sm">About a {data.readTime} minute read</p>
           </div>
         </div>
         <a

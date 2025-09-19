@@ -11,9 +11,10 @@ interface Props {
   title: string;
   bgFill?: string;
   bgFillDark?: string;
+  bgClass?: string; // optional Tailwind classes e.g. "bg-stone-50 dark:bg-slate-900"
 }
 
-const { description, title, bgFill, bgFillDark = '' } = Astro.props;
+const { description, title, bgFill, bgFillDark = '', bgClass } = Astro.props as Props;
 ---
 
 <!DOCTYPE html>
@@ -79,9 +80,11 @@ const { description, title, bgFill, bgFillDark = '' } = Astro.props;
   <body
     class="bg-white text-black dark:bg-darkerblack dark:text-white antialiased transition"
   >
-    <Header  
-    bgFill={bgFill}
-    bgFillDark={bgFillDark} />
+    <Header 
+      bgFill={bgFill}
+      bgFillDark={bgFillDark}
+      bgClass={bgClass}
+    />
     <main>
       <slot />
     </main>

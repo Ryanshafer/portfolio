@@ -7,32 +7,72 @@ import PageHeader from '../components/layout/PageHeader.astro';
 const posts = (await getCollection('studies')).sort(
   (a, b) => new Date(b.data?.pubDate ?? 0).getTime() - new Date(a.data?.pubDate ?? 0).getTime()
 );
+
+// Collect all unique categories for case studies
+const categories = new Set<string>();
+for (const post of posts) {
+  for (const category of post.data.categories || []) {
+    categories.add(category);
+  }
+}
+
+// Build client-side pagination chunks (static HTML, toggled with Alpine)
+const pageSize = 10; // adjust as needed
+const chunks: typeof posts[] = [];
+for (let i = 0; i < posts.length; i += pageSize) {
+  chunks.push(posts.slice(i, i + pageSize));
+}
+const totalPages = chunks.length;
 ---
 
 <Layout
   description="Learn about Ryan Shafer's past design work"
-  title="Cast Studies · Ryan Shafer · UX Design Leader"
-  bgFill='#FAFAF9'
-  bgFillDark='#3C3758'
+  title="Case Studies · Ryan Shafer · UX Design Leader"
 >
-  <PageHeader heading="Case Studies" subheading="Stories of design that connect human needs with business success." />
-  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
-    <div class="space-y-11">
-      {
-        posts.map((post, index) => (
-          <PostPreview
-            layout={index === 0 ? 'featured' : 'wide'}
-            post={post}
-            extraClasses={
-              index === 1
-                ? 'border-t border-black pt-10'
-                : index === posts.length - 1
-                  ? 'border-none'
-                  : ''
-            }
-          />
-        ))
-      }
-    </div>
+  <PageHeader
+    heading="Case Studies"
+    subheading="Stories of design that connect human needs with business success."
+    categories={Array.from(categories)}
+    categoryBasePath="/case-studies"
+    categoryVariant="chips"
+  />
+  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
+    {chunks.map((chunk, chunkIndex) => (
+      <div x-show={`page === ${chunkIndex + 1}`} class="space-y-11">
+        {
+          chunk.map((post, postIndex) => {
+            const overallIndex = (chunkIndex * pageSize) + postIndex;
+            return (
+              <PostPreview
+                layout={overallIndex === 0 ? 'featured' : 'wide'}
+                post={post}
+                extraClasses={
+                  overallIndex === 1
+                    ? 'border-t border-black pt-10'
+                    : overallIndex === posts.length - 1
+                      ? 'border-none'
+                      : ''
+                }
+              />
+            )
+          })
+        }
+      </div>
+    ))}
+
+    {/* Pager */}
+    {totalPages > 1 && (
+      <nav class="mt-12 flex items-center justify-center gap-3" aria-label="Pagination">
+        <button @click="prev()" :disabled="page === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
+        <div class="flex items-center gap-1">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button @click={`page = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`page === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
+              {i + 1}
+            </button>
+          ))}
+        </div>
+        <button @click="next()" :disabled="page === total" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Next</button>
+      </nav>
+    )}
   </section>
 </Layout>
