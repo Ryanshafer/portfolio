@@ -57,38 +57,42 @@ const chunkData = chunks.map((chunk) => {
     heading="My Thoughts" 
     subheading="Writing about design, technology, and leadership." 
     categories={Array.from(categories)}
+    showBackgroundGraphic={true}
   />
-  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-8">
+  <section
+    x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`}
+    class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-8 lg:mt-12"
+  >
     {chunkData.map((chunk, chunkIndex) => (
       <div x-show={`page === ${chunkIndex + 1}`} class="space-y-16">
         {chunk.years.map((year, yearIndex) => (
-          <>
-            <div class="space-y-8 md:space-y-11">
-              <div class="sticky top-0 z-10 py-4 bg-gradient-to-b from-[#EFEDE6] via-[#EFEDE6]/80 to-transparent dark:from-[#1F1C30] dark:via-[#1F1C30] dark:to-transparent">
-                <h2 class="border border-black dark:border-white rounded-lg px-3 h-9 w-fit mx-auto flex items-center leading-none text-base bg-white dark:bg-darkerblack">{year}</h2>
-              </div>
+          <div class="grid grid-cols-4 gap-x-6 gap-y-6 lg:grid-cols-12 lg:gap-x-6">
+                <h2 class="col-span-full self-start font-heading text-3xl font-bold text-black dark:text-white lg:sticky lg:top-12 lg:col-span-3 lg:col-start-2">
+                  {year}
+                </h2>
+            <div class="col-span-full space-y-10 text-left lg:col-span-8 lg:col-start-5">
               {chunk.byYear[year].map((post, index) => (
-                <>
+                <div>
                   <ThoughtPreview post={post} />
                   {index < chunk.byYear[year].length - 1 && (
-                    <hr class="mx-auto max-w-2xl border-black/10 dark:border-white/10" />
+                    <hr class="mt-8 border-black/50 dark:border-white/50" />
                   )}
-                </>
+                </div>
               ))}
             </div>
             {yearIndex < chunk.years.length - 1 && (
-              <hr class="border-black dark:border-white" />
+                <hr class="col-span-full lg:col-span-8 lg:col-start-5 border-black/30 dark:border-white/30" />
             )}
-          </>
+          </div>
         ))}
       </div>
     ))}
 
     {/* Pager */}
     {totalPages > 1 && (
-      <nav class="mt-12 flex items-center justify-center gap-3" aria-label="Pagination">
+      <nav class="mt-12 flex items-center justify-center gap-6" aria-label="Pagination">
         <button @click="prev()" :disabled="page === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-6">
           {Array.from({ length: totalPages }).map((_, i) => (
             <button @click={`page = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`page === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
               {i + 1}

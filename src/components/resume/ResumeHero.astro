@@ -1,0 +1,131 @@
+---
+const contactLinks = [
+  { label: 'Email', value: 'ryan@example.com', href: 'mailto:ryan@example.com' },
+  { label: 'Portfolio', value: 'ryan.design', href: 'https://ryan.design' },
+  {
+    label: 'LinkedIn',
+    value: 'linkedin.com/in/ryandesign',
+    href: 'https://www.linkedin.com/in/ryandesign',
+  },
+];
+
+import Button from '../layout/Button.astro';
+---
+
+<section class="bg-herowhite dark:bg-herodark">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 items-start gap-6 sm:grid-cols-4 md:grid-cols-12 md:items-stretch">
+      <div class="col-span-2 flex justify-center md:col-span-4">
+        <div class="aspect-square relative w-full self-start bg-purewhite dark:bg-black">
+          <div class="absolute inset-[8%] md:inset-[18.5%]">
+            <img
+              class="h-full w-full rounded-full object-cover"
+              src="/assets/ryan-shafer.jpg"
+              alt="Ryan Shafer"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-span-2 flex flex-col justify-center md:col-span-8">
+        <h1
+          class="font-heading text-5xl md:text-4xl-custom font-black text-black dark:text-white"
+        >
+          Ryan Shafer
+        </h1>
+        <h2
+          class="mt-4 font-heading text-2xl-custom font-bold text-black dark:text-white"
+        >
+          UX & Product Design Executive
+        </h2>
+        <div class="my-12 grid grid-cols-9 gap-6 text-base text-black/70 dark:text-white/70">
+          <div class="col-span-9 md:col-span-6">
+            <div class="flex items-start gap-6">
+              <svg
+                class="mt-[5px] h-[15px] w-[20px] shrink-0"
+                viewBox="0 0 20 15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_353_5530)">
+                  <rect width="20" height="15" fill="white" />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M14 0H20V15H14V0Z"
+                    fill="#C51918"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M0 0H6V15H0V0Z"
+                    fill="#5EAA22"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M6 0H14V15H6V0Z"
+                    fill="white"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_353_5530">
+                    <rect width="20" height="15" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div>
+                <p>Contrada Cavallerizza, Ostuni (BR) 72017 Italy</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-6">
+              <svg
+                class="mt-[5px] h-[15px] w-[20px] shrink-0"
+                viewBox="0 0 20 15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_353_5467)">
+                  <rect width="20" height="15" fill="white" />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M0 0H20V15H0V0Z"
+                    fill="#E31D1C"
+                  />
+                  <path
+                    d="M20 13.75V15H0V13.75H20ZM20 12.5H0V11.25H20V12.5ZM20 10H0V8.75H20V10ZM20 7.5H0V6.25H20V7.5ZM20 5H0V3.75H20V5ZM20 2.5H0V1.25H20V2.5Z"
+                    fill="#F7FCFF"
+                  />
+                  <rect width="11.25" height="8.75" fill="#2E42A5" />
+                  <path
+                    d="M9.76367 1.37549H10.4189L9.9043 1.896L10.1035 2.71729L9.46289 2.25537L8.93164 2.62549H9.16895L8.6543 3.146L8.83105 3.87549H9.2041L9.46191 3.20557L9.76367 3.87549H10.4189L9.9043 4.396L10.1035 5.21729L9.46289 4.75537L8.93164 5.12549H9.16895L8.6543 5.646L8.83105 6.37549H9.2041L9.46191 5.70557L9.76367 6.37549H10.4189L9.9043 6.896L10.1035 7.71729L9.46289 7.25537L8.7998 7.71729L9.02344 6.896L8.43555 6.37549H8.72656L8.21289 6.00537L7.68164 6.37549H7.91895L7.4043 6.896L7.60352 7.71729L6.96289 7.25537L6.2998 7.71729L6.52344 6.896L5.93555 6.37549H6.22656L5.71289 6.00537L5.18164 6.37549H5.41895L4.9043 6.896L5.10352 7.71729L4.46289 7.25537L3.7998 7.71729L4.02344 6.896L3.43555 6.37549H3.72656L3.21289 6.00537L2.68164 6.37549H2.91895L2.4043 6.896L2.60352 7.71729L1.96289 7.25537L1.2998 7.71729L1.52344 6.896L0.935547 6.37549H1.7041L1.96191 5.70557L2.26367 6.37549H2.5752L2.77344 5.646L2.18555 5.12549H2.47656L1.96289 4.75537L1.2998 5.21729L1.52344 4.396L0.935547 3.87549H1.7041L1.96191 3.20557L2.26367 3.87549H2.5752L2.77344 3.146L2.18555 2.62549H2.47656L1.96289 2.25537L1.2998 2.71729L1.52344 1.896L0.935547 1.37549H1.7041L1.96191 0.705566L2.26367 1.37549H2.91895L2.4043 1.896L2.58105 2.62549H2.9541L3.21191 1.95557L3.51367 2.62549H3.8252L4.02344 1.896L3.43555 1.37549H4.2041L4.46191 0.705566L4.76367 1.37549H5.41895L4.9043 1.896L5.08105 2.62549H5.4541L5.71191 1.95557L6.01367 2.62549H6.3252L6.52344 1.896L5.93555 1.37549H6.7041L6.96191 0.705566L7.26367 1.37549H7.91895L7.4043 1.896L7.58105 2.62549H7.9541L8.21191 1.95557L8.51367 2.62549H8.8252L9.02344 1.896L8.43555 1.37549H9.2041L9.46191 0.705566L9.76367 1.37549ZM6.43164 5.12549H6.66895L6.1543 5.646L6.33105 6.37549H6.7041L6.96191 5.70557L7.26367 6.37549H7.5752L7.77344 5.646L7.18555 5.12549H7.47656L6.96289 4.75537L6.43164 5.12549ZM3.93164 5.12549H4.16895L3.6543 5.646L3.83105 6.37549H4.2041L4.46191 5.70557L4.76367 6.37549H5.0752L5.27344 5.646L4.68555 5.12549H4.97656L4.46289 4.75537L3.93164 5.12549ZM7.68164 3.87549H7.91895L7.4043 4.396L7.58105 5.12549H7.9541L8.21191 4.45557L8.51367 5.12549H8.8252L9.02344 4.396L8.43555 3.87549H8.72656L8.21289 3.50537L7.68164 3.87549ZM2.68164 3.87549H2.91895L2.4043 4.396L2.58105 5.12549H2.9541L3.21191 4.45557L3.51367 5.12549H3.8252L4.02344 4.396L3.43555 3.87549H3.72656L3.21289 3.50537L2.68164 3.87549ZM5.18164 3.87549H5.41895L4.9043 4.396L5.08105 5.12549H5.4541L5.71191 4.45557L6.01367 5.12549H6.3252L6.52344 4.396L5.93555 3.87549H6.22656L5.71289 3.50537L5.18164 3.87549ZM3.93164 2.62549H4.16895L3.6543 3.146L3.83105 3.87549H4.2041L4.46191 3.20557L4.76367 3.87549H5.0752L5.27344 3.146L4.68555 2.62549H4.97656L4.46289 2.25537L3.93164 2.62549ZM6.43164 2.62549H6.66895L6.1543 3.146L6.33105 3.87549H6.7041L6.96191 3.20557L7.26367 3.87549H7.5752L7.77344 3.146L7.18555 2.62549H7.47656L6.96289 2.25537L6.43164 2.62549Z"
+                    fill="#F7FCFF"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_353_5467">
+                    <rect width="20" height="15" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div>
+                <p>2419 Goulden Ridge Road, Springfield Vermont 05156 USA</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-9 md:col-span-3 font-base text-black/70 dark:text-white/70">
+            <p>
+              +39 351 212 0559
+            </p>
+            <p>
+              +1 646 247 1813
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-6 pb-8 xl:pb-0">
+          <Button href="https://www.linkedin.com/in/ryanshafer" target="_blank" cta="Download Resume" variant="outline" />
+          <Button href="https://www.linkedin.com/in/ryanshafer" target="_blank" cta="Connect on LinkedIn" variant="outline" />
+          <Button href="/contact" cta="Contact Me →" variant="outline" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

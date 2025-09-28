@@ -1,0 +1,33 @@
+---
+import type { WorkEntry } from '../../types/work';
+import { renderMarkdown } from '../../utils/markdown';
+
+interface Props {
+  entry: WorkEntry;
+}
+
+const { entry } = Astro.props as Props;
+const descriptionHtml = await renderMarkdown(entry.description);
+---
+
+<article
+  class="prose prose-resume"
+>
+  <header>
+    <div>
+      <p class="text-lg mt-2 my-0 text-black/70 dark:text-white/70">
+        <span>{entry.start}</span>
+        <span class="px-1">—</span>
+        <span>{entry.end}, </span>
+        <span>{entry.location}</span>
+      </p>
+      <h2 class="font-heading text-2xl-custom md:text-5xl font-black text-black dark:text-white mt-1 mb-2">
+        {entry.title}
+      </h2>
+      <p class="font-heading text-3xl font-bold text-black dark:text-white mb-3 md:mb-6">{entry.company}</p>
+    </div>
+  </header>
+  <p class="my-0 text-base dark:text-white">{entry.intro}</p>
+  <div class="mt-4 text-black dark:text-white" set:html={descriptionHtml} />
+  
+</article>

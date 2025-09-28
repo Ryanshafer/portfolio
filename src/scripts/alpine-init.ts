@@ -1,44 +1,46 @@
-import Alpine from 'alpinejs'
-import collapse from '@alpinejs/collapse'
+import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse';
 
-// --- Type shims so the IDE stops warning ---
-declare global {
-  interface Window {
-    Alpine: typeof Alpine
-  }
-}
+const updateThemeMeta = (isDark: boolean) => {
+  const root = document.documentElement;
+  const lightColor = root.dataset.themeLight;
+  const darkColor = root.dataset.themeDark || lightColor;
+  const meta = document.querySelector('meta[name="theme-color"]:not([media])');
+  if (!meta || !lightColor) return;
+  meta.setAttribute('content', isDark ? (darkColor ?? lightColor) : lightColor);
+};
 
-type ThemeStore = {
-  isDark: boolean
-  init(): void
-  toggle(): void
-}
+let initialized = false;
 
-// Register plugin (no official TS types for @alpinejs/collapse)
-Alpine.plugin(collapse as any)
+export default function initAlpine() {
+  if (initialized) return;
+  initialized = true;
 
-// Central theme store
-;(Alpine as any).store('theme', {
-  init() {
-    this.isDark = (() => {
-      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-        return localStorage.getItem('theme') === 'dark'
+  Alpine.plugin(collapse);
+
+  Alpine.store('theme', {
+    isDark: false,
+    init() {
+      this.isDark = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme') === 'dark';
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return true;
+        }
+        return false;
+      })();
+      updateThemeMeta(this.isDark);
+    },
+    toggle() {
+      this.isDark = !this.isDark;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
       }
-      if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return true
-      }
-      return false
-    })()
-  },
-  isDark: false,
-  toggle() {
-    this.isDark = !this.isDark
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('theme', this.isDark ? 'dark' : 'light')
-    }
-  },
-} as ThemeStore)
+      updateThemeMeta(this.isDark);
+    },
+  });
 
-// Expose Alpine and start
-window.Alpine = Alpine
-Alpine.start()
+  window.Alpine = Alpine;
+  Alpine.start();
+}

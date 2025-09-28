@@ -1,0 +1,42 @@
+---
+import WorkItem from './WorkItem.astro';
+import { workEntries } from '../../content/work-data.mjs';
+---
+
+<section class="my-4 lg:my-12 prose prose-resume">
+  <div
+    class="mx-auto grid max-w-2xl lg:max-w-7xl grid-cols-4 gap-x-6 gap-y-6 px-4 sm:px-6 lg:grid-cols-12 lg:gap-x-6 lg:px-8"
+  >
+    <h2
+      class="col-span-full self-start font-heading text-3xl font-bold text-black dark:text-white lg:col-span-3 lg:col-start-2 lg:sticky lg:top-4 pt-7"
+    >
+      Work History
+    </h2>
+    <div class="col-span-full lg:col-span-8 lg:col-start-5 pt-6 space-y-10 border-t border-black/30 dark:border-white/30">
+      {workEntries.map((entry, index) => (
+        <div>
+          {index > 0 && <hr class="border-black/30 dark:border-white/30" />}
+          <WorkItem entry={entry} />
+        </div>
+      ))}
+    </div>
+
+    <!-- {
+      older.length > 0 && (
+        <details class="rounded-xl border border-slate-200/70 bg-white/70 p-6 shadow-sm backdrop-blur transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500/40 dark:border-slate-800 dark:bg-slate-900/60">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 text-lg font-semibold text-slate-900 text-opacity-90 hover:text-slate-700 dark:text-white dark:text-opacity-90 dark:hover:text-slate-200">
+            Earlier roles
+            <span class="text-sm font-normal text-slate-500 dark:text-slate-400">
+              Expand to view
+            </span>
+          </summary>
+          <div class="mt-4 space-y-6">
+            {older.map((entry) => (
+              <WorkItem entry={entry} />
+            ))}
+          </div>
+        </details>
+      )
+    } -->
+  </div>
+</section>

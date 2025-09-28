@@ -31,12 +31,13 @@ const totalPages = chunks.length;
 >
   <PageHeader
     heading="Case Studies"
-    subheading="Stories of design that connect human needs with business success."
+    subheading="Design stories that connect people and business."
     categories={Array.from(categories)}
     categoryBasePath="/case-studies"
     categoryVariant="chips"
+    showBackgroundGraphic={true}
   />
-  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-0 lg:mt-[5rem]">
+  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-8 lg:mt-12">
     {chunks.map((chunk, chunkIndex) => (
       <div x-show={`page === ${chunkIndex + 1}`} class="space-y-11">
         {
@@ -62,9 +63,9 @@ const totalPages = chunks.length;
 
     {/* Pager */}
     {totalPages > 1 && (
-      <nav class="mt-12 flex items-center justify-center gap-3" aria-label="Pagination">
+      <nav class="mt-12 flex items-center justify-center gap-6" aria-label="Pagination">
         <button @click="prev()" :disabled="page === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-6">
           {Array.from({ length: totalPages }).map((_, i) => (
             <button @click={`page = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`page === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
               {i + 1}

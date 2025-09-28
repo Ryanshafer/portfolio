@@ -1,23 +1,29 @@
 ---
 const currentPath = Astro.url.pathname;
-const { bgFill, bgFillDark, bgClass } = Astro.props ?? {};
+const { bgClass } = Astro.props ?? {};
+
+const computedBgClass = bgClass ?? 'header--frosted';
 
 const links = [
   {
     name: 'Home',
     href: '/',
   },
+    {
+    name: 'Case Studies',
+    href: '/case-studies',
+  },
   {
     name: 'About',
     href: '/about',
   },
   {
-    name: 'Case Studies',
-    href: '/case-studies',
-  },
-  {
     name: 'Thoughts',
     href: '/thoughts',
+  },
+    {
+    name: 'Resume',
+    href: '/resume',
   },
   {
     name: 'Contact',
@@ -28,8 +34,7 @@ const links = [
 
 <header
   x-data="{ open: false }"
-  class={`transition ${bgClass ? bgClass : (bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : 'bg-herowhite dark:bg-herodark')}`}
-  style={!bgClass && bgFill ? `--hero-bg: ${bgFill}; --hero-bg-dark: ${bgFillDark ?? bgFill};` : undefined}
+  class={`header-shell transition ${computedBgClass}`}
 >
   <div
     class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
@@ -46,7 +51,7 @@ const links = [
           width="227"
           height="40"
           :src="$store.theme.isDark ? '/assets/logo-inverted.svg' : '/assets/logo.svg'"
-          alt="Ryan Shafer"
+          alt="Ryan Shafer Logo"
         />
       </a>
     </div>
@@ -155,12 +160,12 @@ const links = [
     x-collapse
     x-collapse.duration.500ms
   >
-    <div class="grid grid-cols-1 gap-16 py-6 lg:grid-cols-2 lg:pt-12">
+    <div class="grid grid-cols-1 gap-6 py-6 lg:grid-cols-2 lg:pt-12">
 
 
       <!-- Navigation -->
        <div class="lg:hidden">
-          <nav class="divide-black/10 dark:divide-white/10 flex flex-col gap-1 divide-y">
+          <nav class="divide-black/10 dark:divide-white/10 flex flex-col gap-6 divide-y">
             {
               links.map((link) => (
                 <a

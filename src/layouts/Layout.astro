@@ -3,8 +3,8 @@ import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
+import AlpineInit from '../components/AlpineInit.astro';
 
-import alpineInitUrl from '../scripts/alpine-init.ts?url';
 
 interface Props {
   description: string;
@@ -15,13 +15,31 @@ interface Props {
 }
 
 const { description, title, bgFill, bgFillDark = '', bgClass } = Astro.props as Props;
+
+const defaultLight = '#F5F3EF';
+const defaultDark = '#3C3758';
+const resolvedLight = bgFill ?? defaultLight;
+const resolvedDark = bgFillDark || bgFill || defaultDark;
 ---
 
 <!DOCTYPE html>
-<html lang="en" x-cloak x-data :class="{ 'dark': $store.theme.isDark }">
+<html
+  lang="en"
+  x-cloak
+  x-data
+  x-init="$store.theme.init()"
+  :class="{ 'dark': $store.theme.isDark }"
+  data-theme-light={resolvedLight}
+  data-theme-dark={resolvedDark}
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content={resolvedLight} />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content={resolvedLight} />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content={resolvedDark} />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -94,6 +112,6 @@ const { description, title, bgFill, bgFillDark = '', bgClass } = Astro.props as 
         display: none !important;
       }
     </style>
-    <script type="module" src={alpineInitUrl}></script>
+    <AlpineInit />
   </body>
 </html>

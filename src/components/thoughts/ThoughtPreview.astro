@@ -1,6 +1,7 @@
 ---
-import { slugify } from '../../utils/slugify';
 import type { CollectionEntry } from 'astro:content';
+import CategoryPills from '../layout/CategoryPills.astro';
+import ReadTime from '../layout/ReadTime.astro';
 
 interface Props {
   post: CollectionEntry<'thoughts'>;
@@ -13,51 +14,26 @@ const title = post?.data?.title ?? 'Untitled';
 const description = post?.data?.description ?? '';
 const readTime = Number(post?.data?.readTime ?? 0);
 const categories = Array.isArray(post?.data?.categories) ? post.data.categories : [];
-const categoryLinks = categories.map((c) => ({ label: c, slug: slugify(String(c)) }));
 const slug = post?.slug ?? '';
 ---
 
-<article class="mx-auto max-w-2xl text-center">
-  <div class="flex items-center justify-center gap-2">
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      class="h-5 w-5 text-black/50 dark:text-white/50"
-      aria-hidden="true"
-    >
-      <g clip-path="url(#clip0)">
-        <path
-          d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
-          class="fill-current"
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0">
-          <rect width="16" height="16" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
-    <span class="text-lg md:text-xl text-black/50 dark:text-white/50">
-     About a {readTime} minute read
-    </span>
-  </div>
+<article>
+  <ReadTime
+    minutes={readTime}
+    iconClass="h-5 w-5 text-black/50 dark:text-white/50"
+    textClass="text-lg md:text-xl text-black/70 dark:text-white/70"
+    textTag="span"
+  />
   <h2 class="pb-4 pt-2 font-heading text-2xl-custom md:text-5xl font-black hover:text-black/60 dark:hover:text-white/60">
     <a href={`/thoughts/${slug}`}>{title}</a>
   </h2>
   {description && <p class="text-lg md:text-xl leading-tight">{description}</p>}
-  {categoryLinks.length > 0 && (
-    <div class="flex flex-wrap justify-center gap-x-3 gap-y-1 py-2 text-lg md:text-xl text-black/50 dark:text-white/50">
-      {categoryLinks.map((link) => (
-        <a
-          href={`/thoughts/category/${link.slug}`}
-          class="underline hover:underline-offset-2"
-        >
-          #{link.label}
-        </a>
-      ))}
-    </div>
+  {categories.length > 0 && (
+    <CategoryPills
+      categories={categories}
+      basePath="/thoughts/category"
+      variant="hashtags"
+      wrapperClass="flex flex-wrap gap-x-6 gap-y-6 py-2 text-lg md:text-xl text-black/70 dark:text-white/70"
+    />
   )}
 </article>

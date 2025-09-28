@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ResumeHero from '../components/resume/ResumeHero.astro';
+import Skills from '../components/resume/Skills.astro';
+import WorkHistory from '../components/resume/WorkHistory.astro';
+---
+
+<Layout
+  title="Resume · Ryan Shafer · Product Design Leader"
+  description="Explore Ryan Shafer’s experience, skills, and product design leadership journey."
+>
+  <main class="flex flex-col gap-6">
+    <ResumeHero />
+    <Skills />
+    <WorkHistory />
+  </main>
+</Layout>

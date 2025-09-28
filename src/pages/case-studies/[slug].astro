@@ -74,55 +74,53 @@ if (featuredStudies.length < 3) {
     <!-- Hero Section -->
     <section
       data-section="hero [slug].astro"
-      class={`w-full mb-4 xl:mb-16 ${data.bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : ''}`}
+      class={`page-header relative overflow-hidden w-full mb-4 xl:mb-16 ${data.bgFill ? '[background-color:var(--hero-bg)] dark:[background-color:var(--hero-bg-dark)]' : 'bg-herowhite dark:bg-herodark'}`}
       style={data.bgFill ? `--hero-bg: ${data.bgFill}; --hero-bg-dark: ${data.bgFillDark ?? data.bgFill};` : undefined}
     >
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 xl:gap-0 items-end max-w-7xl mx-auto px-4 xl:px-8 py-4 xl:py-0">
-        <div class="xl:col-span-7">
-          <img
-            src={data.heroImagePromo}
-            alt={data.title}
-            class="w-full aspect-video object-cover"
-            loading="eager"
-            decoding="async"
-          />
+      <div class="page-header__texture" aria-hidden="true"></div>
+      <div class="relative z-10">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-6 items-end max-w-7xl mx-auto px-4 xl:px-8 py-4 xl:py-0">
+          <div class="xl:col-span-7">
+            <img
+              src={data.heroImagePromo}
+              alt={data.title}
+              class="w-full aspect-video object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+          <h1 class="text-black dark:text-white font-heading font-black text-2xl-custom md:text-5xl xl:text-4xl-custom xl:col-span-5 xl:ml-12 my-0 lg:my-10">
+            {data.title}
+          </h1>
         </div>
-        <h1 class="text-black dark:text-white font-heading font-black text-2xl-custom md:text-5xl xl:text-4xl-custom xl:col-span-5 xl:ml-8 my-0 lg:my-7">
-          {data.title}
-        </h1>
       </div>
     </section>
 
     <!-- Case Study Summary Section -->
     <div
       data-section="case-study-summary [slug].astro"
-      class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
+      class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
     >
-      <div class="col-span-full xl:col-span-12 grid grid-cols-1 xl:grid-cols-12 gap-y-8 xl:gap-y-16">
-        <div class="col-span-full lg:col-span-6 lg:col-start-6">
-        {data.summary && (
-          <CaseStudySummary
-            role={data.summary.role}
-            problem={data.summary.problem}
-            insight={data.summary.insight}
-            approach={data.summary.approach}
-            impact={data.summary.impact}
-            stats={data.summary.stats}
-          />
-        )}
-        </div>
-      </div>
+      {data.summary && (
+        <CaseStudySummary
+          role={data.summary.role}
+          problem={data.summary.problem}
+          insight={data.summary.insight}
+          approach={data.summary.approach}
+          impact={data.summary.impact}
+          categories={data.categories}
+          stats={data.summary.stats}
+        />
+      )}
     </div>
 
     <!-- Case Study Content Section -->
     <div
       data-section="case-study-content [slug].astro"
-      class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
+      class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
     >
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-y-8 xl:gap-y-16">
-        <div class="case-studies prose prose-gray max-w-none col-span-full xl:col-start-6 xl:col-span-6 mt-4">
-          <Content components={{ ImageWithStyle }} />
-        </div>
+      <div class="prose prose-case-study mt-4 max-w-none text-black dark:text-white">
+        <Content components={{ ImageWithStyle }} />
       </div>
     </div>
   </article>
@@ -132,7 +130,7 @@ if (featuredStudies.length < 3) {
     data-section="more-case-studies [slug].astro"
     class="mx-auto max-w-2xl px-0 sm:px-6 lg:max-w-7xl lg:px-8"
   >
-    <div class="grid grid-cols-1 gap-x-5 gap-y-4 p-6 md:p-10 pt-6 lg:grid-cols-12 bg-darkwhite/40">
+    <div class="grid grid-cols-1 gap-x-6 gap-y-6 p-6 md:p-10 pt-6 lg:grid-cols-12 bg-herowhite dark:bg-herodark/40 rounded-lg">
       <!-- 3 column layout for smaller promos -->
       <h3
         data-section="more-case-studies-heading [slug].astro"
@@ -141,20 +139,14 @@ if (featuredStudies.length < 3) {
         More Case Studies
       </h3>
       {featuredStudies[0] && (
-        <div class="col-span-full lg:col-span-4 col-start-1 mb-6 md:mb-0" >
+        <div class="col-span-full lg:col-span-6 col-start-1 mb-6 md:mb-0" >
           <PostPreview post={featuredStudies[0]} />
         </div>
       )}
 
       {featuredStudies[1] && (
-        <div class="col-span-full lg:col-span-4 lg:col-start-5">
+        <div class="col-span-full lg:col-span-6 lg:col-start-7">
           <PostPreview post={featuredStudies[1]} />
-        </div>
-      )}
-
-      {featuredStudies[2] && (
-        <div class="col-span-full lg:col-span-4 lg:col-start-9">
-          <PostPreview post={featuredStudies[2]} />
         </div>
       )}
     </div>

@@ -14,18 +14,26 @@ const featuredStudies: CollectionEntry<'studies'>[] = featuredSlugs
 
 import PostPreview from '../case-studies/PostPreview.astro';
 import Button from '../layout/Button.astro';
+
+const ellipseImages = ['ellipse-1.png', 'ellipse-2.png', 'ellipse-3.png'];
+const heroEllipse = ellipseImages[0];
 ---
 
-<section class="bg-herowhite dark:bg-herodark">
-  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+<section class="page-header relative overflow-hidden bg-herowhite dark:bg-herodark">
+  <div class="page-header__bg-wrapper" aria-hidden="true">
+    <div class="page-header__bg-ellipse__home">
+      <img src={`/assets/ellipses/${heroEllipse}`} alt="" loading="eager" class="page-header__bg-image" />
+    </div>
+  </div>
+  <div class="relative z-10 mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
     <!-- HERO TEXT aligned to new design -->
     <div class="py-10 md:py-16 lg:py-[5.5rem]">
-      <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-6">
         <!-- Heading block -->
         <div class="col-span-full lg:col-span-12">
-          <p class="font-heading text-2xl md:text-3xl lg:text-5xl text-black tracking-[-0.018em] dark:text-white">Hello, I’m Ryan.</p>
+          <p class="font-heading text-2xl md:text-3xl lg:text-5xl text-black tracking-[-0.018em]">Hello, I’m Ryan.</p>
           <h1
-            class="mt-3 font-heading font-black tracking-[-0.018em] text-black dark:text-white leading-[0.85]
+            class="mt-3 font-heading font-black tracking-[-0.018em] text-black leading-[0.85]
                    text-[clamp(2rem,7vw+1rem,6rem)] md:text-[clamp(2rem,7vw+1.5rem,5.5rem)] lg:text-[clamp(2rem,7vw+3rem,9.5rem)] sm:whitespace-nowrap"
           >
             I design for people.
@@ -33,12 +41,12 @@ import Button from '../layout/Button.astro';
         </div>
 
         <!-- Subcopy + CTA -->
-        <div class="col-span-full lg:col-span-8 lg:col-start-5 mt-6 lg:mt-[4rem] flex flex-col gap-8 lg:flex-row lg:items-top lg:justify-between">
-          <p class="font-heading text-xl sm:text-2xl leading-tight text-black/70 dark:text-white/70 max-w-3xl mr-0 md:mr-12">
+        <div class="col-span-full lg:col-span-8 lg:col-start-5 mt-6 lg:mt-[4rem] flex flex-col gap-6 lg:flex-row lg:items-top lg:justify-between">
+          <p class="font-heading text-xl sm:text-2xl leading-tight text-black/70 max-w-3xl mr-0 md:mr-12">
             I’m a design leader with 20+ years turning complexity into clear, measurable outcomes across product, marketing, and brand.
           </p>
           <div class="shrink-0 mt-2">
-            <Button href="/contact" cta="Let’s Talk →" />
+            <Button href="/contact" cta="Let’s Talk →" forceLight="true" />
           </div>
         </div>
       </div>

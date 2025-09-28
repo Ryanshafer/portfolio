@@ -38,11 +38,10 @@ const displayLabel =
 <Layout
   description="Learn about Ryan Shafer's past design work"
   title={`Thoughts – ${displayLabel} · Ryan Shafer · UX Design Leader`}
-  bgFill="#F5F3EF"
-  bgFillDark="#3C3758"
 >
-  <PageHeader heading={`My Thoughts About ${displayLabel}`} />
-  <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+  <PageHeader heading={`My Thoughts About ${displayLabel}`}
+   showBackgroundGraphic={true} />
+  <section class="mx-auto max-w-[65ch] px-4 sm:px-6 lg:px-8">
     <div class="space-y-11 pt-11">
       {
         postsInCategory.map((post, index) => (

@@ -3,7 +3,8 @@
 import { getEntry, getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ImageWithStyle from '../../components/case-studies/ImageWithStyle.astro';
-import { slugify } from '../../utils/slugify';
+import CategoryPills from '../../components/layout/CategoryPills.astro';
+import ReadTime from '../../components/layout/ReadTime.astro';
 
 export async function getStaticPaths() {
   const { getCollection } = await import('astro:content');
@@ -67,47 +68,60 @@ const { Content } = await render();
 <Layout
   description={`${data.description}`}
   title={`Thoughts – ${data.title} · Ryan Shafer · UX Design Leader`}
-  >
+>
   <article>
     <!-- Hero Section -->
     <section
       data-section="hero [slug].astro"
-      class="bg-[#F7F6F3] dark:bg-[#3C3758]"
+      class="page-header relative overflow-hidden bg-herowhite dark:bg-herodark"
     >
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 xl:py-16 text-center flex flex-col items-center gap-y-4">
-        <h1 class="text-black dark:text-white font-heading font-black text-[clamp(32px,4.5vw+17.6px,88px)] leading-[clamp(40px,5vw+14px,100px)]">
+      <div class="page-header__bg-wrapper" aria-hidden="true">
+        <div class="page-header__bg-ellipse">
+          <img
+            src="/assets/ellipses/ellipse-1.png"
+            alt=""
+            loading="eager"
+            class="page-header__bg-image"
+          />
+        </div>
+      </div>
+      <div
+        class="relative z-10 mx-auto flex max-w-2xl flex-col items-center gap-y-6 px-4 pb-12 pt-12 text-center sm:px-6 md:pb-8 md:pt-20 lg:px-8"
+      >
+        <h1
+          class="pt-6 font-heading text-[clamp(24px,4.5vw+17.6px,72px)] font-black leading-[clamp(32px,5vw+14px,68px)] text-black md:pt-0"
+        >
           {data.title}
         </h1>
         <div class="mt-2">
-          <ul class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-black/50 dark:text-white/50
-                    text-[clamp(16px,1.5vw+10px,22px)]
-                    leading-[clamp(22px,2vw+12px,30px)]">
-            {Array.isArray(data.categories) && data.categories.length > 0 && (
-              <>
-                {data.categories.map((cat, idx) => (
-                  <li>
-                    #<a href={`/thoughts/category/${slugify(cat)}`} class="underline hover:underline-offset-2">{cat}</a>
-                  </li>
-                ))}
-              </>
-            )}
-            <li class="hidden sm:inline" aria-hidden="true">—</li>
-            <li>About {post.data.readTime} minute{Number(post.data.readTime) === 1 ? '' : 's'} to read</li>
-          </ul>
+          {Array.isArray(data.categories) && data.categories.length > 0 && (
+            <CategoryPills
+              categories={data.categories}
+              basePath="/thoughts/category"
+              variant="hashtags"
+              wrapperTag="ul"
+              wrapperClass="flex flex-wrap items-center justify-center gap-x-2 gap-y-3 text-[clamp(16px,1.5vw+10px,22px)] leading-[clamp(22px,2vw+12px,30px)] text-black/50"
+            />
+          )}
+          <ReadTime
+            minutes={post.data.readTime}
+            wrapperClass="mt-2 justify-center"
+            iconClass="h-5 w-5 text-black/50"
+            textClass="text-lg text-black/50 md:text-xl"
+            textTag="span"
+          />
         </div>
       </div>
     </section>
 
-
-
     <!-- Thoughts Content Section -->
     <div
       data-section="thoughts-content [slug].astro"
-      class="mx-auto flex max-w-3xl items-center justify-between px-6 lg:px-8 py-8 xl:py-16"
+      class="mx-auto max-w-2xl space-y-6 px-6 py-8 lg:px-8 xl:py-16"
     >
-        <div class="thoughts prose mt-4">
-          <Content components={{ ImageWithStyle }} />
-        </div>
+      <div class="thoughts prose prose-thoughts mt-4 text-black dark:text-white">
+        <Content components={{ ImageWithStyle }} />
+      </div>
     </div>
   </article>
 
@@ -116,9 +130,9 @@ const { Content } = await render();
     data-section="more-case-studies [slug].astro"
     class="mx-auto max-w-2xl px-0 sm:px-6 lg:max-w-7xl lg:px-8"
   >
-    <div class="grid grid-cols-1 gap-x-5 gap-y-4 p-6 md:p-10 pt-6 lg:grid-cols-12 bg-darkwhite/40"> -->
-      <!-- 3 column layout for smaller promos -->
-      <!-- <h3
+    <div class="grid grid-cols-1 gap-x-6 gap-y-6 p-6 md:p-10 pt-6 lg:grid-cols-12 bg-darkwhite/40"> -->
+  <!-- 3 column layout for smaller promos -->
+  <!-- <h3
         data-section="more-case-studies-heading [slug].astro"
         class="col-span-full font-heading text-4xl font-bold text-black dark:text-white"
       >

@@ -1,0 +1,182 @@
+---
+import { slugify } from '../../utils/slugify';
+import { getCollection } from 'astro:content';
+
+export type CategoryPillVariant = 'chips' | 'hashtags' | 'hashtags-sm';
+
+type CollectionName = 'studies' | 'thoughts';
+
+const frequencyCache: Partial<Record<CollectionName, Record<string, number>>> = {};
+
+async function getCategoryFrequency(collection: CollectionName) {
+  if (frequencyCache[collection]) return frequencyCache[collection]!;
+
+  const entries = await getCollection(collection);
+  const frequency: Record<string, number> = {};
+
+  for (const entry of entries) {
+    const cats = Array.isArray(entry.data?.categories) ? entry.data.categories : [];
+    for (const cat of cats) {
+      const normalized = String(cat).trim();
+      if (!normalized) continue;
+      const key = normalized.toLowerCase();
+      frequency[key] = (frequency[key] ?? 0) + 1;
+    }
+  }
+
+  frequencyCache[collection] = frequency;
+  return frequency;
+}
+
+export interface Props {
+  categories: Array<string | number>;
+  wrapperClass?: string;
+  pillClass?: string;
+  basePath?: string;
+  variant?: CategoryPillVariant;
+  renderWrapper?: boolean;
+  wrapperAttrs?: Record<string, any>;
+  wrapperTag?: 'div' | 'ul';
+  itemWrapperTag?: 'li' | null;
+  limit?: number;
+  collection?: CollectionName;
+  chipDarkHoverColor?: 'white' | 'black';
+}
+
+const {
+  categories = [],
+  variant = 'chips',
+  wrapperClass,
+  pillClass,
+  basePath = '/case-studies/category',
+  renderWrapper = true,
+  wrapperAttrs = {},
+  wrapperTag = 'div',
+  itemWrapperTag,
+  limit,
+  collection,
+  chipDarkHoverColor = 'white',
+} = Astro.props;
+
+const variantStyles: Record<CategoryPillVariant, { wrapper: string; pill: string }> = {
+  chips: {
+    wrapper: 'flex flex-wrap gap-2',
+    pill:
+      'rounded-full bg-purewhite px-1.5 py-0.5 text-xs uppercase text-black hover:outline hover:outline-1 hover:outline-black',
+  },
+  hashtags: {
+    wrapper: 'flex flex-wrap gap-x-2 gap-y-1 text-lg md:text-xl text-black/70 transition-all duration-200',
+    pill: 'underline hover:underline-offset-2',
+  },
+  'hashtags-sm': {
+    wrapper: 'flex flex-wrap gap-2 text-sm font-medium text-black/70 transition-all duration-200',
+    pill: 'underline hover:underline-offset-2',
+  },
+};
+
+const normalizedCategories = Array.from(
+  new Set(
+    categories
+      .map((category) => String(category).trim())
+      .filter((category) => category.length > 0)
+  )
+);
+const baseWrapperClass = variantStyles[variant]?.wrapper ?? variantStyles.chips.wrapper;
+const basePillClass = variantStyles[variant]?.pill ?? variantStyles.chips.pill;
+
+const { class: wrapperAttrClass = '', ...restWrapperAttrs } = wrapperAttrs ?? {};
+const wrapperAttrClassName = typeof wrapperAttrClass === 'string' ? wrapperAttrClass : '';
+const resolvedWrapperClass = [baseWrapperClass, wrapperAttrClassName, wrapperClass]
+  .filter(Boolean)
+  .join(' ');
+const chipDarkHoverClass =
+  chipDarkHoverColor === 'black' ? 'dark:hover:outline-black' : 'dark:hover:outline-white';
+
+const resolvedPillClass =
+  [
+    basePillClass,
+    variant === 'chips' ? chipDarkHoverClass : undefined,
+    pillClass,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+let derivedCollection: CollectionName | undefined = collection;
+if (!derivedCollection) {
+  if (basePath.includes('thoughts')) {
+    derivedCollection = 'thoughts';
+  } else if (basePath.includes('case-studies')) {
+    derivedCollection = 'studies';
+  }
+}
+
+const frequencyMap = derivedCollection
+  ? await getCategoryFrequency(derivedCollection)
+  : undefined;
+
+let sortedCategories = normalizedCategories.map((category) => {
+  const frequencyKey = category.toLowerCase();
+  const frequencyScore = frequencyMap?.[frequencyKey] ?? 0;
+  return { category, frequencyScore };
+});
+
+sortedCategories = sortedCategories.sort((a, b) => {
+  if (b.frequencyScore !== a.frequencyScore) {
+    return b.frequencyScore - a.frequencyScore;
+  }
+  return a.category.localeCompare(b.category, undefined, { sensitivity: 'base' });
+});
+
+const limitedCategories =
+  typeof limit === 'number' && limit >= 0
+    ? sortedCategories.slice(0, limit)
+    : sortedCategories;
+
+const pillItems = limitedCategories.map(({ category }) => ({
+  href: `${basePath}/${slugify(category)}`,
+  label: variant === 'hashtags' || variant === 'hashtags-sm' ? `#${category}` : category,
+}));
+
+const effectiveItemWrapperTag =
+  typeof itemWrapperTag !== 'undefined'
+    ? itemWrapperTag
+    : wrapperTag === 'ul'
+    ? 'li'
+    : null;
+
+---
+
+{pillItems.length > 0 &&
+  (renderWrapper ? (
+    wrapperTag === 'ul' ? (
+      <ul {...restWrapperAttrs} class={resolvedWrapperClass}>
+        {pillItems.map((item) => (
+          effectiveItemWrapperTag === 'li' ? (
+            <li>
+              <a class={resolvedPillClass} href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ) : (
+            <a class={resolvedPillClass} href={item.href}>
+              {item.label}
+            </a>
+          )
+        ))}
+      </ul>
+    ) : (
+      <div {...restWrapperAttrs} class={resolvedWrapperClass}>
+        {pillItems.map((item) => (
+          <a class={resolvedPillClass} href={item.href}>
+            {item.label}
+          </a>
+        ))}
+      </div>
+    )
+  ) : (
+    pillItems.map((item) => (
+      <a class={resolvedPillClass} href={item.href}>
+        {item.label}
+      </a>
+    ))
+  ))}

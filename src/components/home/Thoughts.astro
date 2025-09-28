@@ -2,7 +2,7 @@
 // src/components/home/Thoughts.astro
 
 import Button from '../layout/Button.astro';
-import { slugify } from '../../utils/slugify';
+import ThoughtPreview from '../thoughts/ThoughtPreview.astro';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 
@@ -25,69 +25,23 @@ if (!post) {
 }
 
 // Defensive local values (support empty collection)
-const title = post?.data?.title ?? 'Untitled';
-const description = post?.data?.description ?? '';
-const readTime = Number(post?.data?.readTime ?? 0);
-const categories = Array.isArray(post?.data?.categories) ? post!.data.categories : [];
-const categoryLinks = categories.map((c) => ({ label: c, slug: slugify(String(c)) }));
-const slug = post?.slug ?? '';
+const hasPost = Boolean(post);
 ---
 
 <section class="mb-10 px-4 sm:mb-20">
   <div class="mx-auto max-w-2xl lg:max-w-7xl">
-    <div class="grid grid-cols-1 items-start gap-y-8 md:grid-cols-12 md:gap-x-6">
+    <div class="grid grid-cols-1 items-start gap-y-6 md:grid-cols-12 md:gap-x-6">
       <!-- Heading -->
       <h2 class="col-span-1 font-heading text-4xl font-bold md:col-span-4">My Thoughts</h2>
 
       <!-- Thought -->
-      <div class="col-span-1 md:col-span-8 border-t border-black dark:border-white pt-6">
-        <div class="flex items-center justify-left gap-2">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-black/50 dark:text-white/50"
-            aria-hidden="true"
-          >
-            <g clip-path="url(#clip0)">
-              <path
-                d="M8 14.667A6.667 6.667 0 1 1 8 1.333a6.667 6.667 0 0 1 0 13.334Zm0-1.334A5.333 5.333 0 1 0 8 2.667a5.333 5.333 0 0 0 0 10.666ZM8.667 8H11.333V9.333H7.333V4.667h1.334V8Z"
-                class="fill-current"></path>
-            </g>
-            <defs>
-              <clipPath id="clip0">
-                <rect width="16" height="16" fill="white"></rect>
-              </clipPath>
-            </defs>
-          </svg>
-          <span class="text-base text-black/50 dark:text-white/50">
-            About a {readTime} minute read
-          </span>
-        </div>
-        <h3
-          class="pb-4 pt-2 font-heading text-2xl-custom font-black hover:text-black/60 dark:hover:text-white/60 md:text-5xl"
-        >
-          <a href={`/thoughts/${slug}`}>{title}</a>
-        </h3>
-        {description && <p class="text-base leading-tight">{description}</p>}
-        {
-          categoryLinks.length > 0 && (
-            <div class="flex flex-wrap justify-left gap-x-3 gap-y-1 py-2 text-base text-black/50 dark:text-white/50">
-              {categoryLinks.map((link) => (
-                <a
-                  href={`/thoughts/category/${link.slug}`}
-                  class="underline hover:underline-offset-2"
-                >
-                  #{link.label}
-                </a>
-              ))}
-            </div>
-          )
-        }
-        <!-- Button -->
-        <div class="col-span-1 pt-4 text-right md:col-span-12">
+      <div class="col-span-1 md:col-span-8 border-t border-black dark:border-white pt-6 space-y-6">
+        {hasPost ? (
+          <ThoughtPreview post={post!} />
+        ) : (
+          <p class="text-lg text-black/60 dark:text-white/60">More essays coming soon.</p>
+        )}
+        <div class="text-right">
           <Button href="/thoughts" cta="Read More Thoughts →" />
         </div>
       </div>

@@ -1,0 +1,65 @@
+---
+import type { AstroGlobal } from 'astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+  locale?: string;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>> | string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  imageAlt,
+  noindex = false,
+  locale = 'en_US',
+  structuredData,
+} = Astro.props as Props;
+
+const site = Astro.site?.origin ?? undefined;
+const currentPath = typeof Astro.url?.pathname === 'string' ? Astro.url.pathname : undefined;
+const resolvedCanonical = canonical ?? (site && currentPath ? new URL(currentPath, site).toString() : undefined);
+
+const normalizeAsset = (value?: string) => {
+  if (!value) return undefined;
+  if (/^https?:\/\//i.test(value)) return value;
+  if (!site) return value;
+  return new URL(value, site).toString();
+};
+
+const ogImage = normalizeAsset(image);
+const jsonLd = typeof structuredData === 'string' ? structuredData : structuredData ? JSON.stringify(structuredData) : undefined;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={locale} />
+{resolvedCanonical && (
+  <>
+    <link rel="canonical" href={resolvedCanonical} />
+    <meta property="og:url" content={resolvedCanonical} />
+  </>
+)}
+{ogImage && (
+  <>
+    <meta property="og:image" content={ogImage} />
+    {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+  </>
+)}
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{ogImage && <meta name="twitter:image" content={ogImage} />}
+{imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{jsonLd && <script type="application/ld+json">{jsonLd}</script>}
