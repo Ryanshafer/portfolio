@@ -76,13 +76,14 @@ const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
         variant={resolvedCategoryVariant}
         wrapperClass={
           categoryVariant === 'chips'
-            ? 'mx-auto max-w-2xl justify-center gap-3 py-2'
+            ? 'mx-auto max-w-2xl justify-center gap-3 py-2 md:gap-y-2'
             : `mx-auto max-w-xl justify-center md:gap-y-1${randomEllipse ? '' : ' dark:text-white/50'}`
         }
         wrapperAttrs={{
           'x-ref': 'cats',
           ':class': "expanded ? '' : 'overflow-hidden'",
           ':style': "expanded ? '' : (`max-height: ${maxHeight}px`)",
+          'data-variant': resolvedCategoryVariant,
         }}
         chipDarkHoverColor={categoryVariant === 'chips' ? chipDarkHoverColor : undefined}
       />
@@ -95,11 +96,14 @@ const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
           const compute = () => {
             if ($refs.cats) {
               const cs = getComputedStyle($refs.cats);
-              const line = parseFloat(cs.lineHeight) || 28; // fallback ~1.75rem
+              const line = parseFloat(cs.lineHeight) || 24; // fallback ~1.5rem
               const rowGap = parseFloat(cs.rowGap) || 4;    // row gap between lines
               const paddingBlock = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
-              // Allow up to 2 rows fully visible. Include row gap and container padding.
-              maxHeight = Math.round(line * 2 + rowGap + paddingBlock + 2);
+              const allowedRows = 2;
+              const variant = $refs.cats.dataset.variant || 'chips';
+              const baseHeight = line * allowedRows + rowGap * (allowedRows - 1) + paddingBlock;
+              const extra = variant === 'chips' ? -10 : variant === 'hashtags-sm' ? -4 : 6;
+              maxHeight = Math.round(baseHeight + extra);
               const sh = $refs.cats.scrollHeight;
               // Only show the toggle if actual content exceeds the two-line allowance
               hasOverflow = sh > (maxHeight + 2);

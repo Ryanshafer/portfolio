@@ -1,0 +1,100 @@
+---
+title: "Optimizing the Sign-Up Funnel at Showmax"
+description: "Uncovered hidden friction in Showmax’s funnel and turned a failing sign-up flow into a 3x conversion success."
+pubDate: "2024-06-03"
+author: "Ryan Shafer"
+heroImageWide: "/assets/studies/optimizing-showmax-funnel/promowide-showmax-funnel.webp"
+heroImagePromo: "/assets/studies/optimizing-showmax-funnel/promo-showmax-funnel.webp"
+bgFill: "#3d3d42ff"
+darkHeroHeading: true
+readTime: 4
+categories: ["UX Design", "Journey Maps", "Optimization"]
+summary:
+  role: "Head of UX (acting hands-on IC for this project)"
+  problem: "Showmax’s recently redesigned funnel was underperforming. New trial conversion rates—a core business metric—remained low. A significant investment had gone into the new flow, and we were asking a critical question: Why wasn’t it working?"
+  insight: "The design team was focused on the signup flow but overlooked the broader user journey. Showmax’s homepage took nearly 25 seconds to load—an abysmal experience, especially on mobile. Once the two-week trial began, the promoted content remained unchanged due to limitations in the recommendation engine."
+  approach: "I used Lighthouse and analytics tools to identify the root cause, then partnered with engineering to optimize the front end and explore ways to prime the recommendation engine—so users would see personalized content from day one of the trial."
+  impact: "After our optimization changes were deployed, the conversion rate jumped:"
+  stats:
+    - stat: "99% decrease"
+      label: "homepage load time"
+    - stat: "3.6x increase"
+      label: "new customer signups"
+---
+
+## Overview
+---
+
+When I joined Showmax, the team had recently launched an improved sign-up flow — but results lagged expectations. I approached the problem as a hands-on IC, mapping the funnel as a holistic user journey rather than a narrow form flow.
+
+That shift in perspective revealed overlooked UX and performance issues that were quietly undermining conversion rates.
+
+## Challenge
+---
+
+<ImageWithStyle src="/assets/studies/optimizing-showmax-funnel/content/showmax-slow-load-time.webp" alt="One check we ran was comparing our load times—at mobile download speeds—against similar funnel-driven sites. The gap was obvious." disableLightbox />
+
+The team had focused narrowly on the sign-up form itself as the funnel experience. But in practice, users were dropping off much earlier: the homepage. Without a journey-level perspective, the root causes of low conversion remained hidden.
+
+**Analytics and heuristics revealed:**
+
+*   **Slow performance** — homepage load times of ~25 seconds, especially damaging for mobile.
+*   **High bounce rates** — users abandoned before entering the funnel.
+*   **Weak trial-to-paid conversion** — new users weren’t seeing enough relevant content during their two-week trial to find value in paying.
+
+> **Hypothesis 1:** If homepage load times decreased, fewer users would bounce—leading to more users entering the funnel and, ultimately, higher trial conversion rates.
+
+> **Hypothesis 2:** If the recommendation engine surfaced more relevant content throughout the trial, users would perceive greater value in the service—leading to higher trial-to-paid conversion rates.
+
+## Approach
+---
+<ImageWithStyle src="/assets/studies/optimizing-showmax-funnel/content/showmax-signup-funnel.webp" alt="A simple, user-centered mapping of the full signup experience revealed pain points at the edges of the new funnel design." />
+
+**1\. Diagnose with a Journey Lens**
+
+I mapped the funnel from first visit to trial value. Using **Amplitude analytics, heuristic analysis, and Lighthouse audits**, I identified:
+*  The homepage architecture was the root cause of high bounce rates. The frontend lead explained that the full React app—needed for the signup funnel—was also loading on the homepage, an unnecessary architectural choice that introduced massive latency and slow load times.
+* I noticed some trial users were watching less video than paid subscribers—when logic suggested the opposite. In my own test, the homepage never changed—no recommendations appeared. The recommendations lead confirmed the engine needed a full month of data to personalize content—well beyond the two-week trial.
+
+**2\. Collaborate on Performance UX**
+
+I worked directly with engineers to re-architect the homepage as a lightweight entry point. This reduced load times **from ~25 seconds to milliseconds**. We also agreed on a shared performance budget to keep UX efficiency sustainable.
+<ImageWithStyle src="/assets/studies/optimizing-showmax-funnel/content/showmax-perf-budget-future.webp" alt="A homepage performance budget was established to align teams and deliver a faster, more optimized experience." />
+
+**3\. Extend the Funnel to First Value**
+
+After addressing performance, I analyzed the onboarding journey and uncovered another key issue: **trial users weren’t shown any recommended content during their trial period**.
+
+This meant the main screen remained static throughout the trial. Content only changed if a producer manually updated it for that region. The recommendation engine required weeks of behavioral data—far longer than the trial window—resulting in stale, less engaging content.
+
+I partnered with the tech lead on recommendations to explore quick technical wins that could deliver relevance sooner. This led to the idea of priming the recommendation engine at signup—giving it enough starter data to generate meaningful suggestions immediately.
+
+<ImageWithStyle src="/assets/studies/optimizing-showmax-funnel/content/showmax-recomendation-priming.webp" alt="The addition of a recommendation priming interface after successful signup was proposed as a way to drive higher conversion rates." />
+
+**4\. Prototype “Recommendation Priming”**
+
+ Guided by hypothesis #2, I designed a lightweight onboarding step where new users selected shows or genres they liked. This gave the recommendation engine starter data, enabling **immediate personalization** and increasing perceived relevance during the trial period.
+
+The prototype tested positively with users and was deemed technically viable by engineering. While shifting product priorities prevented its launch, it left us with a validated, ready-to-ship solution—available to deploy if increasing conversion rates became a priority.
+
+## Outcomes
+---
+<ImageWithStyle src="/assets/studies/optimizing-showmax-funnel/content/showmax-conversion-rate.webp" alt="Conversion rates on our funnel jumped from 2.5 to 9%." />  
+
+*   **↓ Load time:** Reduced homepage load by 99%, from ~25 seconds to just milliseconds.
+*   **↑ Conversion:** User trial conversion rate improved 3.6×, reaching 9%.
+*   **↑ UX framing:** Shifted org perception of the funnel from “form-only” to full lifecycle experience.
+*   **↑ Relevance:** Delivered a validated priming concept that improved trial engagement in testing.
+
+<ImageWithStyle src="/assets/studies/optimizing-showmax-funnel/content/showmax-speed-improvement.webp" alt="Our load times improved dramatically once the optimization was implemented." disableLightbox />
+
+## Reflection
+---
+
+While working as an IC on this effort, the project reinforced key lessons I later shared with the broader team:
+
+*   **Performance is UX** — slow load times are the experience, and they kill engagement before content appears.
+*   **Think beyond the form** — funnels succeed when mapped as journeys, not just transactions.   
+*   **Perceived value matters** — users need to feel relevance within minutes, not weeks.
+
+Not every solution shipped, but the measurable gains and validated concepts showed how applying end-to-end UX thinking can drive meaningful impact.

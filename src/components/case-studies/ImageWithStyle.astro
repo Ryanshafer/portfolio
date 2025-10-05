@@ -16,9 +16,10 @@ interface Props {
   largeSrc?: ImageSource;
   alt?: string;
   className?: string;
+  disableLightbox?: boolean;
 }
 
-const { src, largeSrc, alt = '', className = '' } = Astro.props as Props;
+const { src, largeSrc, alt = '', className = '', disableLightbox = false } = Astro.props as Props;
 
 const toImageParts = (input?: ImageSource) => {
   if (!input) {
@@ -31,6 +32,16 @@ const toImageParts = (input?: ImageSource) => {
 
 const displayImage = toImageParts(src);
 const overlayImage = toImageParts(largeSrc ?? src);
+
+const imageClass = [
+  'w-full rounded transition-transform duration-300 ease-in-out my-0',
+  !disableLightbox && 'group-hover:scale-110',
+]
+  .filter(Boolean)
+  .join(' ');
+
+const wrapperBaseClass = 'w-full overflow-hidden rounded-lg';
+const buttonWrapperClass = `${wrapperBaseClass} group focus:outline-none`;
 ---
 
 <figure
@@ -38,69 +49,87 @@ const overlayImage = toImageParts(largeSrc ?? src);
   x-data="{ open: false }"
   @keyup.escape.window="open = false"
 >
-  <button
-    type="button"
-    class="group w-full overflow-hidden rounded-lg focus:outline-none"
-    @click="open = true"
-  >
-    {displayImage.meta ? (
-      <Image
-        src={displayImage.meta as any}
-        alt={alt}
-        class="w-full rounded transition-transform duration-300 ease-in-out group-hover:scale-110 my-0"
-        loading="lazy"
-      />
-    ) : (
-      <img
-        src={displayImage.url}
-        alt={alt}
-        class="w-full rounded transition-transform duration-300 ease-in-out group-hover:scale-110 my-0"
-        loading="lazy"
-        decoding="async"
-      />
-    )}
-  </button>
+  {disableLightbox ? (
+    <div class={wrapperBaseClass}>
+      {displayImage.meta ? (
+        <Image
+          src={displayImage.meta as any}
+          alt={alt}
+          class={imageClass}
+          loading="lazy"
+        />
+      ) : (
+        <img
+          src={displayImage.url}
+          alt={alt}
+          class={imageClass}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </div>
+  ) : (
+    <button type="button" class={buttonWrapperClass} @click="open = true">
+      {displayImage.meta ? (
+        <Image
+          src={displayImage.meta as any}
+          alt={alt}
+          class={imageClass}
+          loading="lazy"
+        />
+      ) : (
+        <img
+          src={displayImage.url}
+          alt={alt}
+          class={imageClass}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </button>
+  )}
   {alt && (
     <figcaption class="mt-2 text-sm text-black/70 dark:text-white/70 text-left">
       {alt}
     </figcaption>
   )}
 
-  <!-- Lightbox overlay -->
-  <div
-    x-cloak
-    x-show="open"
-    x-transition.opacity
-    class="fixed inset-0 z-40 flex items-center justify-center bg-darkerblack/70 backdrop-blur-[18px] px-4"
-    role="dialog"
-    aria-modal="true"
-    @click.self="open = false"
-  >
-    <button
-      type="button"
-      class="absolute right-4 top-4 md:right-16 md:top-8 text-white text-4xl-custom font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-      aria-label="Close image"
-      @click="open = false"
+  {!disableLightbox && (
+    <div
+      x-cloak
+      x-show="open"
+      x-transition.opacity
+      class="fixed inset-0 z-40 flex items-center justify-center bg-darkerblack/70 backdrop-blur-[18px] px-4"
+      role="dialog"
+      aria-modal="true"
+      @click.self="open = false"
     >
-      ×
-    </button>
-    <div class="max-h-[100vh] max-w-5xl overflow-auto mt-12">
-      {overlayImage.meta ? (
-        <Image
-          src={overlayImage.meta as any}
-          alt={alt}
-          class="h-auto w-full max-w-full rounded shadow-2xl"
-          loading="lazy"
-        />
-      ) : (
-        <img
-          src={overlayImage.url}
-          alt={alt}
-          class="h-auto w-full max-w-full rounded shadow-2xl"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+      <button
+        type="button"
+        class="absolute right-4 top-4 md:right-16 md:top-8 text-white text-4xl-custom font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        aria-label="Close image"
+        @click="open = false"
+      >
+        ×
+      </button>
+      <div class="max-h-[100vh] max-w-5xl overflow-auto mt-12">
+        {overlayImage.meta ? (
+          <Image
+            src={overlayImage.meta as any}
+            alt={alt}
+            class="h-auto w-full max-w-full rounded shadow-2xl"
+            loading="lazy"
+          />
+        ) : (
+          <img
+            src={overlayImage.url}
+            alt={alt}
+            class="h-auto w-full max-w-full rounded shadow-2xl"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+      </div>
     </div>
-  </div>
+  )}
 </figure>

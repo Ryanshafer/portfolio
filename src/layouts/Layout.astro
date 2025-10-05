@@ -12,9 +12,17 @@ interface Props {
   bgFill?: string;
   bgFillDark?: string;
   bgClass?: string; // optional Tailwind classes e.g. "bg-stone-50 dark:bg-slate-900"
+  forceDarkTheme?: boolean;
 }
 
-const { description, title, bgFill, bgFillDark = '', bgClass } = Astro.props as Props;
+const {
+  description,
+  title,
+  bgFill,
+  bgFillDark = '',
+  bgClass,
+  forceDarkTheme = false,
+} = Astro.props as Props;
 
 const defaultLight = '#F5F3EF';
 const defaultDark = '#3C3758';
@@ -40,9 +48,10 @@ const resolvedDark = bgFillDark || bgFill || defaultDark;
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content={resolvedDark} />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="stylesheet" href="/tailwind.css" />
     <!-- Cabinet Grotesk -->
@@ -102,6 +111,7 @@ const resolvedDark = bgFillDark || bgFill || defaultDark;
       bgFill={bgFill}
       bgFillDark={bgFillDark}
       bgClass={bgClass}
+      forceDarkTheme={forceDarkTheme}
     />
     <main>
       <slot />

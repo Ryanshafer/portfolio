@@ -1,14 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
+import { featuredCaseStudySlugs } from '../../content/homepage-config';
 
 const allStudies = await getCollection('studies');
 
-// Choose your featured case studies by slug, in the exact order you want
-const featuredSlugs = ['building-design-systems', 'mtv-brand-cohesion', 'my-third-study'];
-
 import type { CollectionEntry } from 'astro:content';
 
-const featuredStudies: CollectionEntry<'studies'>[] = featuredSlugs
+const featuredStudies: CollectionEntry<'studies'>[] = featuredCaseStudySlugs
   .map((slug) => allStudies.find((study) => study.slug === slug))
   .filter((study): study is CollectionEntry<'studies'> => Boolean(study));
 

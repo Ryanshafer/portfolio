@@ -195,6 +195,10 @@
     @apply border-white/10 bg-herodark/60;
   }
 
+  .header--forced-dark {
+    @apply border-white/10 bg-herodark/60;
+  }
+
   .page-header {
     margin-top: calc(-1 * var(--header-height, 5.5rem));
     padding-top: calc(var(--header-height, 5.5rem) + 1rem);

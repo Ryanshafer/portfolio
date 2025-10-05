@@ -18,16 +18,18 @@ const outlineClasses = `${baseOutline}${forceLight ? '' : ` ${darkOutline}`}`;
 ---
 
 {href ? (
-  <a
-    href={href}
-    target={target}
-    class={`inline-flex items-center justify-center rounded-full px-5 py-2 text-lg font-base whitespace-nowrap transition
-      ${variant === 'primary' ? primaryClasses : ''}
-      ${variant === 'outline' ? outlineClasses : ''}
-      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 ${forceLight ? '' : 'dark:focus-visible:outline-primary-400'}`}
-  >
-    {cta}
-  </a>
+  <div class="not-prose inline-flex">
+    <a
+      href={href}
+      target={target}
+      class={`inline-flex items-center justify-center rounded-full px-5 py-2 text-lg font-base whitespace-nowrap transition
+        ${variant === 'primary' ? primaryClasses : ''}
+        ${variant === 'outline' ? outlineClasses : ''}
+        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 ${forceLight ? '' : 'dark:focus-visible:outline-primary-400'}`}
+    >
+      {cta}
+    </a>
+  </div>
 ) : (
   <button
     type={type}

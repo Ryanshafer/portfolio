@@ -12,6 +12,8 @@ const studies = defineCollection({
       heroImagePromo: z.string(),
       bgFill:     z.string().optional(),
       bgFillDark: z.string().optional(),
+      darkHeroHeading: z.boolean().optional(),
+      heroTextureBlendMode: z.string().optional(),
       readTime:   z.number(),
       categories: z.array(z.string()),
 

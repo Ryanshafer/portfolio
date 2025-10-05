@@ -1,8 +1,39 @@
 ---
 const currentPath = Astro.url.pathname;
-const { bgClass } = Astro.props ?? {};
+const { bgClass, forceDarkTheme = false } = Astro.props ?? {};
 
 const computedBgClass = bgClass ?? 'header--frosted';
+const headerShellClass = `${computedBgClass} ${forceDarkTheme ? 'header--forced-dark' : ''}`;
+
+const navLinkTextClass = forceDarkTheme
+  ? 'group relative text-l font-medium tracking-tight transition text-white'
+  : 'group relative text-l font-medium tracking-tight transition text-black dark:text-white';
+
+const navUnderlineClass = (isActive: boolean) =>
+  `relative pb-1 transition-colors after:transition-transform after:duration-300 after:ease-out after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-full after:origin-center ${
+    isActive
+      ? forceDarkTheme
+        ? 'after:scale-100 after:bg-white'
+        : 'after:scale-100 after:bg-black dark:after:bg-white'
+      : forceDarkTheme
+      ? 'after:scale-0 after:bg-transparent group-hover:after:bg-white group-hover:after:scale-100'
+      : 'after:scale-0 after:bg-transparent group-hover:after:bg-black dark:group-hover:after:bg-white group-hover:after:scale-100'
+  }`;
+
+const toggleButtonClass = `${
+  forceDarkTheme
+    ? 'text-white hover:bg-white/10 ring-white'
+    : 'text-black dark:text-white hover:bg-primary-500/10 dark:hover:bg-primary-400/10 ring-primary-950'
+} inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2`;
+
+const mobileLinkTextClass = forceDarkTheme
+  ? 'text-white group inline-flex py-6 text-3xl font-medium tracking-tight transition focus-visible:outline-none sm:py-8 sm:text-4xl'
+  : 'text-black dark:text-white group inline-flex py-6 text-3xl font-medium tracking-tight transition focus-visible:outline-none sm:py-8 sm:text-4xl';
+
+const mobileLinkUnderlineClass = (isActive: boolean) =>
+  `group-hover:text-primary-500 border-b-2 ${
+    isActive ? 'border-primary-500' : 'border-transparent'
+  }`;
 
 const links = [
   {
@@ -33,8 +64,10 @@ const links = [
 ---
 
 <header
-  x-data="{ open: false }"
-  class={`header-shell transition ${computedBgClass}`}
+  x-data="{ open: false, forcedDark: false }"
+  x-init="forcedDark = $el.dataset.forcedDark === 'true'"
+  data-forced-dark={forceDarkTheme ? 'true' : 'false'}
+  class={`header-shell transition ${headerShellClass}`}
 >
   <div
     class="mx-auto flex max-w-2xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
@@ -50,7 +83,7 @@ const links = [
           class="h-8 w-auto"
           width="227"
           height="40"
-          :src="$store.theme.isDark ? '/assets/logo-inverted.svg' : '/assets/logo.svg'"
+          :src="(forcedDark || $store.theme.isDark) ? '/assets/logo-inverted.svg' : '/assets/logo.svg'"
           alt="Ryan Shafer Logo"
         />
       </a>
@@ -61,25 +94,20 @@ const links = [
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center space-x-8">
         {
-          links.map((link) => (
-            <a href={link.href} class="group relative text-l font-medium tracking-tight transition text-black dark:text-white">
-              <span
-                class={`relative pb-1 transition-colors ${
-                  (link.href === '/' ? currentPath === '/' : currentPath.startsWith(link.href))
-                    ? 'after:scale-100 after:bg-black dark:after:bg-white'
-                    : 'after:scale-0 after:bg-transparent group-hover:after:bg-black dark:group-hover:after:bg-white group-hover:after:scale-100'
-                } after:transition-transform after:duration-300 after:ease-out after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-full after:origin-center`}
-              >
-                {link.name}
-              </span>
-            </a>
-          ))
+          links.map((link) => {
+            const isActive = link.href === '/' ? currentPath === '/' : currentPath.startsWith(link.href);
+            return (
+              <a href={link.href} class={navLinkTextClass}>
+                <span class={navUnderlineClass(isActive)}>{link.name}</span>
+              </a>
+            );
+          })
         }
       </nav>
       <!-- Toggle theme mode -->
       <button
         type="button"
-        class="text-black dark:text-white hover:bg-primary-500/10 dark:hover:bg-primary-400/10 ring-primary-950 inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2"
+        class={toggleButtonClass}
         x-data
         @click="$store.theme.toggle()"
       >
@@ -87,7 +115,7 @@ const links = [
         <svg
           x-cloak
           class="h-6 w-6"
-          :class="{ 'hidden': !($store.theme.isDark) }"
+          :class="{ 'hidden': !$store.theme.isDark }"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
           viewBox="0 0 24 24"
@@ -115,7 +143,11 @@ const links = [
       <!-- Toggle menu for mobile-->
       <button
         type="button"
-        class="lg:hidden text-primary-950 dark:text-primary-200 hover:bg-primary-500/10 dark:hover:bg-primary-400/10 ring-primary-950 inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2"
+        class={`lg:hidden ${
+          forceDarkTheme
+            ? 'text-white hover:bg-white/10 ring-white'
+            : 'text-primary-950 dark:text-primary-200 hover:bg-primary-500/10 dark:hover:bg-primary-400/10 ring-primary-950'
+        } inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2`}
         @click="open = !open"
         @mousedown="if (open) $event.preventDefault()"
         aria-controls="website-menu"
@@ -165,18 +197,16 @@ const links = [
 
       <!-- Navigation -->
        <div class="lg:hidden">
-          <nav class="divide-black/10 dark:divide-white/10 flex flex-col gap-6 divide-y">
+          <nav class={`${forceDarkTheme ? 'divide-white/10' : 'divide-black/10 dark:divide-white/10'} flex flex-col gap-6 divide-y`}>
             {
               links.map((link) => (
                 <a
                   href={link.href}
-                  class="text-black dark:text-white group inline-flex py-6 text-3xl font-medium tracking-tight transition focus-visible:outline-none sm:py-8 sm:text-4xl"
+                  class={mobileLinkTextClass}
                 >
                   <div class="group-focus-visible:outline-primary-950 dark:group-focus-visible:outline-primary-200 flex flex-1 items-center justify-between rounded-3xl group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2">
                     <div class="flex items-center gap-6">
-                      <span class={`group-hover:text-primary-500 border-b-2 ${
-                        (link.href === '/' ? currentPath === '/' : currentPath.startsWith(link.href)) ? 'border-primary-500' : 'border-transparent'
-                      }`}>{link.name}</span>
+                      <span class={mobileLinkUnderlineClass(link.href === '/' ? currentPath === '/' : currentPath.startsWith(link.href))}>{link.name}</span>
                     </div>
                   </div>
                 </a>
