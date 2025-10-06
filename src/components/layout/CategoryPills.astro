@@ -41,6 +41,7 @@ export interface Props {
   limit?: number;
   collection?: CollectionName;
   chipDarkHoverColor?: 'white' | 'black';
+  sortByFrequency?: boolean;
 }
 
 const {
@@ -56,6 +57,7 @@ const {
   limit,
   collection,
   chipDarkHoverColor = 'white',
+  sortByFrequency = false,
 } = Astro.props;
 
 const variantStyles: Record<CategoryPillVariant, { wrapper: string; pill: string }> = {
@@ -110,22 +112,24 @@ if (!derivedCollection) {
   }
 }
 
-const frequencyMap = derivedCollection
+const frequencyMap = sortByFrequency && derivedCollection
   ? await getCategoryFrequency(derivedCollection)
   : undefined;
 
-let sortedCategories = normalizedCategories.map((category) => {
-  const frequencyKey = category.toLowerCase();
-  const frequencyScore = frequencyMap?.[frequencyKey] ?? 0;
-  return { category, frequencyScore };
+const categoriesWithFrequency = normalizedCategories.map((category, index) => {
+  const key = category.toLowerCase();
+  const frequencyScore = frequencyMap?.[key] ?? 0;
+  return { category, frequencyScore, originalIndex: index };
 });
 
-sortedCategories = sortedCategories.sort((a, b) => {
-  if (b.frequencyScore !== a.frequencyScore) {
-    return b.frequencyScore - a.frequencyScore;
-  }
-  return a.category.localeCompare(b.category, undefined, { sensitivity: 'base' });
-});
+const sortedCategories = sortByFrequency
+  ? categoriesWithFrequency.sort((a, b) => {
+      if (b.frequencyScore !== a.frequencyScore) {
+        return b.frequencyScore - a.frequencyScore;
+      }
+      return a.category.localeCompare(b.category, undefined, { sensitivity: 'base' });
+    })
+  : categoriesWithFrequency;
 
 const limitedCategories =
   typeof limit === 'number' && limit >= 0

@@ -9,6 +9,9 @@ interface Props {
   categoryBasePath?: string; // e.g. '/thoughts' or '/case-studies'
   categoryVariant?: 'links' | 'links-small' | 'chips';
   showBackgroundGraphic?: boolean;
+  showBackLink?: boolean;
+  backLinkHref?: string;
+  backLinkLabel?: string;
 }
 const {
   heading,
@@ -17,6 +20,9 @@ const {
   categoryBasePath = '/thoughts',
   categoryVariant = 'links',
   showBackgroundGraphic = false,
+  showBackLink = false,
+  backLinkHref,
+  backLinkLabel,
 } = Astro.props as Props;
 
 const ellipseImages = ['ellipse-1.png', 'ellipse-2.png', 'ellipse-3.png'];
@@ -35,6 +41,19 @@ const resolvedCategoryVariant =
     ? 'hashtags-sm'
     : 'hashtags';
 const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
+
+const deriveSectionLabel = (path: string) => {
+  const segment = path.replace(/\/$/, '').split('/').filter(Boolean)[0] ?? '';
+  if (!segment) return '';
+  return segment
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+};
+
+const backLinkTarget = backLinkHref ?? categoryBasePath;
+const backLinkSection = backLinkLabel ?? (backLinkTarget ? deriveSectionLabel(backLinkTarget) : '');
+const showBackLinkResolved = showBackLink && backLinkTarget && backLinkSection;
 ---
 
 <section class="page-header relative overflow-hidden bg-herowhite dark:bg-herodark">
@@ -52,6 +71,19 @@ const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
   )}
 <!-- HERO TEXT -->
 <div class="relative z-10 mx-auto max-w-2xl px-4 sm:px-6 py-8 lg:py-[5.5rem]">
+  {showBackLinkResolved && (
+    <div class="mb-4 flex justify-center">
+      <a
+        href={backLinkTarget}
+        class={`group inline-flex items-center text-sm font-medium tracking-wide text-black/70 ${
+          randomEllipse ? '' : 'dark:text-white/70'
+        } transition-colors hover:text-black dark:hover:text-white`}
+      >
+        <span class="mr-1 transition-transform duration-200 group-hover:-translate-x-1">←</span>
+        <span>All {backLinkSection}</span>
+      </a>
+    </div>
+  )}
   <h1
     class={`overflow-visible text-center font-heading text-5xl font-black text-black ${
       randomEllipse ? '' : 'dark:text-white'
@@ -74,6 +106,7 @@ const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
         categories={sortedCategories}
         basePath={categoryHrefBase}
         variant={resolvedCategoryVariant}
+        sortByFrequency={true}
         wrapperClass={
           categoryVariant === 'chips'
             ? 'mx-auto max-w-2xl justify-center gap-3 py-2 md:gap-y-2'
@@ -114,7 +147,7 @@ const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
           requestAnimationFrame(compute);
         })()"
       >
-        <span x-text="expanded ? 'Show Less' : 'Show More'"></span>
+        <span x-text="expanded ? 'Show Fewer Categories' : 'Show More Categories'"></span>
         <span class="ml-1" x-text="expanded ? '↑' : '↓'"></span>
       </button>
     </div>
