@@ -149,9 +149,9 @@ module.exports = {
               },
             },
             p: {
-              '@apply text-lg pb-0': {},
+              '@apply text-lg pb-0 my-3': {},
               '@screen md': {
-                '@apply mb-6': {},
+                '@apply my-6': {},
               },
             },
             hr: {
@@ -161,11 +161,16 @@ module.exports = {
               },
               '@apply mt-0 mb-0': {},
               '@screen lg': {
-                '@apply mt-8 mb-6': {},
+                '@apply my-8 mb-6': {},
               },
             },
             ul: {
-              '@apply list-disc pl-4': {},
+              '@apply list-disc pl-4 my-2': {},
+              
+            },
+            ol: {
+              '@apply my-2': {},
+              
             },
             li: {
               '@apply py-2 text-lg my-0': {},

@@ -69,8 +69,8 @@ if (featuredStudies.length < 3) {
 ---
 
 <Layout
-  description={`${data.description}`}
-  title={`Case Studies – ${data.title} · Ryan Shafer · UX Design Leader`}
+  description={`${data.seo?.description ?? data.description}`}
+  title={`${data.title} Case Study | Ryan Shafer, UX Design Leader`}
   bgFill={data.bgFill}
   bgFillDark={data.bgFillDark}
   forceDarkTheme={isDarkHeroHeading}
@@ -133,7 +133,7 @@ if (featuredStudies.length < 3) {
     <!-- Case Study Content Section -->
     <div
       data-section="case-study-content [slug].astro"
-      class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
+      class="mx-auto max-w-2xl px-4 mt-4 mb-24 sm:px-6 lg:max-w-7xl lg:px-8"
     >
       <div class="prose prose-case-study mt-4 max-w-none text-black dark:text-white">
         <Content components={{ ImageWithStyle, Button }} />

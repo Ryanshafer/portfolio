@@ -1,6 +1,6 @@
 export const featuredCaseStudySlugs = [
-  'mtv-responsive-redesign',
-  'mtv-digital-rebrand',
+  'oritain-ux-research-strategy',
+  'mtv-ux-leadership',
   'showmax-funnel-optimization',
 ] as const;
 
