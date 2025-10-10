@@ -13,6 +13,7 @@ type ResolvedContent =
 
 export interface Props {
   role?: RichContent;
+  timeline?: RichContent;
   problem?: RichContent;
   insight?: RichContent;
   approach?: RichContent;
@@ -24,7 +25,7 @@ export interface Props {
   }[];
 }
 
-const { role, problem, insight, approach, impact, categories = [], stats = [] } = Astro.props;
+const { role, timeline, problem, insight, approach, impact, categories = [], stats = [] } = Astro.props;
 
 const resolveContent = async (value?: RichContent): Promise<ResolvedContent | undefined> => {
   if (!value) return undefined;
@@ -36,6 +37,7 @@ const resolveContent = async (value?: RichContent): Promise<ResolvedContent | un
 };
 
 const roleContent = await resolveContent(role);
+const timelineContent = await resolveContent(timeline);
 const problemContent = await resolveContent(problem);
 const insightContent = await resolveContent(insight);
 const approachContent = await resolveContent(approach);
@@ -47,6 +49,7 @@ const normalizedCategories = Array.isArray(categories) ? categories : [];
 if (
   !(
     roleContent ||
+    timelineContent ||
     problemContent ||
     insightContent ||
     approachContent ||
@@ -73,6 +76,18 @@ if (
             <roleContent.component />
           ) : (
             <div class="prose prose-summary max-w-none" set:html={roleContent.html} />
+          )}
+        </div>
+      </div>
+    )}
+    {timelineContent && (
+      <div class="flex flex-col border-t border-black/30 pt-6 dark:border-white/50 lg:flex-row">
+        <h3 class="mb-1 font-heading text-2xl lg:mb-0 lg:w-48 lg:mr-12">Timeline</h3>
+        <div class="flex-1 text-base">
+          {timelineContent.type === 'component' ? (
+            <timelineContent.component />
+          ) : (
+            <div class="prose prose-summary max-w-none" set:html={timelineContent.html} />
           )}
         </div>
       </div>

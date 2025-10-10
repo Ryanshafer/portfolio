@@ -25,6 +25,7 @@ const studies = defineCollection({
       summary: z
         .object({
           role:     z.string().optional(),
+          timeline: z.string().optional(),
           problem:  z.string().optional(),
           insight:  z.string().optional(),
           approach: z.string().optional(),
