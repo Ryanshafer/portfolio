@@ -20,6 +20,8 @@ if (!post) {
   throw new Error(`No post found for slug: ${slug}`);
 }
 
+const ellipseImages = ['ellipse-1.webp', 'ellipse-2.webp', 'ellipse-3.webp'];
+const randomEllipse = ellipseImages[Math.floor(Math.random() * ellipseImages.length)];
 const { data, render } = post;
 const { Content } = await render();
 
@@ -78,7 +80,7 @@ const { Content } = await render();
       <div class="page-header__bg-wrapper" aria-hidden="true">
         <div class="page-header__bg-ellipse">
           <img
-            src="/assets/ellipses/ellipse-1.png"
+            src={`/assets/ellipses/${randomEllipse}`}
             alt=""
             loading="eager"
             class="page-header__bg-image"
