@@ -19,6 +19,8 @@ const studies = defineCollection({
       seo: z
         .object({
           description: z.string().optional(),
+          image: z.string().optional(),
+          imageAlt: z.string().optional(),
         })
         .optional(),
 

@@ -96,6 +96,7 @@ const buttonWrapperClass = `${wrapperBaseClass} group focus:outline-none`;
 
   {!disableLightbox && (
     <div
+      id="lightbox"
       x-cloak
       x-show="open"
       x-transition.opacity
@@ -130,6 +131,11 @@ const buttonWrapperClass = `${wrapperBaseClass} group focus:outline-none`;
           />
         )}
       </div>
+      {alt && (
+        <div class="absolute bottom-10 left-1/2 w-[min(90%,32rem)] -translate-x-1/2 rounded-lg bg-white/80 px-4 py-3 text-center text-base font-medium text-black shadow-xl backdrop-blur-md dark:bg-black/70 dark:text-white">
+          {alt}
+        </div>
+      )}
     </div>
   )}
 </figure>

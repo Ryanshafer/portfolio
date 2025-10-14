@@ -1,0 +1,218 @@
+@page {
+  margin: 0.75in;
+}
+
+* {
+  box-shadow: none !important;
+  background: transparent !important;
+  color: inherit !important;
+}
+
+html,
+body {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12pt;
+  line-height: 1.6;
+  color: #000;
+  background: #fff !important;
+}
+
+body {
+  max-width: 100%;
+}
+
+header,
+footer,
+nav,
+.header-shell,
+.page-header__bg-wrapper,
+.page-header__bg-ellipse,
+.page-header__bg-ellipse__home,
+.page-header__texture,
+[data-section="more-case-studies [slug].astro"],
+[data-section="more-case-studies heading [slug].astro"],
+[data-section="hero [slug].astro"] .page-header__bg-wrapper {
+  display: none !important;
+}
+
+main,
+article,
+section,
+div,
+figure {
+  float: none !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.prose,
+.prose-case-study,
+.prose-summary {
+  max-width: 100% !important;
+  font-size: 12pt;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Cabinet Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 1.5em 0 0.5em !important;
+  color: #000 !important;
+}
+
+h1 {
+  margin-top: 1.25rem !important;
+  font-size: 3rem !important;
+}
+
+p,
+ul,
+ol,
+li {
+  margin: 0 0 0.75em !important;
+}
+
+a {
+  color: inherit !important;
+  text-decoration: underline !important;
+}
+
+a[href]:after {
+  content: " (" attr(href) ")";
+  font-size: 10pt;
+}
+
+[data-section="case-study-summary [slug].astro"] a[href]:after {
+  content: none !important;
+}
+
+img,
+video,
+canvas{
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+[data-section="case-study-content [slug].astro"] img,
+[data-section="case-study-content [slug].astro"] picture img,
+[data-section="case-study-content [slug].astro"] figure img {
+  max-width: 50% !important;
+}
+
+
+button,
+.btn,
+.button {
+  display: none !important;
+}
+
+[data-section="case-study-content [slug].astro"] .group button,
+[aria-modal="true"],
+[aria-modal="true"] * {
+  display: none !important;
+}
+
+[data-section="case-study-content [slug].astro"] .group,
+[data-section="case-study-content [slug].astro"] .group > img,
+[data-section="case-study-content [slug].astro"] .group > picture,
+[data-section="case-study-content [slug].astro"] .group > picture > img,
+[data-section="case-study-content [slug].astro"] .group > div img {
+  display: block !important;
+}
+
+[data-section="hero [slug].astro"] {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+[data-section="hero [slug].astro"] img {
+  max-width: 50% !important;
+  height: auto !important;
+}
+
+[data-section="case-study-summary [slug].astro"],
+[data-section="case-study-content [slug].astro"],
+section {
+  margin-bottom: 1.5em !important;
+  padding-bottom: 0 !important;
+  border: none !important;
+}
+
+.case-section,
+.case-section__body,
+.case-section__title {
+  display: block !important;
+}
+
+.case-section__title {
+  position: static !important;
+  top: auto !important;
+  align-self: auto !important;
+  margin-top: 0 !important;
+}
+
+.case-section__title h2,
+.case-section__title h3,
+.case-section__body h3 {
+  width: auto !important;
+  max-width: none !important;
+}
+
+.case-section__title h2 {
+  margin-top: 0 !important;
+}
+
+.grid,
+.flex {
+  display: block !important;
+}
+
+[data-section="case-study-content [slug].astro"] hr,
+hr {
+  border: none;
+  border-top: 1px solid #bbb;
+  margin: 1.5em 0 !important;
+}
+
+blockquote {
+  border-left: 3px solid #ccc;
+  padding-left: 1em;
+  margin: 1.5em 0 !important;
+  font-style: italic;
+}
+
+figure,
+figcaption {
+  margin: 0 !important;
+}
+
+figcaption {
+  font-size: 10pt;
+  color: #333 !important;
+}
+[data-section="case-study-content [slug].astro"] .group,
+[data-section="case-study-content [slug].astro"] .group > img,
+[data-section="case-study-content [slug].astro"] .group > picture,
+[data-section="case-study-content [slug].astro"] .group > picture > img,
+[data-section="case-study-content [slug].astro"] .group > div img {
+  display: block !important;
+  filter: none !important;
+}
+
+[aria-modal="true"],
+[aria-modal="true"] * {
+  display: none !important;
+}
+
+[backdrop-filter],
+.backdrop-blur{
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

@@ -13,6 +13,12 @@ interface Props {
   bgFillDark?: string;
   bgClass?: string; // optional Tailwind classes e.g. "bg-stone-50 dark:bg-slate-900"
   forceDarkTheme?: boolean;
+  seoImage?: string;
+  seoImageAlt?: string;
+  canonical?: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article' | 'profile';
+  twitterCard?: 'summary' | 'summary_large_image';
 }
 
 const {
@@ -22,12 +28,34 @@ const {
   bgFillDark = '',
   bgClass,
   forceDarkTheme = false,
+  seoImage,
+  seoImageAlt,
+  canonical,
+  noindex = false,
+  ogType = 'website',
+  twitterCard,
 } = Astro.props as Props;
 
 const defaultLight = '#F5F3EF';
 const defaultDark = '#3C3758';
 const resolvedLight = bgFill ?? defaultLight;
 const resolvedDark = bgFillDark || bgFill || defaultDark;
+
+const siteOrigin = Astro.site?.origin;
+const currentUrl = Astro.url ? Astro.url.pathname + Astro.url.search : '/';
+const canonicalUrl = canonical ?? (siteOrigin ? new URL(currentUrl, siteOrigin).toString() : undefined);
+const siteName = siteOrigin ? new URL(siteOrigin).hostname : undefined;
+
+const resolveAbsoluteUrl = (input?: string) => {
+  if (!input) return undefined;
+  if (/^https?:\/\//i.test(input)) return input;
+  if (!siteOrigin) return input;
+  return new URL(input, siteOrigin).toString();
+};
+
+const defaultFallbackImage = resolveAbsoluteUrl('/assets/ryan-shafer.jpg');
+const ogImage = resolveAbsoluteUrl(seoImage) ?? defaultFallbackImage;
+const computedTwitterCard = twitterCard ?? (ogImage ? 'summary_large_image' : 'summary');
 ---
 
 <!DOCTYPE html>
@@ -99,8 +127,27 @@ const resolvedDark = bgFillDark || bgFill || defaultDark;
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/print.css" media="print" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {siteName && <meta property="og:site_name" content={siteName} />}
+    {ogImage && (
+      <>
+        <meta property="og:image" content={ogImage} />
+        {seoImageAlt && <meta property="og:image:alt" content={seoImageAlt} />}
+      </>
+    )}
+    <meta name="twitter:card" content={computedTwitterCard} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    {seoImageAlt && <meta name="twitter:image:alt" content={seoImageAlt} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     <ViewTransitions />
   </head>

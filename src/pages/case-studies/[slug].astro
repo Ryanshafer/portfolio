@@ -70,10 +70,13 @@ if (featuredStudies.length < 3) {
 
 <Layout
   description={`${data.seo?.description ?? data.description}`}
-  title={`${data.title} Case Study | Ryan Shafer, UX Design Leader`}
+  title={`${data.title} Case Study | Ryan Shafer, UX/Product Design Leader`}
   bgFill={data.bgFill}
   bgFillDark={data.bgFillDark}
   forceDarkTheme={isDarkHeroHeading}
+  seoImage={data.seo?.image ?? data.heroImageWide ?? data.heroImagePromo}
+  seoImageAlt={data.seo?.imageAlt ?? data.title}
+  ogType="article"
   >
   <article>
     <!-- Hero Section -->

@@ -196,11 +196,14 @@ module.exports = {
             '--tw-prose-pre-bg': 'inherit',
             '--tw-prose-th-borders': 'inherit',
             '--tw-prose-td-borders': 'inherit',
+            p: {
+              '@apply text-[1.125rem] leading-[2rem]': {},
+            },
             ul: {
               '@apply pl-8 lg:pl-0': {},
             },
             li: {
-              '@apply list-none ml-0 relative pb-2 text-base ps-0': {},
+              '@apply list-none ml-0 relative pb-0 text-[1.125rem] leading-[2rem] ps-0': {},
             },
             'li::before': {
               '@apply font-bold absolute left-[-1.75rem]': {},
