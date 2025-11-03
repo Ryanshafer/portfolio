@@ -16,6 +16,7 @@ const studies = defineCollection({
       heroTextureBlendMode: z.string().optional(),
       readTime:   z.number(),
       categories: z.array(z.string()),
+      company:    z.array(z.string()).min(1),
       seo: z
         .object({
           description: z.string().optional(),

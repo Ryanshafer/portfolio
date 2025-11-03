@@ -3,12 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import PostPreview from '../components/case-studies/PostPreview.astro';
 import PageHeader from '../components/layout/PageHeader.astro';
+import CategoryPills from '../components/layout/CategoryPills.astro';
+import SegmentedControl from '../components/case-studies/SegmentedControl.astro';
 
 const posts = (await getCollection('studies')).sort(
   (a, b) => new Date(b.data?.pubDate ?? 0).getTime() - new Date(a.data?.pubDate ?? 0).getTime()
 );
 
-// Collect all unique categories for case studies
 const categories = new Set<string>();
 for (const post of posts) {
   for (const category of post.data.categories || []) {
@@ -16,13 +17,24 @@ for (const post of posts) {
   }
 }
 
-// Build client-side pagination chunks (static HTML, toggled with Alpine)
-const pageSize = 10; // adjust as needed
+const pageSize = 10;
 const chunks: typeof posts[] = [];
 for (let i = 0; i < posts.length; i += pageSize) {
   chunks.push(posts.slice(i, i + pageSize));
 }
 const totalPages = chunks.length;
+
+const shortPosts = posts.filter((post) => (post.data.readTime ?? Infinity) <= 5);
+const shortChunks: typeof posts[] = [];
+for (let i = 0; i < shortPosts.length; i += pageSize) {
+  shortChunks.push(shortPosts.slice(i, i + pageSize));
+}
+const shortTotalPages = shortChunks.length;
+const safeFullTotal = Math.max(totalPages, 1);
+const safeShortTotal = Math.max(shortTotalPages, 1);
+const hasShortPosts = shortPosts.length > 0;
+const disableShortMode = !hasShortPosts;
+const headerCategories = Array.from(categories);
 ---
 
 <Layout
@@ -32,48 +44,202 @@ const totalPages = chunks.length;
   <PageHeader
     heading="Case Studies"
     subheading="Design stories that connect people and business."
-    categories={Array.from(categories)}
-    categoryBasePath="/case-studies"
-    categoryVariant="chips"
     showBackgroundGraphic={true}
+    showCategories={false}
+    heroPadding="compact"
   />
-  <section x-data={`{ page: 1, total: ${totalPages}, next(){ if(this.page < this.total) this.page++ }, prev(){ if(this.page > 1) this.page-- } }`} class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl mt-8 lg:mt-12">
-    {chunks.map((chunk, chunkIndex) => (
-      <div x-show={`page === ${chunkIndex + 1}`} class="space-y-11">
+
+  <div
+    x-data={`{
+      mode: 'full',
+      fullPage: 1,
+      shortPage: 1,
+      init() {
+        const params = new URLSearchParams(window.location.search);
+        const hash = window.location.hash.replace('#', '').toLowerCase();
+        if (${hasShortPosts ? 'true' : 'false'} && (params.get('view') === 'short' || hash === 'short')) {
+          this.mode = 'short';
+        } else if (params.get('view') === 'category' || hash === 'category') {
+          this.mode = 'category';
+        }
+        this.updateUrl(this.mode);
+      },
+      switchMode(target) {
+        if (target === 'short' && ${hasShortPosts ? 'false' : 'true'}) return;
+        if (this.mode === target) return;
+        this.mode = target;
+        if (target === 'short') this.shortPage = 1;
+        if (target === 'full') this.fullPage = 1;
+        this.updateUrl(target);
+      },
+      isCategoryMode() {
+        return this.mode === 'category';
+      },
+      updateUrl(target) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('view');
+        const existingHash = url.hash.toLowerCase();
+        if (target === 'short') {
+          url.hash = '#short';
+        } else if (target === 'category') {
+          url.hash = '#category';
+        } else if (existingHash === '#short' || existingHash === '#category') {
+          url.hash = '';
+        }
+        const searchString = url.searchParams.toString();
+        const nextUrl =
+          url.pathname + (searchString ? '?' + searchString : '') + (url.hash ? url.hash : '');
+        window.history.replaceState({}, '', nextUrl);
+      },
+      next() {
+        if (this.mode === 'full') {
+          if (this.fullPage < ${safeFullTotal}) this.fullPage++;
+        } else if (this.mode === 'short') {
+          if (${shortTotalPages} === 0) return;
+          if (this.shortPage < ${safeShortTotal}) this.shortPage++;
+        }
+      },
+      prev() {
+        if (this.mode === 'full') {
+          if (this.fullPage > 1) this.fullPage--;
+        } else if (this.mode === 'short') {
+          if (${shortTotalPages} === 0) return;
+          if (this.shortPage > 1) this.shortPage--;
+        }
+      }
+    }`}
+  >
+    <section class="mx-auto bg-darkwhite dark:bg-black">
+      <div class="py-8 dark:bg-black/30 dark:shadow-none">
+        <SegmentedControl
+          variant="interactive"
+          hasShortPosts={hasShortPosts}
+          disableShortMode={disableShortMode}
+          fullAction="switchMode('full')"
+          shortAction="switchMode('short')"
+          categoryAction="switchMode('category')"
+        />
+        <div
+          x-cloak
+          x-show="isCategoryMode()"
+          x-collapse.duration.600ms
+          class="transition-[height] !ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+        >
+        <div class="mt-8 md:mt-10 overflow-hidden px-4 py-6 sm:px-8 sm:py-7 bg-herowhite/40 dark:bg-darkerblack/40 border border-t-black/40 border-b-black/20 shadow-[inset_0_2px_8px_rgba(0,0,0,0.18)] dark:border-white/10 dark:shadow-[inset_0_2px_12px_rgba(0,0,0,0.45)]">
+          <CategoryPills
+            categories={headerCategories}
+            basePath="/case-studies/category"
+            variant="chips"
+            sortByFrequency={true}
+            wrapperClass="mx-auto max-w-4xl justify-center gap-3 py-1 md:gap-x-4 md:gap-y-3"
+            chipDarkHoverColor="black"
+          />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:mt-10 lg:max-w-7xl">
+      {chunks.map((chunk, chunkIndex) => (
+        <div x-show={`mode === 'full' && fullPage === ${chunkIndex + 1}`} class="space-y-11">
+          {
+            chunk.map((post, postIndex) => {
+              const isFeatured = chunkIndex === 0 && postIndex === 0;
+              const isLast =
+                chunkIndex === chunks.length - 1 && postIndex === chunk.length - 1;
+              const extraClassList: string[] = [];
+              if (isFeatured) {
+                extraClassList.push('md:border-b border-black md:pb-11');
+              }
+              if (isLast && !isFeatured) {
+                extraClassList.push('md:border-b-0 md:pb-0');
+              }
+              return (
+                <PostPreview
+                  layout={isFeatured ? 'featured' : 'wide'}
+                  post={post}
+                  extraClasses={extraClassList.join(' ')}
+                />
+              );
+            })
+          }
+        </div>
+      ))}
+
+      {shortChunks.map((chunk, chunkIndex) => (
+        <div x-show={`mode === 'short' && shortPage === ${chunkIndex + 1}`} class="space-y-10">
+          {
+            chunk.map((post, index) => {
+              const isLast =
+                chunkIndex === shortChunks.length - 1 && index === chunk.length - 1;
+              return (
+                <PostPreview
+                  layout="wide"
+                  post={post}
+                  extraClasses={isLast ? 'md:border-b-0 md:pb-0' : ''}
+                />
+              );
+            })
+          }
+        </div>
+      ))}
+
+      <div x-show="mode === 'category'" class="space-y-10">
         {
-          chunk.map((post, postIndex) => {
-            const overallIndex = (chunkIndex * pageSize) + postIndex;
+          posts.map((post, index) => {
+            const isLast = index === posts.length - 1;
             return (
               <PostPreview
-                layout={overallIndex === 0 ? 'featured' : 'wide'}
+                layout="wide"
                 post={post}
-                extraClasses={
-                  overallIndex === 1
-                    ? 'border-t border-black pt-10'
-                    : overallIndex === posts.length - 1
-                      ? 'border-none'
-                      : ''
-                }
+                extraClasses={isLast ? 'md:border-b-0 md:pb-0' : ''}
               />
-            )
+            );
           })
         }
       </div>
-    ))}
 
-    {/* Pager */}
-    {totalPages > 1 && (
-      <nav class="mt-12 flex items-center justify-center gap-6" aria-label="Pagination">
-        <button @click="prev()" :disabled="page === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
-        <div class="flex items-center gap-6">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button @click={`page = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`page === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
-              {i + 1}
-            </button>
-          ))}
+      {shortChunks.length === 0 && (
+        <div x-show="mode === 'short'" class="mt-10 text-center text-base text-black/70 dark:text-white/70">
+          No case studies under five minutes yet—check back soon!
         </div>
-        <button @click="next()" :disabled="page === total" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Next</button>
-      </nav>
-    )}
-  </section>
+      )}
+
+      {totalPages > 1 && (
+        <nav
+          x-show="mode === 'full'"
+          class="mt-12 flex items-center justify-center gap-6"
+          aria-label="Pagination for full case studies"
+        >
+          <button @click="prev()" :disabled="fullPage === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
+          <div class="flex items-center gap-6">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button @click={`fullPage = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`fullPage === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
+                {i + 1}
+              </button>
+            ))}
+          </div>
+          <button @click="next()" :disabled={`fullPage === ${safeFullTotal}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Next</button>
+        </nav>
+      )}
+
+      {shortTotalPages > 1 && (
+        <nav
+          x-show="mode === 'short'"
+          class="mt-12 flex items-center justify-center gap-6"
+          aria-label="Pagination for quick case studies"
+        >
+          <button @click="prev()" :disabled="shortPage === 1" class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Prev</button>
+          <div class="flex items-center gap-6">
+            {Array.from({ length: shortTotalPages }).map((_, i) => (
+              <button @click={`shortPage = ${i + 1}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20" :class={`shortPage === ${i + 1} ? 'bg-black text-white dark:bg-white dark:text-black' : ''`}>
+                {i + 1}
+              </button>
+            ))}
+          </div>
+          <button @click="next()" :disabled={`shortPage === ${safeShortTotal}`} class="rounded-md px-3 py-2 text-sm border border-black/20 dark:border-white/20 disabled:opacity-40">Next</button>
+        </nav>
+      )}
+    </section>
+  </div>
 </Layout>

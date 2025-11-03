@@ -12,6 +12,8 @@ interface Props {
   showBackLink?: boolean;
   backLinkHref?: string;
   backLinkLabel?: string;
+  showCategories?: boolean;
+  heroPadding?: 'default' | 'compact';
 }
 const {
   heading,
@@ -23,6 +25,8 @@ const {
   showBackLink = false,
   backLinkHref,
   backLinkLabel,
+  showCategories = true,
+  heroPadding = 'default',
 } = Astro.props as Props;
 
 const ellipseImages = ['ellipse-1.webp', 'ellipse-2.webp', 'ellipse-3.webp'];
@@ -41,6 +45,8 @@ const resolvedCategoryVariant =
     ? 'hashtags-sm'
     : 'hashtags';
 const chipDarkHoverColor = randomEllipse ? 'black' : 'white';
+const headerPaddingClass =
+  heroPadding === 'compact' ? 'py-8 lg:py-[3.5rem]' : 'py-8 lg:py-[5.5rem]';
 
 const deriveSectionLabel = (path: string) => {
   const segment = path.replace(/\/$/, '').split('/').filter(Boolean)[0] ?? '';
@@ -70,7 +76,11 @@ const showBackLinkResolved = showBackLink && backLinkTarget && backLinkSection;
     </div>
   )}
 <!-- HERO TEXT -->
-<div class="relative z-10 mx-auto max-w-2xl px-4 sm:px-6 py-8 lg:py-[5.5rem]">
+<div
+  class={`relative z-10 mx-auto px-4 sm:px-6 ${heroPadding === 'compact' ? 'max-w-4xl' : 'max-w-2xl'} ${
+    headerPaddingClass
+  }`}
+>
   {showBackLinkResolved && (
     <div class="mb-4 flex justify-center">
       <a
@@ -100,7 +110,7 @@ const showBackLinkResolved = showBackLink && backLinkTarget && backLinkSection;
       {subheading}
     </p>
   )}
-  {sortedCategories.length > 0 && (
+  {showCategories && sortedCategories.length > 0 && (
     <div x-data="{ expanded: false, hasOverflow: false, maxHeight: 0 }" class="relative">
       <CategoryPills
         categories={sortedCategories}

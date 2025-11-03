@@ -1,59 +1,36 @@
 ---
-const skillGroups = [
-  {
-    title: 'Design Strategy & Leadership',
-    description:
-      'Driving UX vision, building high-performing teams, and aligning design with measurable business goals.',
-    highlights: [
-      'Discovery facilitation',
-      'Talent acquisition & development',
-      'Executive storytelling',
-    ],
-  },
-  {
-    title: 'Human-Centered Design',
-    description:
-      'Turning research and insights into validated, scalable solutions that balance user needs with product impact.',
-    highlights: [
-      'Qual/Quant research',
-      'Hypothesis-driven design',
-      'Usability testing',
-      'Rapid prototyping',
-    ],
-  },
-  {
-    title: 'Design Operations & Delivery Enablement',
-    description:
-      'Establishing the structures, rituals, and tools that accelerate design impact, improve delivery, and scale UX across teams.',
-    highlights: [
-      'Cross-functional rituals',
-      'UX roadmap planning',
-      'Executive alignment',
-      'Async collaboration',
-    ],
-  },
-  {
-    title: 'Systems Thinking',
-    description:
-      'Creating responsive, cross-platform systems that unify patterns, content, and accessibility across experiences.',
-    highlights: ['Design system stewardship', 'Information architecture'],
-  },
-  {
-    title: 'Brand & Experience Cohesion',
-    description:
-      'Connecting marketing and product touchpoints to deliver consistent stories and reinforce customer trust.',
-    highlights: [
-      'Multichannel orchestration',
-      'Campaign-to-product integration',
-      'Narrative design',
-    ],
-  },
+// const skillGroups = [
+//   {
+//     title: 'Leadership & Strategy:',
+//     description:
+//       'Design Leadership, UX Strategy, Executive Alignment, Cross-functional Alignment, Talent Development, DesignOps, AI-Enhanced Workflows, Growth Enablement, Systems Thinking, B2B/B2C SaaS.',
+//     highlights: [
+//       'Discovery facilitation',
+//       'Executive storytelling',
+//       'UX vision & roadmap planning',
+//       'Talent development',
+//       'Cross-functional alignment',
+//       'Team Building & Mentorship',
+//       'Growth enablement',
+//     ],
+//   },
+// ];
+
+const capabilities = [
+  'Design Leadership',
+  'UX Strategy',
+  'Executive Alignment',
+  'Cross-functional Collaboration',
+  'Talent Development',
+  'DesignOps Implementation',
+  'AI-Enhanced Workflows',
+  'Systems Thinking',
+  'B2B/B2C SaaS Expertise',
 ];
 
 const tools = [
   'Figma',
-  'Miro',
-  'FigJam',
+  'Miro/FigJam',
   'Notion',
   'UX Research Tools',
   'Quantitative Analytics',
@@ -61,25 +38,24 @@ const tools = [
   'VSCode/GPT-Codex',
   'HTML/CSS/JS',
   'Tailwind',
-  'Astro',
   'Git',
   'DaVinci Resolve',
 ];
 
 const skills = [
   'UX Strategy',
+  'Design Leadership',
   'DesignOps',
-  'Human-Centered Design',
-  'Accessibility',
-  'Design Systems',
-  'Information Architecture',
-  'Prototyping',
-  'Research',
-  'Agile Delivery',
+  'Systems Thinking',
   'Executive Alignment',
-  'SaaS',
-  'B2B',
-  'B2C',
+  'Human-Centered Design',
+  'Information Architecture',
+  'Design Systems (Creation & Governance)',
+  'Accessibility (WCAG)',
+  'Hypothesis-Driven Design',
+  'UX Research (Qual/Quant)',
+  'Prototyping',
+  'Agile Delivery',
 ];
 ---
 
@@ -93,28 +69,32 @@ const skills = [
       Skills & Expertise
     </h2>
     <div class="col-span-full mt-1.5 space-y-10 lg:col-span-8 lg:col-start-5">
-      <div class="max-w-[65ch] space-y-8">
+      <!-- <div class="max-w-[65ch] space-y-8">
         {
-          skillGroups.map((group) => (
+          skillGroups.map((group, index) => (
             <article class="font-base text-lg text-black dark:text-white">
-              <h3 class="text-2xl font-bold">{group.title}</h3>
-              <p class="mt-0">{group.description}</p>
-              <p class="mt-2">
-                <span class="font-bold">Highlights:</span>
-                <span class="ml-1 italic">{group.highlights.join(' · ')}</span>
+              <h3 class={`text-2xl font-bold mb-4 ${index === 0 ? 'mt-0' : ''}`}>{group.title}</h3>
+              <p class="mt-0 mb-2">{group.description}
               </p>
+              {/* <p class="my-1">
+                <span class="ml-1 italic text-sm">{group.highlights.join(' · ')}</span>
+              </p> */}
+
             </article>
           ))
         }
-      </div>
-
-      <div class="border-t border-black/50 pt-8 dark:border-white/30">
+      </div> -->
+    <div>
+        <h4 class="text-2xl font-bold mt-0">Leadership & Strategy</h4>
+        <p class="mt-2 max-w-[65ch] text-lg">{capabilities.join(' · ')}</p>
+    </div>
+      <div class="border-t border-black/50 dark:border-white/30">
+        <h4 class="text-2xl font-bold">UX & Technical</h4>
+        <p class="mt-2 max-w-[65ch] text-lg">{skills.join(' · ')}</p>
+    </div>
+      <div class="border-t border-black/50 dark:border-white/30">
         <h4 class="text-2xl font-bold">Software & Tools</h4>
         <p class="mt-2 max-w-[65ch] text-lg">{tools.join(', ')}</p>
       </div>
-      <div class="border-t border-black/50 pt-8 dark:border-white/30">
-        <h4 class="text-2xl font-bold">Core Skills</h4>
-        <p class="mt-2 max-w-[65ch] text-lg">{skills.join(' · ')}</p>
-    </div>
   </div>
 </section>

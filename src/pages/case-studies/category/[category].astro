@@ -3,7 +3,9 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import PostPreview from '../../../components/case-studies/PostPreview.astro';
+import CategoryPills from '../../../components/layout/CategoryPills.astro';
 import PageHeader from '../../../components/layout/PageHeader.astro';
+import SegmentedControl from '../../../components/case-studies/SegmentedControl.astro';
 import { slugify } from '../../../utils/slugify';
 
 // Part 1: getStaticPaths
@@ -33,21 +35,65 @@ const postsInCategory = allPosts.filter((post) =>
   (post.data.categories || []).some((c) => slugify(String(c)) === rawCategory)
 );
 
+const headerCategories = Array.from(
+  new Set(
+    allPosts
+      .flatMap((post) => post.data.categories || [])
+      .map((category) => String(category).trim())
+      .filter(Boolean)
+  )
+).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+
+const hasShortPosts = allPosts.some((post) => (post.data.readTime ?? Infinity) <= 5);
+
 // Recover a human-friendly label from the first matching category or fallback
 const displayLabel =
   postsInCategory.flatMap((p) => p.data.categories || []).find((c) => slugify(c) === rawCategory) ||
   rawCategory.replaceAll('-', ' ');
+
 ---
 
 <Layout
   description="Learn about Ryan Shafer's past design work"
-  title={`Case Studies – ${displayLabel} | Ryan Shafer, UX/Product Design Leader`}
+  title={`Case Studies — ${displayLabel} | Ryan Shafer, UX/Product Design Leader`}
 >
-<PageHeader heading={`My Studies Related to ${displayLabel}`}
+  <PageHeader
+    heading={`Case Studies on ${displayLabel}`}
+    subheading="Design stories that connect people and business."
     showBackgroundGraphic={true}
-    showBackLink
-    backLinkHref="/case-studies"
-/>
+    heroPadding="compact"
+  />
+
+  <section class="mx-auto bg-darkwhite dark:bg-black">
+    <div class="py-8 dark:bg-black/30 dark:shadow-none">
+      <SegmentedControl
+        variant="link"
+        hasShortPosts={hasShortPosts}
+        disableShortMode={!hasShortPosts}
+        fullHref="/case-studies"
+        shortHref="/case-studies#short"
+        categoryHref="/case-studies#category"
+        activeSegment="category"
+      />
+
+      <div class="mt-8 md:mt-10">
+        <div class="bg-[#f3efe4] px-4 py-6 sm:px-8 sm:py-7 dark:bg-black/40">
+          <CategoryPills
+            categories={headerCategories}
+            basePath="/case-studies/category"
+            variant="chips"
+            sortByFrequency={true}
+            chipDarkHoverColor="black"
+            activeCategorySlug={rawCategory}
+            activeSuffix=" ×"
+            wrapperClass="mx-auto max-w-4xl justify-center gap-3 py-1 md:gap-x-4 md:gap-y-3"
+            pillClass="transition-colors"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="space-y-11 pt-11">
       {
@@ -55,7 +101,7 @@ const displayLabel =
           <PostPreview
             post={post}
             layout="wide"
-            extraClasses={(index === postsInCategory.length - 1) ? 'border-none' : ''}
+            extraClasses={index === postsInCategory.length - 1 ? 'border-none' : ''}
           />
         ))
       }

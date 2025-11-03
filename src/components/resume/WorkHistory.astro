@@ -1,6 +1,35 @@
 ---
 import WorkItem from './WorkItem.astro';
 import { workEntries } from '../../content/work-data.mjs';
+import { getCollection } from 'astro:content';
+import type { WorkEntry } from '../../types/work';
+
+type RelatedCaseStudy = {
+  title: string;
+  slug: string;
+};
+
+const studies = await getCollection('studies');
+const studiesByCompany = studies.reduce((acc, study) => {
+  const companies = study.data.company ?? [];
+  for (const company of companies) {
+    const list = acc.get(company) ?? [];
+    list.push({
+      title: study.data.title,
+      slug: study.slug,
+    });
+    acc.set(company, list);
+  }
+  return acc;
+}, new Map<string, RelatedCaseStudy[]>());
+
+const typedEntries = workEntries as WorkEntry[];
+
+const workEntriesWithStudies = typedEntries.map((entry, index) => ({
+  entry,
+  index,
+  relatedStudies: studiesByCompany.get(entry.company) ?? [],
+}));
 ---
 
 <section class="my-4 lg:my-12 prose prose-resume">
@@ -13,10 +42,10 @@ import { workEntries } from '../../content/work-data.mjs';
       Work History
     </h2>
     <div class="col-span-full lg:col-span-8 lg:col-start-5 pt-6 space-y-10 border-t border-black/30 dark:border-white/30">
-      {workEntries.map((entry, index) => (
+      {workEntriesWithStudies.map(({ entry, index, relatedStudies }) => (
         <div>
           {index > 0 && <hr class="border-black/30 dark:border-white/30" />}
-          <WorkItem entry={entry} />
+          <WorkItem entry={entry} caseStudies={relatedStudies} />
         </div>
       ))}
     </div>

@@ -1,0 +1,110 @@
+---
+type Mode = 'full' | 'short' | 'category';
+type Variant = 'interactive' | 'link';
+
+interface Props {
+  variant?: Variant;
+  hasShortPosts?: boolean;
+  disableShortMode?: boolean;
+  fullAction?: string;
+  shortAction?: string;
+  categoryAction?: string;
+  fullHref?: string;
+  shortHref?: string;
+  categoryHref?: string;
+  activeSegment?: Mode;
+}
+
+const {
+  variant = 'interactive',
+  hasShortPosts = false,
+  disableShortMode = false,
+  fullAction = "switchMode('full')",
+  shortAction = "switchMode('short')",
+  categoryAction = "switchMode('category')",
+  fullHref = '/case-studies',
+  shortHref = '/case-studies#short',
+  categoryHref = '/case-studies#category',
+  activeSegment = 'full',
+} = Astro.props as Props;
+
+const baseWrapperClass =
+  'relative flex rounded-full border border-black bg-white p-0.5 shadow-sm dark:border-white/30 dark:bg-black/30 dark:shadow-[0_0_0_1px_rgba(255,255,255,0.15)]';
+const innerWrapperClass = 'flex items-center gap-1 rounded-full bg-white px-1 py-0.5 dark:bg-black/70';
+const segmentBaseClass =
+  'rounded-full px-2 md:px-5 py-2 text-sm font-semibold leading-none transition whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/40 dark:focus-visible:outline-white/60';
+const activeClass = 'bg-black text-white dark:bg-white dark:text-black';
+const inactiveClassInteractive = 'text-black/60 dark:text-white/60';
+const inactiveClassLink = 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white';
+const disabledClass = 'cursor-not-allowed text-black/30 dark:text-white/30 pointer-events-none';
+const isShortDisabled = disableShortMode || !hasShortPosts;
+---
+
+<div class="flex justify-center">
+  <div class={baseWrapperClass}>
+    <div class={innerWrapperClass}>
+      {variant === 'interactive' ? (
+        <>
+          <button
+            type="button"
+            @click={fullAction}
+            class={segmentBaseClass}
+            :class={`mode === 'full' ? '${activeClass}' : '${inactiveClassInteractive}'`}
+          >
+            <span class="hidden md:inline">I Want the Full Story</span>
+            <span class="inline md:hidden">The Full Story</span>
+          </button>
+          <button
+            type="button"
+            @click={shortAction}
+            disabled={isShortDisabled}
+            class={`${segmentBaseClass}${isShortDisabled ? ` ${disabledClass}` : ''}`}
+            :class={`mode === 'short' ? '${activeClass}' : '${inactiveClassInteractive}'`}
+          >
+            <span class="hidden md:inline">I'm Short on Time</span>
+            <span class="inline md:hidden">The Short Story</span>
+          </button>
+          <button
+            type="button"
+            @click={categoryAction}
+            class={segmentBaseClass}
+            :class={`mode === 'category' ? '${activeClass}' : '${inactiveClassInteractive}'`}
+          >
+            <span class="hidden md:inline">Explore by Category</span>
+            <span class="inline md:hidden">By Category</span>
+          </button>
+        </>
+      ) : (
+        <>
+          <a
+            href={fullHref}
+            class={`${segmentBaseClass} ${activeSegment === 'full' ? activeClass : inactiveClassLink}`}
+            aria-current={activeSegment === 'full' ? 'page' : undefined}
+          >
+            <span class="hidden md:inline">I Want the Full Story</span>
+            <span class="inline md:hidden">The Full Story</span>
+          </a>
+          <a
+            href={shortHref}
+            class={`${segmentBaseClass} ${
+              activeSegment === 'short' ? activeClass : inactiveClassLink
+            }${isShortDisabled ? ` ${disabledClass}` : ''}`}
+            aria-disabled={isShortDisabled ? 'true' : undefined}
+            tabindex={isShortDisabled ? -1 : undefined}
+          >
+            <span class="hidden md:inline">I'm Short on Time</span>
+            <span class="inline md:hidden">The Short Story</span>
+          </a>
+          <a
+            href={categoryHref}
+            class={`${segmentBaseClass} ${activeSegment === 'category' ? activeClass : inactiveClassLink}`}
+            aria-current={activeSegment === 'category' ? 'page' : undefined}
+          >
+            <span class="hidden md:inline">Explore by Category</span>
+            <span class="inline md:hidden">By Category</span>
+          </a>
+        </>
+      )}
+    </div>
+  </div>
+</div>

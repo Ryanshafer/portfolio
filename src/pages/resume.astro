@@ -13,5 +13,36 @@ import WorkHistory from '../components/resume/WorkHistory.astro';
     <ResumeHero />
     <Skills />
     <WorkHistory />
+    <section class="my-4 lg:my-12 prose prose-resume">
+      <div
+        class="mx-auto grid max-w-2xl grid-cols-4 gap-x-6 gap-y-6 px-4 sm:px-6 lg:max-w-7xl lg:grid-cols-12 lg:gap-x-6 lg:px-8"
+      >
+        <h2
+          class="col-span-full self-start pt-7 font-heading text-3xl font-bold text-black dark:text-white lg:sticky lg:top-4 lg:col-span-3 lg:col-start-2"
+        >
+          Education
+        </h2>
+        <div
+          class="col-span-full space-y-6 border-t border-black/30 pt-6 dark:border-white/30 lg:col-span-8 lg:col-start-5"
+        >
+          <header>
+            <div>
+              <p class="my-0 mt-2 text-lg text-black/70 dark:text-white/70">
+                <span>1996</span>
+                <span class="px-1">—</span>
+                <span>2000</span>
+                <span class="pl-2">Providence, RI</span>
+              </p>
+              <h3
+                class="mb-2 mt-1 font-heading text-2xl-custom font-black text-black dark:text-white md:text-5xl"
+              >
+                Rhode Island School of Design (RISD)
+              </h3>
+            </div>
+          </header>
+          <p class="my-0 text-base dark:text-white">B.F.A. in Film/Animation/Video</p>
+        </div>
+      </div>
+    </section>
   </main>
 </Layout>

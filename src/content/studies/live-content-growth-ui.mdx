@@ -1,0 +1,123 @@
+---
+title: "Designing for Live: Two Bets on Growth at Showmax"
+description: "How I led UX strategy for Showmax’s live content expansion—using fast experiments and data-driven design to balance growth bets with user experience."
+pubDate: "2025-07-04"
+author: "Ryan Shafer"
+readTime: 5
+heroImageWide: "/assets/studies/live-content-growth-ui/promowide-live-content-growth-ui.webp"
+heroImagePromo: "/assets/studies/live-content-growth-ui/promo-live-content-growth-ui.webp"
+bgFill: "#000000"
+darkHeroHeading: true
+categories: ["UI Design", "A/B Testing", "Content Design", "UX Strategy", "Multi-Platform Design"]
+company: ["Showmax"]
+seo:
+  description: "A lead-level UI/UX case study on designing scalable, content-forward interfaces for Showmax’s live experiences. Using rapid experimentation, A/B testing, and real data, I balanced marketing goals with conversion performance across a complex, multi-platform ecosystem."
+summary:
+  role: "Head of UX (acting hands-on IC for these projects)"
+  problem: "Showmax wanted to expand its audience by betting on live content—first with *Saturday Night Live* in Poland, then with live sports. Both required fast UX strategy, rapid iteration, and careful balancing of marketing ambitions with conversion and usability goals."
+  impact: |-
+    - Led strategic design solutions for both initiatives.
+    - Resolved marketing vs product conflicts through quantified A/B testing, agreeing on a –10% conversion tolerance; the SNL promo variant landed at –8.32%, within target.
+    - Delivered a content-forward, data-driven sports experience approved as the future live platform.  
+  insight: "The success of live content—and its impact on user growth—depends on two key factors: the cultural relevance of the content and how easy it is to find and watch. Both of Showmax’s live initiatives had to perform against these complexities to succeed."
+  approach: "I united teams through clear guardrails and rapid experiments, using cultural insight and real data to drive scalable design decisions."
+  timeline: "A few weeks per project — fast-paced startup environment."
+---
+
+
+## Expanding Reach Through Live Content: Two Bets, Two Design Challenges
+---
+
+To accelerate audience growth and improve sign-ups and retention, Showmax made a strategic bet on live content. As Head of UX, I led two critical initiatives under tight startup timelines—balancing marketing ambition with conversion, and transforming variable live sports data into a clear, scalable, multi-platform UI.
+
+From many experiments at MTV, I learned live content only succeeds when it’s a can’t-miss cultural moment—like a concert or award show. Regular premieres rarely change behavior; users default to on-demand.
+
+This became my lens for evaluating Showmax’s two live bets: **Saturday Night Live** in Poland, which I questioned whether it met that cultural threshold, and **Live Sports**, which aligned naturally—unlocking a clear growth opportunity.
+
+## Design Principles for Live Experiences
+---
+
+While designing Showmax’s growth-focused live experiences, I grounded my approach in a few key principles:
+
+* **Design with real data, not assumptions.**
+* **Prioritize when layouts serve competing goals.**
+* **Scalable outcomes come from repeatable, reusable design patterns.**
+* **Design for adaptability across platforms.**
+
+## Saturday Night Live: Mediating Marketing Ambition and Conversion Risk
+---
+
+Over two fast-paced weeks, I led our three-person agency to make the homepage—not a new subpage—the primary entry point for SNL, maximizing visibility and organic traffic. This decision led to a responsive, state-based homepage layout tailored for live events—designed to promote content without undermining trial conversions, the homepage’s primary business goal.
+
+Our initial design led to a major disagreement between a designer on my team and the Head of Marketing in Poland. Marketing wanted better promotion with the promo above the fold, while the design team feared that would cannibalize conversions.
+
+I aligned Marketing and Product by negotiating **an A/B test with a –10% signup conversion tolerance** on the contentious design. This turned subjective debates into measurable guardrails and signaled UX maturity in balancing growth with conversion.
+
+**We tested two homepage variants:**
+- **Version A** prioritized conversions with the promo **below the fold**.
+- **Version B** placed it **above the fold**, introducing competing CTAs.
+
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-live-ab.webp" alt="We ran A/B tests on two homepage variants to ensure effective promotion of the live event without significantly harming trial conversion rates." />
+
+As expected, **Version B saw a -8.32% drop** in signups compared to Version A. Since this was **within the agreed tolerance**, Marketing accepted the trade-off, prioritizing louder promotion over conversion.
+
+After the initial launch, I led further design experiments to explore **layouts and messaging hierarchies that maintained promotional prominence while reducing conversion loss**.
+
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-further-experiments.webp" alt="Each weekly stream gave us an opportunity to iterate—minimizing conversion loss while maintaining the strong promotional presence Marketing wanted." />
+
+Even with a well-executed launch, the SNL initiative reinforced what my MTV experience had taught me: without a culturally must-see hook, live formats struggle to shift user behavior. Still, by mediating competing goals and using experimentation to manage risk, we balanced growth with conversion.
+
+
+## Sports: From Spreadsheet Mess to Scalable Multi-Platform UI
+---
+
+To further Showmax’s push into live content and growth, we chose to add live sports, which carried real cultural weight, but came with **a complex, real-time dataset** and tight timelines for delivery. 
+
+Showmax’s parent company had been developing a live sports solution within their own product, but their design team struggled to deliver a usable, scalable experience. Leadership asked me to take over as design lead and adapt it for integration into our platform.
+
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/multichoice-promgramming-grid.webp" alt="We inherited a grid-based layout from our parent company’s team—one that wasn’t content-forward and was based on assumptions rather than real data. This needed to change." />
+
+Within three weeks, I organized our three-person design team by focus area—programming, filtering, search, and playback—spanning Web, TV, and Mobile. We worked in parallel, critiqued each other’s designs, and quickly iterated to produce **one cohesive experience across platforms**.
+
+### Real Data, Not Assumptions
+
+As IC lead for cross-device content programming design, I grounded my approach in real data—not assumptions. The original team’s spreadsheet-style grid was difficult to navigate, poorly suited to multiple platforms, and based on the assumption of a full live schedule. Before designing a solution, I needed to understand the dataset for what it really was.
+
+With only a content API available, I extracted the raw JSON and mapped it into spreadsheets to better understand the actual structure. It quickly became clear the dataset was too sparse for a traditional programming grid—most cells would be empty, resulting in a scroll-heavy experience on desktop and a painful one on mobile.
+
+As a data-driven alternative, I reorganized the content into **four time-based groups**:
+
+1. What’s live now or starting soon 
+2. Today Morning  
+3. Today Afternoon  
+4. Today Evening
+
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-time-grouping.webp" alt="We inherited a grid-based layout from our parent company’s team—one that wasn’t content-forward and was based on assumptions rather than real data. This needed to change." />
+
+This structure enabled us to use familiar content rows that expanded or contracted based on need, with dynamic states like *In Progress, Starting Soon, and Reminder*—making the experience **content-forward, intuitive to navigate, and scalable across devices**. I especially valued how this solution **extended our design system with a repeatable pattern**, adaptable across the main sports section, video player pause states, and the broader Showmax product ecosystem.
+
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-live-video-states.webp" alt="We extended Showmax’s design system to handle the complex states of live event promos—supporting reminders, live, and upcoming events as reusable components within the new Sports experience." />
+
+
+### Establishing a Scalable Foundation
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-mvp.webp" 
+                largeSrc="/assets/studies/live-content-growth-ui/content/showmax-mvp-full.webp" 
+                alt="The MVP web experience was shaped around how sports fans actually browse and plan. A featured live stream auto-played in the hero to grab attention. Users could filter by day, sport, or favorites, and set reminders for upcoming events. Below that, content was organized intuitively: live and reminder-ready events first, followed by upcoming events segmented into morning, afternoon, and evening. At the bottom, evergreen sports content promoted the broader catalog—encouraging exploration beyond the live schedule." full />
+
+Though I left Showmax before launch, I handed off clear next steps to the design team—including **lightweight guerrilla usability testing** to catch unforeseen issues early. The design was approved as the future pattern across Web/TV/Mobile, which **laid a strong foundation for Showmax’s future live sports platform**—transforming a dense, spreadsheet-like concept into a scalable, content-forward experience consistent across devices.
+
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-tv-main.webp" alt="The Smart TV interface mirrored the web experience, reusing familiar patterns and concepts for a consistent, cross-platform design." />
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-tv-player.webp" alt="A pull-down event browser in Smart TV playback let viewers quickly switch between simultaneous games. An on-screen clock provided a constant time reference to support faster, more informed decisions. We echoed this in the web platform as well." />
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-moble.webp" alt="In the mobile app—and across all platforms—once a live event ended, we surfaced other in-progress games to keep users seamlessly engaged and moving from one event to the next." />
+<ImageWithStyle src="/assets/studies/live-content-growth-ui/content/showmax-search.webp" alt="Even Search was enhanced for the Sports experience—surfacing live events by default and letting users search upcoming games and set reminders." />
+
+## Reflection: Designing for Culture, Data, and Trade-offs
+---
+
+These projects sharpened how I tackle **complex UI challenges under real constraints**—balancing cultural insight, marketing goals, and messy data to deliver scalable, content-forward systems.
+
+* **Cultural insight shapes success** – Live works when content is can’t-miss.
+* **Data-driven mediation beats opinion** – Guardrails and testing align teams.
+* **Taming messy data unlocks scalable systems** – Interrogating structure early reveals patterns that scale.
+
+Across both initiatives, I treated live content as a growth experiment—applying a UX lens early, using data to navigate ambiguity, and mediating competing goals to turn complexity into clear, testable, scalable UI systems aligned with user and business needs.

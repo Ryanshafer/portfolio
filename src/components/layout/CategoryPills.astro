@@ -42,6 +42,9 @@ export interface Props {
   collection?: CollectionName;
   chipDarkHoverColor?: 'white' | 'black';
   sortByFrequency?: boolean;
+  activeCategorySlug?: string | null;
+  activePillClass?: string;
+  activeSuffix?: string;
 }
 
 const {
@@ -58,6 +61,9 @@ const {
   collection,
   chipDarkHoverColor = 'white',
   sortByFrequency = false,
+  activeCategorySlug,
+  activePillClass,
+  activeSuffix = '',
 } = Astro.props;
 
 const variantStyles: Record<CategoryPillVariant, { wrapper: string; pill: string }> = {
@@ -101,7 +107,7 @@ const resolvedPillClass =
     pillClass,
   ]
     .filter(Boolean)
-    .join(' ');
+  .join(' ');
 
 let derivedCollection: CollectionName | undefined = collection;
 if (!derivedCollection) {
@@ -136,10 +142,30 @@ const limitedCategories =
     ? sortedCategories.slice(0, limit)
     : sortedCategories;
 
-const pillItems = limitedCategories.map(({ category }) => ({
-  href: `${basePath}/${slugify(category)}`,
-  label: variant === 'hashtags' || variant === 'hashtags-sm' ? `#${category}` : category,
-}));
+const normalizedActiveSlug =
+  typeof activeCategorySlug === 'string' && activeCategorySlug.length > 0
+    ? activeCategorySlug
+    : undefined;
+
+const fallbackActiveClass =
+  '!bg-black !text-white shadow-sm outline-none dark:!bg-white dark:!text-black';
+const resolvedActivePillClass = activePillClass || fallbackActiveClass;
+
+const pillItems = limitedCategories.map(({ category }) => {
+  const slug = slugify(category);
+  const label =
+    variant === 'hashtags' || variant === 'hashtags-sm' ? `#${category}` : category;
+  const isActive = normalizedActiveSlug ? slug === normalizedActiveSlug : false;
+  const href = isActive
+    ? `/case-studies?view=category#category`
+    : `${basePath}/${slug}`;
+  return {
+    href,
+    label,
+    slug,
+    isActive,
+  };
+});
 
 const effectiveItemWrapperTag =
   typeof itemWrapperTag !== 'undefined'
@@ -157,13 +183,13 @@ const effectiveItemWrapperTag =
         {pillItems.map((item) => (
           effectiveItemWrapperTag === 'li' ? (
             <li>
-              <a class={resolvedPillClass} href={item.href}>
-                {item.label}
+              <a class={[resolvedPillClass, item.isActive ? resolvedActivePillClass : ''].filter(Boolean).join(' ')} href={item.href}>
+                {item.isActive && activeSuffix ? `${item.label}${activeSuffix}` : item.label}
               </a>
             </li>
           ) : (
-            <a class={resolvedPillClass} href={item.href}>
-              {item.label}
+            <a class={[resolvedPillClass, item.isActive ? resolvedActivePillClass : ''].filter(Boolean).join(' ')} href={item.href}>
+              {item.isActive && activeSuffix ? `${item.label}${activeSuffix}` : item.label}
             </a>
           )
         ))}
@@ -171,16 +197,16 @@ const effectiveItemWrapperTag =
     ) : (
       <div {...restWrapperAttrs} class={resolvedWrapperClass}>
         {pillItems.map((item) => (
-          <a class={resolvedPillClass} href={item.href}>
-            {item.label}
+          <a class={[resolvedPillClass, item.isActive ? resolvedActivePillClass : ''].filter(Boolean).join(' ')} href={item.href}>
+            {item.isActive && activeSuffix ? `${item.label}${activeSuffix}` : item.label}
           </a>
         ))}
       </div>
     )
   ) : (
     pillItems.map((item) => (
-      <a class={resolvedPillClass} href={item.href}>
-        {item.label}
+      <a class={[resolvedPillClass, item.isActive ? resolvedActivePillClass : ''].filter(Boolean).join(' ')} href={item.href}>
+        {item.isActive && activeSuffix ? `${item.label}${activeSuffix}` : item.label}
       </a>
     ))
   ))}
