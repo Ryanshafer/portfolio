@@ -26,6 +26,40 @@ const { data, render } = post;
 const { Content } = await render();
 const isDarkHeroHeading = Boolean(data.darkHeroHeading);
 const textureBlendMode = data.heroTextureBlendMode ?? 'color-burn';
+const siteOrigin = Astro.site?.origin ?? 'https://ryanshafer.com';
+const canonicalPath = `/case-studies/${slug}/`;
+const canonicalUrl = siteOrigin ? new URL(canonicalPath, siteOrigin).toString() : undefined;
+const toAbsoluteUrl = (value?: string) => {
+  if (!value) return undefined;
+  if (/^https?:\/\//i.test(value)) return value;
+  if (!siteOrigin) return value;
+  return new URL(value, siteOrigin).toString();
+};
+const updatedDate = 'updated' in data ? (data as { updated?: string | Date }).updated : undefined;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.seo?.description ?? data.description,
+  inLanguage: 'en-US',
+  author: {
+    '@type': 'Person',
+    name: 'Ryan Shafer',
+    url: siteOrigin,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: 'Ryan Shafer',
+    url: siteOrigin,
+  },
+  mainEntityOfPage: canonicalUrl,
+  articleSection: data.categories ?? [],
+  keywords: Array.isArray(data.categories) ? data.categories.join(', ') : undefined,
+  datePublished: data.pubDate,
+  dateModified: updatedDate ?? data.pubDate,
+  image: toAbsoluteUrl(data.seo?.image ?? data.heroImageWide ?? data.heroImagePromo),
+};
 // --- Build-time random selection with at least one related by category ---
 function shuffle<T>(arr: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -77,6 +111,8 @@ if (featuredStudies.length < 3) {
   seoImage={data.seo?.image ?? data.heroImageWide ?? data.heroImagePromo}
   seoImageAlt={data.seo?.imageAlt ?? data.title}
   ogType="article"
+  canonical={canonicalUrl}
+  structuredData={[articleSchema]}
   >
   <article>
     <!-- Hero Section -->

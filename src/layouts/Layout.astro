@@ -19,6 +19,7 @@ interface Props {
   noindex?: boolean;
   ogType?: 'website' | 'article' | 'profile';
   twitterCard?: 'summary' | 'summary_large_image';
+  structuredData?: Array<Record<string, unknown>>;
 }
 
 const {
@@ -34,6 +35,7 @@ const {
   noindex = false,
   ogType = 'website',
   twitterCard,
+  structuredData: structuredDataProps = [],
 } = Astro.props as Props;
 
 const defaultLight = '#F5F3EF';
@@ -56,6 +58,27 @@ const resolveAbsoluteUrl = (input?: string) => {
 const defaultFallbackImage = resolveAbsoluteUrl('/assets/ryan-shafer.jpg');
 const ogImage = resolveAbsoluteUrl(seoImage) ?? defaultFallbackImage;
 const computedTwitterCard = twitterCard ?? (ogImage ? 'summary_large_image' : 'summary');
+
+const publisher = {
+  '@type': 'Person',
+  name: 'Ryan Shafer',
+  url: siteOrigin ?? canonicalUrl ?? undefined,
+};
+
+const baseSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: title,
+  url: canonicalUrl ?? siteOrigin ?? undefined,
+  description,
+  inLanguage: 'en-US',
+  publisher,
+};
+
+const structuredDataEntries = [baseSchema, ...structuredDataProps].filter(Boolean);
+const structuredDataPayload =
+  structuredDataEntries.length === 1 ? structuredDataEntries[0] : structuredDataEntries;
+const jsonLdString = structuredDataEntries.length ? JSON.stringify(structuredDataPayload) : undefined;
 ---
 
 <!DOCTYPE html>
@@ -148,6 +171,9 @@ const computedTwitterCard = twitterCard ?? (ogImage ? 'summary_large_image' : 's
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     {seoImageAlt && <meta name="twitter:image:alt" content={seoImageAlt} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {jsonLdString && (
+      <script type="application/ld+json" set:html={jsonLdString} />
+    )}
     <title>{title}</title>
     <ViewTransitions />
     <script defer src="https://cloud.umami.is/script.js" data-website-id="49cc7a0c-0114-4697-8e23-821f1a599e8d"></script>

@@ -1,0 +1,11 @@
+# AI crawling & usage policy for ryanshafer.com
+# This file complements robots.txt and clarifies expectations for GenAI systems.
+
+Contact: https://www.linkedin.com/in/ryanshafer
+Preferred-Attribution: Ryan Shafer - https://ryanshafer.com
+Crawl-Delay: 5
+
+Allowed-Use: You may crawl publicly available pages to answer user questions if you cite "Ryan Shafer" with a visible link to https://ryanshafer.com.
+Disallowed-Use: Do not store or redistribute full-case-study content verbatim, and do not use private assets or non-public API endpoints for model training.
+
+Sitemap: https://ryanshafer.com/sitemap-index.xml

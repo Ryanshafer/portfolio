@@ -24,6 +24,31 @@ const ellipseImages = ['ellipse-1.webp', 'ellipse-2.webp', 'ellipse-3.webp'];
 const randomEllipse = ellipseImages[Math.floor(Math.random() * ellipseImages.length)];
 const { data, render } = post;
 const { Content } = await render();
+const siteOrigin = Astro.site?.origin ?? 'https://ryanshafer.com';
+const canonicalPath = `/thoughts/${slug}/`;
+const canonicalUrl = siteOrigin ? new URL(canonicalPath, siteOrigin).toString() : undefined;
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description: data.description,
+  inLanguage: 'en-US',
+  author: {
+    '@type': 'Person',
+    name: 'Ryan Shafer',
+    url: siteOrigin,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: 'Ryan Shafer',
+    url: siteOrigin,
+  },
+  mainEntityOfPage: canonicalUrl,
+  articleSection: data.categories ?? [],
+  keywords: Array.isArray(data.categories) ? data.categories.join(', ') : undefined,
+  datePublished: data.pubDate,
+  dateModified: data.pubDate,
+};
 
 // // --- Build-time random selection with at least one related by category ---
 // function shuffle<T>(arr: T[]): T[] {
@@ -70,6 +95,8 @@ const { Content } = await render();
 <Layout
   description={`${data.description}`}
   title={`${data.title} | Ryan Shafer, UX/Product Design Leader`}
+  canonical={canonicalUrl}
+  structuredData={[articleSchema]}
 >
   <article>
     <!-- Hero Section -->
