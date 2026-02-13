@@ -1,0 +1,17 @@
+{
+  "path": "/*",
+  "excludedPath": [
+    "/favicon.ico",
+    "/*.js",
+    "/*.css",
+    "/*.png",
+    "/*.jpg",
+    "/*.jpeg",
+    "/*.gif",
+    "/*.svg",
+    "/*.webp",
+    "/*.woff",
+    "/*.woff2",
+    "/_astro/*"
+  ]
+}
