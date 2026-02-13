@@ -17,6 +17,12 @@ export default async (request: Request, context: any) => {
   const UMAMI_WEBSITE_ID = Deno.env.get("UMAMI_WEBSITE_ID")
 
   if (UMAMI_ENDPOINT && UMAMI_WEBSITE_ID) {
+    // Normalize pathname: remove trailing slash (except for root)
+    let normalizedPath = url.pathname
+    if (normalizedPath !== "/" && normalizedPath.endsWith("/")) {
+      normalizedPath = normalizedPath.slice(0, -1)
+    }
+
     // Fire-and-forget tracking request
     context.waitUntil(
       fetch(UMAMI_ENDPOINT, {
@@ -29,12 +35,12 @@ export default async (request: Request, context: any) => {
           type: "event",
           payload: {
             website: UMAMI_WEBSITE_ID,
-            url: url.pathname,
+            url: normalizedPath,  // Use normalized path
             hostname: url.hostname,
             referrer: request.headers.get("referer") || "",
-            screen: "1920x1080", // Default since server-side
+            screen: "1920x1080",
             language: request.headers.get("accept-language")?.split(",")[0] || "en-US",
-            title: url.pathname // You can enhance this if you want
+            title: normalizedPath  // Use normalized path here too
           }
         })
       }).catch(err => {
