@@ -1,3 +1,5 @@
+import type { Config } from "@netlify/edge-functions"
+
 export default async (request: Request, context: any) => {
   const url = new URL(request.url)
 
@@ -42,4 +44,8 @@ export default async (request: Request, context: any) => {
   }
 
   return context.next()
+}
+
+export const config: Config = {
+  path: "/*"
 }
