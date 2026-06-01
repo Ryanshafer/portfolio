@@ -1,0 +1,80 @@
+---
+title: "Behavior First — An AI-Assisted Design Process"
+description: "How AI makes behavior-first design practical and why it removes the costliest gap in the design process."
+pubDate: "2026-06-01"
+readTime: 3
+categories: ["Design Methodology", "AI-Augmented Design", "Collaboration"]
+
+---
+
+I’ve shipped designs that looked right, were usable, ticked all the right UX boxes, and still fell short by my personal design standards once in production. When that happens, I need to understand why to improve my workflow.
+
+It’s typically not because the UI is bad. More often, something in the interaction feels unrefined, unexamined or poorly translated from design into code. Either way, what users actually experience has drifted away from the vision.
+
+That drift usually starts the same way. Our design tools excel at expressing what a UI looks like, but struggle to express interactions that depend on complex state and logic. Designers follow the path of least resistance, and modern tools make visual refinement that path: fast, satisfying, and immediately legible as progress. So workflows pull toward polish early, even when the hardest behavioral questions have yet been answered. Logic, state, edge cases, and failure modes end up roughed in or adjusted during build, where change is hard and expensive.
+
+Every step of that translation is inherently **lossy**.
+
+The barrier to fixing this was never capability — it was cost. Code-based prototypes were expensive enough that behavioral exploration was either poorly served by watered-down prototyping tools or handed off to dedicated prototypers. AI collapses that cost. Logic and state become design material at the same speed as visual design, and inverting the order — behavior first, polish second — becomes practical.
+
+A prototype's job is to bring a fuzzy idea into focus. A coded prototype makes it real — and AI makes any technically-minded designer their own prototyper.
+
+---
+
+## Logic- and state-based interactive wireframes
+
+On a recent project, I hit the familiar wall: Figma couldn’t express the interactions I needed. I’d built what I could, but teammates couldn’t understand the experience from the limited capabilities of the Figma prototype. Feedback became speculative, hampering our progress.
+
+Instead of pushing harder with Figma, I switched to using AI tools, like Claude Code and Codex, to build a code-based prototype. I focused on behavior first (logic, state, conditionals, timing) and deferred visual polish. This is what I call logic- and state-based interactive wireframes.
+
+They’re still prototypes. Still disposable. They don’t replace thinking through flows in diagrams. But they let you explore behavior directly, living in code rather than as notes attached to polished mockups. The shift isn’t about code for its own sake. It’s about _when_ behavior gets explored. Refine interactions early, get the critical feedback, and polish the UI once the team feels the interactions are solid.
+
+---
+
+## How the workflow actually runs
+
+This doesn’t start with code. AI makes the prototyping faster, not the thinking that precedes it: understanding the problem, the user’s motivation, and the constraints that matter.
+
+From there, I move into logic-first wireframing: building interaction behavior in code before committing to visual design. The goal is not production-ready output, but to make the system tangible early enough that it can still change.
+
+A recent example was a global search interaction. Search is a good stress test for traditional design tools: Figma can simulate predefined states, but it cannot behave like a real system responding to live input.
+
+So I built it directly in code. Using AI tools, I created a modal search component and a lightweight JSON data layer. The JSON acted as a temporary schema: simple, editable text that let me define structure without introducing database overhead during exploration.
+
+Once the behavior worked (opening the modal, typing input, and rendering dynamically filtered results), I moved into Figma. Not to prototype interaction, but to define visual direction. These mockups had zero interaction: only layout and visual treatment of system states.
+
+I then iterated between the two in tight loops: visual changes pushed via MCP Server back into code, interaction refinements made directly in code, returns to Figma for visual adjustment. Each cycle took minutes: build, use my judgment to evaluate it as an actual user, refine, repeat. After three of these cycles, I had a functioning global search experience that responded to key commands, real input and could be evaluated as an actual interaction rather than a simulation. Because this lived in real code, there was no separate accessibility or responsive cleanup phase — the behavior was real, not approximated in a design tool and later reconciled.
+
+That prototype did not stay a prototype.
+
+The components were reused directly in production. Because the layout and interaction already existed as code, engineers did not need to rebuild it from static designs. They altered it to align with backend requirements. The designed behavior and layout was carried forward rather than reinterpreted.
+
+The impact was not that the process became faster. It was that a layer of translation between design intent and interaction implementation was removed for this class of problem. What normally exists as a handoff gap simply did not exist here. The prototype became the product, engineers extended what already existed rather than rebuilding from static designs.
+
+---
+
+## Tradeoffs — cost moves, it doesn't disappear
+
+This workflow requires technical literacy — setting up an environment, understanding component structure, working in Git — skills outside what's typically expected of designers today. Adopting it represents a meaningful shift in what the role demands.
+
+At team scale, this becomes a staffing question with real constraints. Hiring designers with these skills narrows the candidate pool and increases cost. Upskilling existing designers requires sustained investment. There are no easy answers here.
+
+There are less technical tools that aim to support this: Lovable, Replit, Figma Make. In practice they don’t match the flexibility of working directly in code, or the fluidity of moving between Figma and code within the same design system. These tools are improving quickly. For now, the tradeoff is control over intent and the ability to shape real interaction behavior without tooling constraints.
+
+Code-based prototypes also reduces friction for evaluation. A deployed prototype requires nothing special from the viewer: no broken interactions, no simulation layer, no account or setup. It can be shared as a real website, versioned, and iterated in context.
+
+It can change how artifacts exist across the process. User flows live in FigJam or Miro. The wireframe lives in a repository. Visual design lives in Figma. There is no single source of truth, and that is intentional. Each artifact serves a different purpose at a different stage of thinking. Attempts to unify everything into one system may improve organization, but often at the cost of clarity.
+
+There's a structural benefit here specific to design systems. The gap between a design system in Figma and one in code has always existed: components that drift, tokens that diverge. Keeping them in sync was good practice, but rarely urgent. No real pressure forced it.
+
+In this workflow, your prototype sits at the intersection of Figma and your production design system. A token out of sync isn't organizational debt — it breaks the workflow. Alignment stops being a discipline you maintain and becomes a natural consequence of how the work is done.
+
+---
+
+## The underlying principle
+
+A prototype should match the question it is trying to answer. When "how it looks" is the question, Figma is the right tool. When "how it works" is the question, reaching for a tool focused on appearance is the wrong answer.
+
+AI doesn't change that principle. It changes how early you can act on it — confronting behavior before polish, before certainty, before decisions calcify into something expensive to undo.
+
+The gap worth closing isn't between design and engineering. It's between what we draw and what users actually experience.
