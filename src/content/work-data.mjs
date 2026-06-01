@@ -28,7 +28,7 @@ export const workEntries = [
   },
   {
     title: 'Head of User Experience Design (UX Lead)',
-    company: 'Showmax',
+    company: 'Naspers — Showmax',
     start: 'Summer 2017',
     end: 'Spring 2019',
     location: 'Europe (Remote)',
