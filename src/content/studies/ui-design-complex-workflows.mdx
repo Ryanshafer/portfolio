@@ -1,6 +1,6 @@
 ---
 title: "Designing Order: A UI to Scale Global Supply Chain Testing"
-description: Designing the right UX turns a global operational burden into a competitive advantage.
+description: A fragmented, manual testing workflow serving a global supplier base redesigned into a self-service digital platform that achieved 100% task completion and contributed to one of Oritain's largest client contracts.
 pubDate: "2025-10-08"
 author: "Ryan Shafer"
 heroImageWide: "/assets/studies/ui-design-complex-workflows/promowide-ui-design-complex-workflows.webp"
@@ -8,13 +8,13 @@ heroImagePromo: "/assets/studies/ui-design-complex-workflows/promo-ui-design-com
 bgFill: "#DBA74F"
 heroTextureBlendMode: luminosity
 darkHeroHeading: false
-readTime: 6
+readTime: 5
 categories: ["UI Design", "UX Strategy", "UX Research", "Information Architecture", "Accessibility", "Prototyping"]
 company: ["Oritain"]
 seo:
-  description: A UX/UI case study showing how research-driven design transformed a fragmented global supplier testing process into a scalable digital platform—through modular UI systems, accessibility for multilingual users, Stripe and DocuSign integration, and iterative testing.
+  description: A UI/UX case study on designing a self-service supplier portal for a global testing platform — covering information architecture, multilingual usability, and structured data entry, with measurable improvements in task completion, data quality, and business outcomes.
 summary:
-  role: "UX Lead / UI Designer"
+  role: "UX Lead"
   problem: "Oritain’s supplier testing process was manual and error-prone—limiting data quality, scalability, and revenue. The challenge: design a digital flow that translated a complex, multi-step process into a clear, guided UI that suppliers around the world could trust and use with confidence."
   impact: |-
     - Achieved 100% task completion in testing.
@@ -32,107 +32,119 @@ summary:
 ---
 
 
-## Problem Context & Key Challenges
+## Overview
 --------
 
-Oritain, a global leader in supply chain verification, faced a critical challenge: **its supplier testing process was manual, slow, and prone to error**. Clients paid the cost, while suppliers worldwide navigated a complex, multi-step workflow—often across regions, time zones, and languages.
+Oritain's testing process followed a five-step journey: order test, define test, collect samples, test samples, return results.
 
-The opportunity was to empower suppliers to manage testing directly, reducing client oversight, improving data quality, and unlocking a scalable new revenue stream.
+In practice, the workflow lived across spreadsheets, shared folders, emails, and Teams messages, with each service delivery manager maintaining their own version. I described it internally as a “Wizard of Oz” UX test, a system that appeared software-like but was still coordinated manually behind the scenes. It had never been fully converted into a system where those human steps were designed out.
 
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-collection-points.webp" alt="The supplier portal translated a complex, multilingual service workflow into a clear, step-by-step digital experience—designed to be intuitive, guided, and built to support the business’s goal of scaling operations." />
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-manual-flow.webp" alt="The manual workflow lived across spreadsheets, shared folders, emails, and Teams messages — with each service delivery manager maintaining their own version. Mapping it revealed not just complexity, but the absence of shared rules." />
 
-### Key challenges included:
-- **A multi-step, high-stakes workflow** requiring precise data entry to avoid costly errors and wasted tests.
-- **A global, multilingual user base** with many suppliers using English at a basic proficiency level.
-- **Manual, error-prone operations** relying on spreadsheets, emails, and copy-pasting, leading to frequent data errors and duplicates.
-- **Evolving requirements and shifting priorities**, including mid-project pivots like payment model changes, demanding flexible design strategies.
-- **A complex, un-systematized manual process** that needed to be translated into a scalable digital flow.
+The opportunity was framed as digitizing the workflow into a self-service product for a new, scalable customer segment. After mapping the process and speaking with stakeholders, it became clear the real challenge was building something users could complete independently without introducing errors that would affect test quality.
 
-## Research & Service Mapping (~3 weeks research & mapping)
+The workflow spanned multiple departments with different priorities and operating models. A complete streamlining would have required organizational alignment beyond the project scope. Instead, I focused on a scalable structure that automated data capture where possible while preserving human verification where expert judgment was required.
+
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-digital-flow.webp" alt="The digital flow preserved core steps from the manual flow, but streamlined responsibilities between suppliers and Oritain." />
+
+## Defining the Model
 --------
 
-### Mapped Manual Workflow
-I interviewed service delivery staff across the organization to understand the day-to-day testing process and map the manual workflow. Like many startups, Oritain had evolved through quick, manual fixes to meet growing client needs. As a result, no two service flows were exactly alike, and requirements kept shifting as I dug deeper.
+The most important design decision wasn’t the interface—it was the object model.
 
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-manual-flow.webp" alt="Mapping Oritain’s manual testing process revealed a fragmented, error-prone workflow — critical context for our UI design decisions." />
+Through research and workflow mapping, I identified a consistent mental structure in how suppliers understood their businesses: contracts, facilities, and tests.
 
-**This reinforced the need for a flexible UX strategy: build just enough structure to move forward while staying ready to adapt.**
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-cards.webp" alt="Contracts, facilities, and tests became the three core entities. Modeling them as interactive objects — rather than form steps — reduced cognitive load and gave the system a reusable foundation for future expansion." />
 
-## Design Principles & Strategic Approach
+I structured the system around these three entities. Contracts represented commercial relationships, facilities represented manufacturing locations, and tests represented the individual testing activities tied to both.
+
+This became the foundation of the information architecture.
+
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-collection-points.webp" alt="Once the object model was established, the interface followed naturally. Suppliers moved through the workflow without needing orientation because the structure matched how they already thought about their business." />
+
+The system was designed so that if the model matched how users thought about their domain, the structure would require little explanation.
+
+In testing, participants moved through the product without needing orientation or asking how it was organized, indicating the model aligned closely with their mental model and reduced interpretive friction.
+
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-responsive.webp" alt="The system launched supporting tablets and desktops — the shared devices most commonly used on factory floors. Fluid layouts and touch support were built in from the start, not retrofitted." />
+
+
+## Designing for a Global Supplier Base
 --------
 
-### To succeed, the UI needed to:
-- **Leverage research-backed personas and model key concepts** (contracts, facilities, tests) as interactive, modular objects for clarity and reusability.
-- **Minimize cognitive load** through a guided, step-by-step flow using plain, accessible language simplified with AI tools to support non-native English speakers.
-- **Reflect Oritain’s manual process** to maintain testing accuracy and internal alignment.
-- **Prioritize tablets and desktops**—the primary devices used by global suppliers.
-- **Prevent costly errors** by designing for data accuracy and clarity.
-- **Stay modular and scalable** for future adaptation and client-facing use cases.
-- **Avoid building everything in-house** by integrating Stripe for payments and DocuSign for contracts—saving time, ensuring compliance, and improving user trust through familiar tools.
+Many suppliers used English as a second language and were completing high-stakes data entry where misunderstandings could lead to costly errors, delays, or invalid tests.
 
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-cards.webp" alt="Key entities—Contracts, Facilities, Test Packages and Tests—were modeled as interactive cards. This modular structure reduced cognitive load and enabled scalable, reusable UI patterns." />
+In early usability testing, language and labeling were a primary source of failure. Users hesitated, misinterpreted terminology, or required clarification to proceed.
 
-## From Manual Workflow to Modular UI System (3 months designing and iterating)
---------
-### Designing a Digital Workflow
+Localization was the long-term solution, but out of scope for MVP. I focused instead on simplifying product language systematically.
 
-I sketched low-fidelity UI flows to translate the manual workflow into a clear, guided digital experience that preserved critical details while improving usability. These flows aligned stakeholders across Service Delivery, Product, and Engineering around a shared vision.
+Before AI-assisted UX workflows were common, I built a custom GPT grounded in ESL and UX writing principles and used it to refine all product copy, including labels, instructions, and system messages.
 
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-digital-flow.webp" alt="The digital flow preserved core steps but streamlined responsibilities between suppliers and Oritain." />
+For example, "Define your collection details" became "What are you testing?"
 
-I then iterated in Figma—using and extending Oritain’s design system—to prototype the full end-to-end supplier experience. These prototypes helped define technical requirements and served as the foundation for moderated remote usability testing with suppliers worldwide.
+After these changes, task completion improved from ~70% to 100% in the second round of testing. Users moved through the workflow with fewer points of hesitation and reduced need for clarification, lowering the risk of costly mistakes in execution.
 
-### Major Design Pivots
-- **Payment model:** I recommended a familiar cart/checkout flow to minimize friction and support future scenarios, but leadership opted for a bundled credit model mirroring client sales. This increased cognitive load, introduced complex UI states, and required midstream redesigns.
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-user-testing.webp" alt="In the first round of testing, language was the primary failure point. Users hesitated or misread labels. To fix this without localization, I created a custom AI writing tool grounded in ESL and UX writing principles and used it to rewrite every label, instruction, and system message in the product." />
 
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-payment.webp" alt="Instead of building everything from scratch, we used Stripe for payments and DocuSign for contract signing." />
-
-
-- **Late technical discoveries:** Requirements like handling complex material composition data emerged deep into the build. I designed lightweight but robust UI patterns to capture nuanced inputs and prevent data errors without derailing MVP timelines.
-
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-error-states.webp" alt="Error states were surfaced through clear messages and interface cues to prevent wasted tests — critical for supplier trust." />
-
-### System & Accessibility Considerations
-
-- **Used AI-assisted UX writing to ensure clear, low-reading-level text**, prioritized error prevention and clarity to avoid costly wasted tests and maintain supplier trust.
-- Designed for fluid layouts and touch support on tablets and desktops, reflecting suppliers’ typical factory-floor shared devices rather than phones.
-
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-responsive.webp" alt="Designed for fluid layouts and touch support for a range of devices—factory-floor tablets and office desktop computers" />
-
-## Validating the Design Through Usability Testing (~1 Month Across Two Phases)
+## Adapting to a Major Business Change
 --------
 
-In **Phase 1**, early Figma prototypes tested core flows and object models. **Completion rates hovered around 70%**, with failures pointing to usability gaps in effort and clarity. Fixes were clear and actionable.
+Midway through the project, two structural changes reshaped the system design.
 
-In **Phase 2**, refined pre-launch software addressed major blockers and improved language. **Task completion rose to 100%**, confirming the effectiveness of design decisions.
+The first was a shift in the commercial model. Leadership replaced the shopping-cart approach I had recommended with a bundled credit system aimed at standardizing purchasing across customer segments.
 
-<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-user-testing.webp" alt="During usability testing, some users had trouble completing tasks because instructions were unclear or important information was missing." />
+While the cart model matched supplier behavior—small, task-based purchases on short timelines—the new model was designed for consistency with enterprise customers purchasing at scale under long-term contracts.
 
-Throughout both testing phases, I resolved language and navigation issues, adapted UI flows in response to evolving requirements, and balanced those changes against MVP constraints to preserve scalability. Along the way, I also uncovered opportunities for future features.
+I raised concerns about the added complexity for suppliers, given the nature of their workflows. The business ultimately proceeded with the credit system.
 
-## Impact
+This introduced new requirements across the purchasing flow:
+
+- Credit balances  
+- Package purchasing  
+- Mid-flow purchase states  
+- Package management rules  
+- Additional edge cases throughout the workflow  
+
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-payment.webp" alt="The credit system introduced balance states, mid-flow purchase decisions, and package management rules that weren't part of the original scope. The design had to absorb that complexity without surfacing it to the user." />
+
+
+The second change emerged during implementation. While science decisions were not defined as formal rules, engineering had already implemented a strict data schema with defined types and validation requirements. Inputs initially treated as free text had to be rebuilt as structured forms with enforced constraints and validation states aligned to the backend model.
+
+Both changes had to be delivered under tight timelines, without disrupting the existing workflow, while keeping the interface usable for non-technical users entering complex structured data.
+
+<ImageWithStyle src="/assets/studies/ui-design-complex-workflows/content/oritain-error-states.webp" alt="The backend schema enforced strict data types and validation requirements. Error states had to be precise enough to guide correction without exposing the underlying technical constraints to non-technical users." />
+
+
+## Outcomes
 --------
+The platform launched with measurable improvements in usability, data quality, and operational efficiency.
 
-The redesigned supplier portal delivered significant benefits:
+Results included:
 
-- **100% task completion** in usability tests with the pre-launch build.
-- **Reduced Errors:** Significantly minimized data entry mistakes and duplicate records through guided input and validation.
-- **Scalability:** The modular design system supports ongoing feature/flow expansion.
-- **Revenue Growth:** The portal enabled Oritain to open a new scalable revenue stream.
-- **Business Success:** Played a key role in securing one of Oritain’s largest client contracts to date.
-- **Improved User Confidence:** Suppliers reported higher satisfaction and ease of use.
+- 100% task completion in pre-launch testing, up from ~70%  
+- Reduced data entry errors and duplicates through structured input and validation  
+- A modular architecture that supported post-launch expansion without redesign  
+- Contributed to securing one of Oritain’s largest client contracts  
 
-> Suppliers report the portal being easy to navigate, with timely guidance and efficient troubleshooting. We are very pleased with this demonstration of commitment to the customer experience. [\Redacted Client\] has high standards, and we appreciate your partnership in easing the supplier compliance burden.
+A key client later noted:
+
+> Suppliers report the portal being easy to navigate, with timely guidance and efficient troubleshooting. We are very pleased with this demonstration of commitment to the customer experience.
 
 ## Reflection
 --------
 
-**This project reinforced the power of strong design principles as an anchor in complex, high-stakes UI work.** The supplier experience demanded translating a nuanced, multilingual service flow into a clear, step-by-step digital flow—while navigating shifting business priorities.
+The most important lesson from this project wasn’t about interface design.
 
-When decisions like the payment model diverged from ideal UX patterns, I relied on core principles—clarity, error prevention, modularity—to keep the product cohesive and usable.
+Where decision-making exists as expert judgment rather than defined rules, it limits how much of the system can be automated. Human verification becomes part of the workflow not because of the UI, but because the underlying logic is not explicit enough to remove it.
 
-It also marked my first use of **AI-assisted UX writing at scale**, which proved essential for ensuring clarity without localization—a critical factor for non-native English speakers across global supply chains.
+That sets a ceiling on scalability. Further improvement depends less on interface iteration and more on turning implicit knowledge into shared rules that can be implemented directly in the product.
 
-In parallel, there are structural opportunities to improve the flow. **Optimizing it will require close collaboration** with Service Delivery and Science to redefine what qualifies as an acceptable test. While the manual process prioritized flexibility, a scalable digital model depends on clear, standardized rules that translate into the UI—reducing friction, increasing speed, and enabling long-term growth.
+The second lesson was about influence.
 
-More than anything, this work sharpened my ability to balance ideal solutions with real-world constraints. It taught me when to push, when to adapt, and how to protect the user experience either way. **That balance — between principled design and pragmatic delivery — is what I bring to every complex UI initiative I lead.**
+I raised concerns about the payment-model change from a UX perspective. The issue wasn’t the argument itself, but that it stayed within a UX framing rather than becoming cross-functional. The decision required alignment across product, engineering, operations, and leadership.
+
+In this case, the tight timeline led me to believe broader alignment wasn't possible before the decision was made.
+
+A more effective approach would have been to take the time to build cross-functional alignment earlier and frame tradeoffs as system-level costs rather than UX impact alone.
+
+As design becomes more closely intertwined with business systems, the challenge shifts from improving interfaces to shaping how decisions are made.
