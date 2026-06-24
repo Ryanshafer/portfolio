@@ -154,15 +154,6 @@
     top: 60%;
     width: clamp(32rem, 90vw, 56rem);
   }
-  .page-header__bg-ellipse__home {
-    @apply absolute left-1/2;
-    top: 60%;
-  }
-}
-@media (max-width: 1350px) {
-  .page-header__bg-ellipse__home {
-    @apply absolute left-1/2 top-1/2;
-  }
 }
 
 @media (max-width: 640px) {
@@ -227,12 +218,9 @@
     top: 140%;
   }
 
-  .page-header__bg-ellipse__home {
-    @apply absolute left-1/2 grid place-items-center;
-    width: clamp(48rem, 120vw, 90rem);
-    aspect-ratio: 1 / 1;
-    transform: translate(-50%, -48%);
-    top: 70%;
+  .hero-photo-ring__bg {
+    animation: page-header-spin 40s linear infinite;
+    transform-origin: center;
   }
 
   .page-header__bg-image {
